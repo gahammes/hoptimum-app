@@ -44,7 +44,7 @@ class HoptimumApp extends StatefulWidget {
 }
 
 Future<void> teste() async {
-  final url = Uri.parse(globals.url('http', 'api/login'));
+  final url = Uri.parse(globals.getUrl('http', 'api/login'));
   final response = await http.post(
     url,
     headers: <String, String>{
@@ -60,12 +60,13 @@ Future<void> teste() async {
   );
   // JsonEncoder encoder = JsonEncoder.withIndent('  ');
   // print(encoder.convert(json.decode(response.body)));
-  // globals.loginData = json.decode(response.body);
+  globals.loginData = json.decode(response.body);
+  getLog();
 }
 
 class _HoptimumAppState extends State<HoptimumApp> {
   void _connect() {
-    globals.channel = IOWebSocketChannel.connect(globals.url('ws', ''));
+    globals.channel = IOWebSocketChannel.connect(globals.getUrl('ws', ''));
     print('💩💩💩💩💩💩💩💩💩💩💩💩💩');
     JsonEncoder encoder = JsonEncoder.withIndent('  ');
     globals.channel?.stream.listen(
@@ -162,11 +163,6 @@ class _HoptimumAppState extends State<HoptimumApp> {
     );
   }
 
-  void handleContent(String content) {
-    var res = jsonDecode(content);
-    print(res['createdAt']);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -215,7 +211,15 @@ class _HoptimumAppState extends State<HoptimumApp> {
             ),
           ),
           home: auth.isAuth
-              ? TabsScreen()
+              ? globals.perfil == 'hospede'
+                  ? TabsScreen()
+                  : globals.perfil == 'limpeza'
+                      ? FuncSolicitacaoScreen()
+                      : globals.perfil == 'cozinha'
+                          ? FuncSolicitacaoScreen()
+                          : globals.perfil == 'seguranca'
+                              ? FuncSegurancaScreen()
+                              : null
               : FutureBuilder(
                   future: auth.tryAutoLogin(),
                   builder: (ctx, snapshot) =>

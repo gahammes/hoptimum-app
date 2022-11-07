@@ -1,10 +1,12 @@
 import 'package:dashboard_tcc/models/hospede.dart';
+import 'package:dashboard_tcc/models/providers/auth.dart';
 import 'package:dashboard_tcc/models/report.dart';
 import 'package:dashboard_tcc/widgets/lista_hospedes.dart';
 import 'package:dashboard_tcc/widgets/report_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 
 import 'login_screen.dart';
 
@@ -29,7 +31,8 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
   late TabController _tabController;
 
   void _logout() {
-    Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+    Provider.of<Auth>(context, listen: false).logout();
+    Navigator.of(context).pushReplacementNamed('/');
   }
 
   @override

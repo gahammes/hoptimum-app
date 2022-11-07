@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:dashboard_tcc/models/seguranca.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,29 +27,9 @@ class Auth with ChangeNotifier {
     return _userId;
   }
 
-  // Future<void> _postLogin(String email, String password) async {
-  //   var negocio = json.encode({
-  //     'email': email,
-  //     'senha': password,
-  //     'id': globals.chaveBackUp,
-  //   });
-  //   var response = await http.post(
-  //     Uri.parse(globals.url('http', 'api/login')),
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //     body: negocio,
-  //   );
-
-  //   JsonEncoder encoder = JsonEncoder.withIndent('  ');
-
-  //   //print(encoder.convert(json.decode(response.body)));
-  //   print(json.decode(response.body)['hospede']['_id']);
-  // }
-
   Future<void> _authenticate(String email, String password,
       String urlSegmentStart, String urlSegmentEnd) async {
-    final url = Uri.parse(globals.url(urlSegmentStart, urlSegmentEnd));
+    final url = Uri.parse(globals.getUrl(urlSegmentStart, urlSegmentEnd));
     try {
       final response = await http.post(
         url,
@@ -65,15 +46,32 @@ class Auth with ChangeNotifier {
       );
       globals.email = email;
       globals.password = password;
-      JsonEncoder encoder = JsonEncoder.withIndent('  ');
-      print(encoder.convert(json.decode(response.body)));
-      globals.loginData = json.decode(response.body);
-
-      //print(json.decode(response.body)['hospede']['_id']);
-      //print(json.decode(response.body));
+      var decodedRes = json.decode(response.body) as Map;
+      if (decodedRes.containsKey('hospede')) {
+        globals.perfil = 'hospede';
+      }
+      if (decodedRes.containsKey('funcionario')) {
+        switch (decodedRes['funcionario']['cargo']['nome']
+            .toString()
+            .toLowerCase()) {
+          case 'segurança':
+            globals.perfil = 'seguranca';
+            break;
+          case 'limpeza':
+            globals.perfil = 'limpeza';
+            break;
+          case 'cozinha':
+            globals.perfil = 'cozinha';
+            break;
+        }
+      }
+      //JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
       globals.loginData = json.decode(response.body);
       final responseData = json.decode(response.body) as Map;
+
+      getLog();
+
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
@@ -84,15 +82,6 @@ class Auth with ChangeNotifier {
       if (responseData.containsKey('funcionario')) {
         _userId = responseData['funcionario']['_id'];
       }
-
-      // _expiryDate = DateTime.now().add(
-      //   Duration(
-      //     seconds: int.parse(
-      //       responseData['expiresIn'],
-      //     ),
-      //   ),
-      // );
-      //_autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
       final userData = json.encode(
@@ -101,6 +90,8 @@ class Auth with ChangeNotifier {
           'userId': _userId,
           'email': email,
           'password': password,
+          'perfil': globals.perfil,
+          'loginData': globals.loginData,
         },
       );
       prefs.setString('userData', userData);
@@ -118,10 +109,11 @@ class Auth with ChangeNotifier {
     _userId = null;
     globals.email = null;
     globals.password = null;
+    globals.perfil = null;
     globals.channel?.sink.close();
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
-    // prefs.remove('userData');
+    prefs.remove('userData');
     prefs.clear();
   }
 
@@ -130,10 +122,17 @@ class Auth with ChangeNotifier {
     if (!prefs.containsKey('userData')) {
       return false;
     }
+    //getLog();
     final extractedUserData =
         json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
     _token = extractedUserData['token'] as String;
     _userId = extractedUserData['userId'] as String;
+    globals.perfil = extractedUserData['perfil'] == null
+        ? null
+        : extractedUserData['perfil'] as String;
+    globals.loginData = extractedUserData['loginData'] == null
+        ? null
+        : extractedUserData['loginData'] as Map;
 
     notifyListeners();
 

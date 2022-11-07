@@ -8,13 +8,13 @@ var SEGURANCA_DATA = [
     date: DateTime(2022, 6, 15, 9, 7).toString(),
     tag: 'car',
   ),
-  Seguranca(
-    id: 's6',
-    title: 'Uso do cartão-chave',
-    info: 'Quarto',
-    date: DateTime(2022, 6, 14, 21, 47).toString(),
-    tag: 'tag',
-  ),
+  // Seguranca(
+  //   id: 's6',
+  //   title: 'Uso do cartão-chave',
+  //   info: 'Quarto',
+  //   date: DateTime(2022, 6, 14, 21, 47).toString(),
+  //   tag: 'tag',
+  // ),
   // Seguranca(
   //   id: 's6',
   //   title: 'Uso do cartão-chave',

@@ -164,9 +164,9 @@ class _AuthPartState extends State<AuthPart> {
       _showErrorDiaglog(errorMessage);
     }
 
-    // setState(() {
-    //   _isLoading = false;
-    // });
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void _switchAuthMode() {
@@ -416,7 +416,7 @@ class _AuthPartState extends State<AuthPart> {
       'id': globals.chaveBackUp,
     });
     var response = await http.post(
-      Uri.parse(globals.url('http', 'api/login')),
+      Uri.parse(globals.getUrl('http', 'api/login')),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

@@ -30,11 +30,58 @@ class HomePage extends StatelessWidget {
 
     var hospedes = [];
 
-    hospedes =
-        globals.loginData['hospede']['reservas'][0]['reserva']['hospedes'];
-    print(hospedes.length);
+    hospedes = globals.loginData['hospede']['reservas'][getIndex()]['reserva']
+        ['hospedes'];
+    //print('numero hospedes ${hospedes.length}');
 
     return hospedes.length;
+  }
+
+  List getReservas() {
+    var reservas = [];
+    reservas = globals.loginData['hospede']['reservas'];
+    return reservas;
+  }
+
+  int getIndex() {
+    var dados = globals.loginData as Map;
+    var reservas = [];
+
+    reservas = dados['hospede']['reservas'];
+    int index = reservas.indexWhere((reserva) {
+      Map mapa = reserva as Map;
+      if (mapa['reserva']['status'].toString().toLowerCase() == 'ativa') {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    //print('INDEX DA RESERVA ATIVA $index');
+    return index;
+  }
+
+  String getNome(int index) {
+    return getHospedes()[index]['hospede']['nome'].toString();
+  }
+
+  String getQuarto(int index) {
+    return getReservas()[getIndex()]['reserva']['quarto']['numero'].toString();
+  }
+
+  bool getTitular(int index) {
+    if (globals.loginData['hospede']['reservas'][getIndex()]['reserva']
+            ['hospedes'][index]['titular'] ==
+        true) {
+      return true;
+    }
+    return false;
+  }
+
+  List getHospedes() {
+    var hospedes = [];
+    hospedes = globals.loginData['hospede']['reservas'][getIndex()]['reserva']
+        ['hospedes'];
+    return hospedes;
   }
 
   double _getConsumo() {
@@ -83,26 +130,18 @@ class HomePage extends StatelessWidget {
           child: CarouselSlider(
             //TODO: IMPLEMENTAR BUILDER
             options: CarouselOptions(
-              enableInfiniteScroll: true,
+              enableInfiniteScroll: getHospCount() > 1 ? true : false,
               autoPlay: false,
               enlargeCenterPage: true,
               enlargeStrategy: CenterPageEnlargeStrategy.height,
             ),
             items: [
-              for (var i = 3; i >= 0; i--)
-                i == 3
-                    ? CardsList(
-                        HOSPEDES[2].nome,
-                        'Titular',
-                        'Quarto ${HOSPEDES[2].reserva.quarto}',
-                        '${HOSPEDES[2].reserva.numCartaoChave.length} cartões-chave')
-                    : CardsList(
-                        HOSPEDES[2].dependentes[i].nome,
-                        'Dependente',
-                        HOSPEDES[2].dependentes[i].idade,
-                        HOSPEDES[2].dependentes[i].cartaoChave
-                            ? 'Possui cartão-chave'
-                            : 'Sem cartão-chave'),
+              for (var i = 0; i < getHospCount(); i++)
+                CardsList(
+                    getNome(i),
+                    getTitular(i) == true ? 'Titular' : 'Dependente',
+                    'Quarto ${getQuarto(i)}',
+                    ''),
             ],
           ),
         ),
