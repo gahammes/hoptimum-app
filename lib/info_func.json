@@ -1,0 +1,89 @@
+
+
+
+{
+    "funcionario": {
+        "_id": "6368505045667cc5be70fa3b",
+        "cpf": "1234",
+        "nome": "Func #1",
+        "email": "func1@gmail.com",
+        "telefone": "111111111",
+        "nascimento": "1911-11-11T03:06:28.000Z",
+        "genero": "M",
+        "servicos": [
+            {
+                "_id": "6368505045667cc5be70fa4f",
+                "funcionarioId": "6368505045667cc5be70fa3b",
+                "servicoId": "6368505045667cc5be70fa3f",
+                "createdAt": "2022-11-07T00:24:48.958Z",
+                "updatedAt": "2022-11-07T00:24:48.958Z",
+                "__v": 0,
+                "servico": {
+                    "_id": "6368505045667cc5be70fa3f",
+                    "nome": "servicoA",
+                    "funcionarios": [
+                        "6368505045667cc5be70fa4f"
+                    ],
+                    "createdAt": "2022-11-07T00:24:48.710Z",
+                    "updatedAt": "2022-11-07T00:24:49.033Z",
+                    "__v": 0
+                },
+                "id": "6368505045667cc5be70fa4f"
+            },
+            {
+                "_id": "6368505145667cc5be70fa53",
+                "funcionarioId": "6368505045667cc5be70fa3b",
+                "servicoId": "6368505045667cc5be70fa41",
+                "createdAt": "2022-11-07T00:24:49.053Z",
+                "updatedAt": "2022-11-07T00:24:49.053Z",
+                "__v": 0,
+                "servico": {
+                    "_id": "6368505045667cc5be70fa41",
+                    "nome": "servicoB",
+                    "funcionarios": [
+                        "6368505145667cc5be70fa53",
+                        "6368505145667cc5be70fa57"
+                    ],
+                    "createdAt": "2022-11-07T00:24:48.758Z",
+                    "updatedAt": "2022-11-07T00:24:49.196Z",
+                    "__v": 0
+                },
+                "id": "6368505145667cc5be70fa53"
+            }
+        ],
+        "carros": [
+            {
+                "_id": "6368505145667cc5be70fa71",
+                "cor": "preto",
+                "modelo": "fuscão",
+                "placa": "FPE2324",
+                "registros": [],
+                "createdAt": "2022-11-07T00:24:49.744Z",
+                "updatedAt": "2022-11-07T00:24:49.744Z",
+                "__v": 0
+            }
+        ],
+        "cartoesChave": [
+            {
+                "_id": "6368505045667cc5be70fa2b",
+                "codigo": " 3B 9C B6 1C",
+                "createdAt": "2022-11-07T00:24:48.317Z",
+                "updatedAt": "2022-11-07T00:24:48.317Z",
+                "__v": 0
+            }
+        ],
+        "cargo": {
+            "_id": "6368505045667cc5be70fa37",
+            "nome": "segurança",
+            "salarioBase": 2000,
+            "createdAt": "2022-11-07T00:24:48.553Z",
+            "updatedAt": "2022-11-07T00:24:48.553Z",
+            "__v": 0
+        },
+        "conexoes": [],
+        "createdAt": "2022-11-07T00:24:48.631Z",
+        "updatedAt": "2022-11-07T00:24:49.854Z",
+        "__v": 0
+    }
+}
+
