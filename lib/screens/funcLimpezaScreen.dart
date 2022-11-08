@@ -8,22 +8,16 @@ import 'package:provider/provider.dart';
 
 import 'login_screen.dart';
 
-class FuncSolicitacaoScreen extends StatefulWidget {
-  static const routeName = '/funcSolicitacao-screen';
+class FuncLimpezaScreen extends StatefulWidget {
+  static const routeName = '/funcLimpeza-screen';
 
   @override
-  State<FuncSolicitacaoScreen> createState() => _FuncSolicitacaoScreenState();
+  State<FuncLimpezaScreen> createState() => _FuncLimpezaScreenState();
 }
 
-class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
+class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
     with TickerProviderStateMixin {
   static const List<Tab> myTabs = [
-    Tab(
-      icon: Icon(Icons.home),
-    ),
-    Tab(
-      icon: Icon(Icons.history),
-    ),
     Tab(
       icon: Icon(Icons.tag),
     ),
@@ -53,7 +47,7 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
     initializeDateFormatting();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Solicitações'.toUpperCase()),
+        title: Text('Limpeza'.toUpperCase()),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(
@@ -77,21 +71,6 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
         child: TabBarView(
           controller: _tabController,
           children: [
-            SingleChildScrollView(
-              child: Container(
-                height: 647,
-                padding: EdgeInsets.all(0.0),
-                child: FuncSolicitacaoItem(PEDIDOS, PEDIDOS_FINALIZADOS),
-              ),
-            ),
-            SingleChildScrollView(
-              child: Container(
-                height: 647,
-                padding: EdgeInsets.all(0.0),
-                child: FuncSolicitacaoItem(
-                    PEDIDOS_FINALIZADOS, PEDIDOS_FINALIZADOS),
-              ),
-            ),
             //TODO: historico do cartao aqui!!!
             SingleChildScrollView(
               child: Container(

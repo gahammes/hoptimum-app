@@ -96,10 +96,11 @@ class AuthPart extends StatefulWidget {
 }
 
 class _AuthPartState extends State<AuthPart> {
-  var _rememberMe = false;
+  var _rememberMe = globals.rememberMe ?? false;
   final GlobalKey<FormState> _formKey = GlobalKey();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final _passwordFocusNode = FocusNode();
 
   final AuthMode _authMode = AuthMode.Login;
   final Map<String, String> _authData = {
@@ -225,6 +226,10 @@ class _AuthPartState extends State<AuthPart> {
             //onSubmitted: (_) => _loginDirection(),
             keyboardType: TextInputType.emailAddress,
             cursorColor: Colors.white,
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (_) {
+              FocusScope.of(context).requestFocus(_passwordFocusNode);
+            },
             //decoration: InputDecoration(labelText: 'email'),
             validator: (value) {
               if (value!.isEmpty || !value.contains('@')) {
@@ -275,6 +280,8 @@ class _AuthPartState extends State<AuthPart> {
               }
               return null;
             },
+            onFieldSubmitted: (_) => _submit(),
+            focusNode: _passwordFocusNode,
             onSaved: (value) {
               _authData['password'] = value!;
             },
@@ -341,12 +348,13 @@ class _AuthPartState extends State<AuthPart> {
               onChanged: (value) {
                 setState(() {
                   _rememberMe = value!;
+                  globals.rememberMe = _rememberMe;
                 });
               },
             ),
           ),
           Text(
-            'Lembre-se de mim',
+            'Manter conectado',
             style: kLabelStyle,
           ),
         ],

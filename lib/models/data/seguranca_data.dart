@@ -1,13 +1,13 @@
 import 'package:dashboard_tcc/models/seguranca.dart';
 
-var SEGURANCA_DATA = [
-  Seguranca(
-    id: 's1',
-    title: 'Saída de veículo',
-    info: 'AAA1A11',
-    date: DateTime(2022, 6, 15, 9, 7).toString(),
-    tag: 'car',
-  ),
+List<Seguranca> SEGURANCA_DATA = [
+  // Seguranca(
+  //   id: 's1',
+  //   title: 'Saída de veículo',
+  //   info: 'AAA1A11',
+  //   date: DateTime(2022, 6, 15, 9, 7).toString(),
+  //   tag: 'car',
+  // ),
   // Seguranca(
   //   id: 's6',
   //   title: 'Uso do cartão-chave',

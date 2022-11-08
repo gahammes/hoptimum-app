@@ -97,6 +97,8 @@ class Auth with ChangeNotifier {
         },
       );
       prefs.setString('userData', userData);
+      prefs.setString(
+          'rememberMe', globals.rememberMe == true ? 'true' : 'false');
     } catch (error) {
       rethrow;
     }
@@ -122,6 +124,11 @@ class Auth with ChangeNotifier {
 
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('rememberMe')) {
+      if (prefs.getString('rememberMe') == 'false') {
+        return false;
+      }
+    }
     if (!prefs.containsKey('userData')) {
       return false;
     }

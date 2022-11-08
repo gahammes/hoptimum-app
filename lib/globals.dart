@@ -30,3 +30,4 @@ dynamic listenData;
 dynamic loginData;
 var chave;
 var chaveBackUp;
+var rememberMe;

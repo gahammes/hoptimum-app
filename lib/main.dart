@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, use_key_in_widget_constructors
 
+import 'package:dashboard_tcc/screens/funcLimpezaScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
@@ -219,7 +220,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
               ? globals.perfil == 'hospede'
                   ? TabsScreen()
                   : globals.perfil == 'limpeza'
-                      ? FuncSolicitacaoScreen()
+                      ? FuncLimpezaScreen()
                       : globals.perfil == 'cozinha'
                           ? FuncSolicitacaoScreen()
                           : globals.perfil == 'seguranca'
@@ -250,6 +251,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
             TelaReserva.routeName: (ctx) => TelaReserva(),
             ReservaInfo.routeName: (ctx) =>
                 ReservaInfo(reserva: HOSPEDES[2].reserva, quarto: QUARTOS[3]),
+            FuncLimpezaScreen.routeName: (ctx) => FuncLimpezaScreen(),
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => HomePage());
