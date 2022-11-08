@@ -26,7 +26,8 @@ class _SegurancaScreen extends State<SegurancaScreen> {
             Container(
               height: 640, //TODO: aqui da overflow
               //margin: EdgeInsets.only(top: 0),
-              child: SegurancaList(SEGURANCA_DATA),
+              child:
+                  SEGURANCA_DATA.isEmpty ? null : SegurancaList(SEGURANCA_DATA),
             ),
           ],
         ),

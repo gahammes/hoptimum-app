@@ -20,7 +20,7 @@ class CardsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final content = Container(
-      margin: EdgeInsets.fromLTRB(60, 16, 16, 0),
+      margin: EdgeInsets.fromLTRB(70, 16, 10, 0),
       constraints: BoxConstraints.expand(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,13 +66,14 @@ class CardsList extends StatelessWidget {
             ),
           ),
           Container(
-            height: 4,
+            height: 6,
           ),
           Text(
             carro,
             style: TextStyle(
               color: Colors.white,
               fontStyle: FontStyle.italic,
+              fontSize: 12,
             ),
           ),
         ],
@@ -92,7 +93,7 @@ class CardsList extends StatelessWidget {
             height: 155.0,
             margin: EdgeInsets.only(
               top: 20.0,
-              left: 60,
+              left: 50,
             ),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,

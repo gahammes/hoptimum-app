@@ -44,22 +44,29 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               Container(
+                margin: EdgeInsets.only(top: 50),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 10.0,
+                ),
+                height: 200,
+                child: Image(
+                  image: AssetImage('assets/images/logo-black.png'),
+                ),
+              ),
+              Container(
                 height: double.infinity,
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 80.0,
+                  padding: EdgeInsets.only(
+                    left: 40.0,
+                    right: 40.0,
+                    bottom: 80.0,
+                    top: 200.0,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        height: 200,
-                        child: Image(
-                          image: AssetImage('assets/images/LogoFinal.png'),
-                        ),
-                      ),
                       // Text(
                       //   'Entrar',
                       //   style: TextStyle(

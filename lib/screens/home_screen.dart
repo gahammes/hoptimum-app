@@ -99,28 +99,35 @@ class HomePage extends StatelessWidget {
       children: [
         Container(
           height: 90,
-          //margin: EdgeInsets.only(top: 5),
+          margin: EdgeInsets.only(top: 10),
           alignment: Alignment.center,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(
-                image: AssetImage('assets/images/LogoFinal.png'),
-              ),
               Container(
-                padding: EdgeInsets.only(
-                  left: 10,
-                  top: 10,
-                ),
-                child: Text(
-                  'H\'Optimum',
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontFamily: 'Gabriola',
-                    fontWeight: FontWeight.bold,
+                child: Expanded(
+                  child: Container(
+                    padding: EdgeInsets.only(top: 10.0),
+                    child: Image(
+                      image: AssetImage('assets/images/new_logo.png'),
+                    ),
                   ),
                 ),
               ),
+              // Container(
+              //   padding: EdgeInsets.only(
+              //     left: 10,
+              //     top: 10,
+              //   ),
+              //   child: Text(
+              //     'H\'Optimum',
+              //     style: TextStyle(
+              //       fontSize: 40,
+              //       fontFamily: 'Gabriola',
+              //       fontWeight: FontWeight.bold,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -141,7 +148,7 @@ class HomePage extends StatelessWidget {
                     getNome(i),
                     getTitular(i) == true ? 'Titular' : 'Dependente',
                     'Quarto ${getQuarto(i)}',
-                    ''),
+                    'Clique para informações'),
             ],
           ),
         ),

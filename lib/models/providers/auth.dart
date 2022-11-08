@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:dashboard_tcc/models/data/seguranca_data.dart';
 import 'package:dashboard_tcc/models/seguranca.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -70,7 +71,7 @@ class Auth with ChangeNotifier {
       globals.loginData = json.decode(response.body);
       final responseData = json.decode(response.body) as Map;
 
-      getLog();
+      //getLog();
 
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
@@ -78,6 +79,7 @@ class Auth with ChangeNotifier {
       _token = globals.chave;
       if (responseData.containsKey('hospede')) {
         _userId = responseData['hospede']['_id'];
+        getLog();
       }
       if (responseData.containsKey('funcionario')) {
         _userId = responseData['funcionario']['_id'];
@@ -110,6 +112,7 @@ class Auth with ChangeNotifier {
     globals.email = null;
     globals.password = null;
     globals.perfil = null;
+    SEGURANCA_DATA.clear();
     globals.channel?.sink.close();
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();

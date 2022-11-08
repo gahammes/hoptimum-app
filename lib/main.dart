@@ -43,7 +43,7 @@ class HoptimumApp extends StatefulWidget {
   State<HoptimumApp> createState() => _HoptimumAppState();
 }
 
-Future<void> teste() async {
+Future<void> reLogin() async {
   final url = Uri.parse(globals.getUrl('http', 'api/login'));
   final response = await http.post(
     url,
@@ -61,7 +61,12 @@ Future<void> teste() async {
   // JsonEncoder encoder = JsonEncoder.withIndent('  ');
   // print(encoder.convert(json.decode(response.body)));
   globals.loginData = json.decode(response.body);
-  getLog();
+  final data = json.decode(response.body) as Map;
+
+  if (data.containsKey('hospede')) {
+    getLog();
+  }
+  if (data.containsKey('funcionario')) {}
 }
 
 class _HoptimumAppState extends State<HoptimumApp> {
@@ -85,7 +90,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
               globals.password != null &&
               !globals.email.toString().isEmpty &&
               !globals.password.toString().isEmpty) {
-            teste();
+            reLogin();
           }
           if (globals.email == null && globals.password == null) {
             final prefs = await SharedPreferences.getInstance();
@@ -96,7 +101,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
                   .decode(prefs.getString('userData')!) as Map<String, dynamic>;
               globals.email = extractedUserData['email'] as String;
               globals.password = extractedUserData['password'] as String;
-              teste();
+              reLogin();
             }
           }
           //globals.loginData = res;
