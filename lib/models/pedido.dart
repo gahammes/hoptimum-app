@@ -1,4 +1,11 @@
-enum Status { Espera, Recebido, Preparando, Caminho, Entregue, Finalizado }
+enum Status {
+  Espera,
+  Recebido,
+  Preparando,
+  Caminho,
+  Entregue,
+  Finalizado,
+}
 
 class Pedido {
   final int id;

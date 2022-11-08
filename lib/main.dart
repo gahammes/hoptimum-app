@@ -114,42 +114,12 @@ class _HoptimumAppState extends State<HoptimumApp> {
           setState(() {
             addLog(res);
           });
-
-          // if (res.containsKey('reserva')) {
-          //   var newData = Seguranca(
-          //     id: 's1',
-          //     title: 'Acesso ao quarto',
-          //     info: 'Hóspede',
-          //     //date: DateTime.now().toIso8601String(),
-          //     date: res['createdAt'],
-          //     tag: 'tag',
-          //   );
-          //   setState(
-          //     () {
-          //       SEGURANCA_DATA.insert(0, newData);
-          //     },
-          //   );
-          // }
-          // if (res.containsKey('funcionario')) {
-          //   var newData = Seguranca(
-          //     id: 's1',
-          //     title: 'Acesso ao quarto',
-          //     info: 'Funcionário',
-          //     //date: DateTime.now().toIso8601String(),
-          //     date: res['createdAt'],
-          //     tag: 'tag',
-          //   );
-          //   setState(
-          //     () {
-          //       SEGURANCA_DATA.insert(0, newData);
-          //     },
-          //   );
-          // }
-          //data
-          //globals.listenData = data;
-          //var decodedData = jsonDecode(globals.listenData);
-          //print(res);
-          //print(res['hospede']['reservas']['reserva']['hospedes']);
+          print(encoder.convert(json.decode(data)));
+        }
+        if (res.containsKey('funcionario')) {
+          setState(() {
+            addLog(res);
+          });
           print(encoder.convert(json.decode(data)));
         }
 
@@ -158,6 +128,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
             addLog(res);
           });
         }
+        print(encoder.convert(json.decode(data)));
 
         // globals.listenData = data;
         // DateTime teste = DateTime.parse(

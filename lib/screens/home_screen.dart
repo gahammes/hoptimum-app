@@ -84,6 +84,13 @@ class HomePage extends StatelessWidget {
     return hospedes;
   }
 
+  void getCartoes() {
+    var cartoes = [];
+    cartoes = globals.loginData['hospede']['reservas'][getIndex()]['reserva']
+        ['cartoesChave'];
+    print(cartoes);
+  }
+
   double _getConsumo() {
     var subTotal = 0.0;
     for (var valor in DESPESAS_DATA)
@@ -93,8 +100,13 @@ class HomePage extends StatelessWidget {
     return subTotal;
   }
 
+  // void printCarros() {
+  //   print(globals.loginData['hospede']['carros'][0]['registros']);
+  // }
+
   @override
   Widget build(BuildContext context) {
+    // printCarros();
     return Column(
       children: [
         Container(

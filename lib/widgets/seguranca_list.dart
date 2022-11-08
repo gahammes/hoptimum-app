@@ -200,7 +200,7 @@ class _SegurancaListState extends State<SegurancaList> {
                                     horizontal: 8,
                                   ),
                                   child: Icon(
-                                    Icons.tag,
+                                    Icons.key,
                                     color: Colors.white,
                                     size: 50,
                                   ),

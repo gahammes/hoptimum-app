@@ -127,7 +127,7 @@ class NotificacaoList extends StatelessWidget {
                                   horizontal: 8,
                                 ),
                                 child: Icon(
-                                  Icons.room_service,
+                                  Icons.king_bed,
                                   color: Colors.white,
                                   size: 50,
                                 ),

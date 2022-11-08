@@ -9,6 +9,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
 import 'login_screen.dart';
+import '../globals.dart' as globals;
 
 class FuncSegurancaScreen extends StatefulWidget {
   static const routeName = '/funcSeguranca-screen';
@@ -50,9 +51,11 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting();
+    print(globals.loginData['funcionario']['cartoesChave']);
     return Scaffold(
       appBar: AppBar(
-        title: Text('SEGURANÇA'.toUpperCase()),
+        title: Text('${globals.loginData['funcionario']['nome']} - Segurança'
+            .toUpperCase()),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(

@@ -62,7 +62,7 @@ class CardsList extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontStyle: FontStyle.italic,
-              fontSize: 14,
+              fontSize: 15,
             ),
           ),
           Container(

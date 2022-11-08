@@ -7,6 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
 import 'login_screen.dart';
+import '../globals.dart' as globals;
 
 class FuncSolicitacaoScreen extends StatefulWidget {
   static const routeName = '/funcSolicitacao-screen';
@@ -51,9 +52,11 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
     }
 
     initializeDateFormatting();
+    print(globals.loginData['funcionario']['cartoesChave']);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Solicitações'.toUpperCase()),
+        title: Text('${globals.loginData['funcionario']['nome']} - Cozinha'
+            .toUpperCase()),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(
