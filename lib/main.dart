@@ -94,7 +94,8 @@ class _HoptimumAppState extends State<HoptimumApp> {
               globals.password != null &&
               !globals.email.toString().isEmpty &&
               !globals.password.toString().isEmpty) {
-            if (globals.naoTenta) {
+            if (!globals.naoTenta) {
+              print('ta tentando aqui');
               reLogin();
             }
           }
@@ -107,19 +108,22 @@ class _HoptimumAppState extends State<HoptimumApp> {
                   .decode(prefs.getString('userData')!) as Map<String, dynamic>;
               globals.email = extractedUserData['email'] as String;
               globals.password = extractedUserData['password'] as String;
-              reLogin();
+              print('ta tentando aqui mais embaixo');
+              if (!globals.naoTenta) {
+                reLogin();
+              }
             }
           }
           //globals.loginData = res;
           //globals.chaveBackUp = res['loginId'];
-          print(res['loginId']);
+          //print(res['loginId']);
           //res['loginId'] = '';
         }
         if (res.containsKey('reserva')) {
           setState(() {
             addLog(res);
           });
-          print('🧄');
+          print('🧄 log de hospede 🧄');
           //print(encoder.convert(json.decode(data)));
         }
         if (res.containsKey('funcionario')) {
@@ -127,15 +131,15 @@ class _HoptimumAppState extends State<HoptimumApp> {
             addLog(res);
           });
           //print(encoder.convert(json.decode(data)));
-          print('🤢');
-          print(res['quarto']);
+          print('🤢 log de funcionario 🤢');
+          //print(res['quarto']);
         }
 
         if (res.containsKey('status')) {
           setState(() {
             addLog(res);
           });
-          print('👌');
+          print('👌 log de carro 👌');
         }
         //print(encoder.convert(json.decode(data)));
 

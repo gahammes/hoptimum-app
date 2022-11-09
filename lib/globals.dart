@@ -31,4 +31,4 @@ dynamic loginData;
 var chave;
 var chaveBackUp;
 var rememberMe;
-bool naoTenta = false;
+bool naoTenta = true;

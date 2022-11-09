@@ -95,6 +95,7 @@ class Auth with ChangeNotifier {
           'password': password,
           'perfil': globals.perfil,
           'loginData': globals.loginData,
+          'naoTenta': globals.naoTenta,
         },
       );
       prefs.setString('userData', userData);
@@ -106,7 +107,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    globals.naoTenta = false;
+    globals.naoTenta = true;
     return _authenticate(email, password, 'http', 'api/login');
   }
 
@@ -116,7 +117,7 @@ class Auth with ChangeNotifier {
     globals.email = null;
     globals.password = null;
     globals.perfil = null;
-    globals.naoTenta = true;
+    globals.naoTenta = false;
     SEGURANCA_DATA.clear();
     globals.channel?.sink.close();
     notifyListeners();
@@ -146,6 +147,7 @@ class Auth with ChangeNotifier {
     globals.loginData = extractedUserData['loginData'] == null
         ? null
         : extractedUserData['loginData'] as Map;
+    globals.naoTenta = extractedUserData['naoTenta'];
 
     notifyListeners();
 

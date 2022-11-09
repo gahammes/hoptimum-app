@@ -144,17 +144,17 @@ void getLogFunc() {
 
 void addLog(Map<dynamic, dynamic> res) {
   var loginData = globals.loginData as Map;
-  if (res.containsKey('reserva')) {
-    var newData = Seguranca(
-      id: res['_id'].toString(),
-      title: 'Acesso ao quarto',
-      info: 'Hóspede',
-      date: res['createdAt'],
-      tag: 'tag',
-    );
-    SEGURANCA_DATA.insert(0, newData);
-  }
-  if (!loginData.containsKey('funcionario')) {
+  if (loginData.containsKey('hospede')) {
+    if (res.containsKey('reserva')) {
+      var newData = Seguranca(
+        id: res['_id'].toString(),
+        title: 'Acesso ao quarto',
+        info: 'Hóspede',
+        date: res['createdAt'],
+        tag: 'tag',
+      );
+      SEGURANCA_DATA.insert(0, newData);
+    }
     if (res.containsKey('funcionario')) {
       var newData = Seguranca(
         id: res['_id'].toString(),
@@ -165,25 +165,41 @@ void addLog(Map<dynamic, dynamic> res) {
       );
       SEGURANCA_DATA.insert(0, newData);
     }
-  } else if (res.containsKey('status')) {
-    var newData = Seguranca(
-      id: res['_id'].toString(),
-      title: res['status'].toString().toLowerCase().contains('entrou')
-          ? 'Entrada de veículo'
-          : 'Saída de veículo',
-      info: res['carro']['placa'].toString(),
-      date: res['createdAt'],
-      tag: 'car',
-    );
-    SEGURANCA_DATA.insert(0, newData);
-  } else {
-    var newData = Seguranca(
-      id: res['_id'].toString(),
-      title: 'Acesso ao quarto',
-      info: res['quarto']['numero'],
-      date: res['createdAt'],
-      tag: 'tag',
-    );
-    SEGURANCA_DATA.insert(0, newData);
+    if (res.containsKey('status')) {
+      var newData = Seguranca(
+        id: res['_id'].toString(),
+        title: res['status'].toString().toLowerCase().contains('entrou')
+            ? 'Entrada de veículo'
+            : 'Saída de veículo',
+        info: res['carro']['placa'].toString(),
+        date: res['createdAt'],
+        tag: 'car',
+      );
+      SEGURANCA_DATA.insert(0, newData);
+    }
+  }
+
+  if (loginData.containsKey('funcionario')) {
+    if (res.containsKey('status')) {
+      var newData = Seguranca(
+        id: res['_id'].toString(),
+        title: res['status'].toString().toLowerCase().contains('entrou')
+            ? 'Entrada de veículo'
+            : 'Saída de veículo',
+        info: res['carro']['placa'].toString(),
+        date: res['createdAt'],
+        tag: 'car',
+      );
+      SEGURANCA_DATA.insert(0, newData);
+    } else {
+      var newData = Seguranca(
+        id: res['_id'].toString(),
+        title: 'Acesso ao quarto',
+        info: res['quarto']['numero'],
+        date: res['createdAt'],
+        tag: 'tag',
+      );
+      SEGURANCA_DATA.insert(0, newData);
+    }
   }
 }
