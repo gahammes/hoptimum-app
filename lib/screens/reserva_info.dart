@@ -2,6 +2,7 @@ import 'package:dashboard_tcc/models/hospede.dart';
 import 'package:dashboard_tcc/models/quarto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import '../globals.dart' as globals;
 
 import 'package:intl/intl.dart';
 
@@ -10,6 +11,71 @@ class ReservaInfo extends StatelessWidget {
   final Quarto quarto;
   ReservaInfo({required this.reserva, required this.quarto});
   static const routeName = '/reserva-info-screen';
+
+  int getIndex() {
+    var dados = globals.loginData as Map;
+    var reservas = [];
+
+    reservas = dados['hospede']['reservas'];
+    int index = reservas.indexWhere((reserva) {
+      Map mapa = reserva as Map;
+      if (mapa['reserva']['status'].toString().toLowerCase() == 'ativa') {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    //print('INDEX DA RESERVA ATIVA $index');
+    return index;
+  }
+
+  Map getReservaInfo() {
+    var dados = globals.loginData as Map;
+    return dados['hospede']['reservas'][getIndex()]['reserva'];
+  }
+
+  Quarto getQuartoInfo() {
+    switch (getReservaInfo()['quarto']['nome'].toString().toLowerCase()) {
+      case 'quarto top':
+        return QUARTOS.firstWhere((quarto) => quarto.nome == 'Family Room');
+      case 'quarto nao tao top':
+        return QUARTOS.firstWhere((quarto) => quarto.nome == 'Double Room');
+      case 'quarto lixo':
+        return QUARTOS.firstWhere((quarto) => quarto.nome == 'Single Room');
+      default:
+        return QUARTOS[0];
+    }
+  }
+
+  Row buildWrappedText(String title, String subtitle) {
+    return Row(
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            fontFamily: 'Quicksand',
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Expanded(
+          child: FittedBox(
+            child: Text(
+              subtitle,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: 'Quicksand',
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildRichText(String title, String subtitle) {
     return RichText(
@@ -23,7 +89,9 @@ class ReservaInfo extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          TextSpan(text: subtitle),
+          TextSpan(
+            text: subtitle,
+          ),
         ],
       ),
     );
@@ -53,7 +121,7 @@ class ReservaInfo extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)),
                       child: Image.network(
-                        quarto.url,
+                        getQuartoInfo().url,
                         height: 200,
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -75,7 +143,7 @@ class ReservaInfo extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            quarto.nome,
+                            getQuartoInfo().nome,
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 22,
@@ -88,7 +156,7 @@ class ReservaInfo extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                quarto.tipo,
+                                getQuartoInfo().tipo,
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 16,
@@ -97,7 +165,7 @@ class ReservaInfo extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    'R\$${quarto.preco.toStringAsFixed(0)}',
+                                    'R\$${getReservaInfo()['quarto']['precoBase'].toStringAsFixed(0)}',
                                     style: TextStyle(
                                       color:
                                           Theme.of(context).colorScheme.primary,
@@ -129,11 +197,7 @@ class ReservaInfo extends StatelessWidget {
                             children: [
                               _buildRichText(
                                 'Número do quarto: ',
-                                reserva.quarto.toString(),
-                              ),
-                              _buildRichText(
-                                'Códigos dos cartões-chave: ',
-                                '2261, 2262',
+                                getReservaInfo()['quarto']['numero'].toString(),
                               ),
                             ],
                           ),
@@ -147,24 +211,25 @@ class ReservaInfo extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildRichText(
-                                'Número da reserva: ',
-                                reserva.numReserva.toString(),
-                              ),
-                              _buildRichText(
+                              buildWrappedText('Número da reserva: ',
+                                  getReservaInfo()['_id'].toString()),
+                              buildWrappedText(
                                 'Data da reserva: ',
-                                DateFormat.yMMMMd('pt_BR')
-                                    .format(reserva.dataReserva),
+                                DateFormat.yMMMMd('pt_BR').format(
+                                    DateTime.parse(
+                                        getReservaInfo()['createdAt'])),
                               ),
-                              _buildRichText(
+                              buildWrappedText(
                                 'Data do check-in: ',
-                                DateFormat.yMMMMd('pt_BR')
-                                    .format(reserva.dataCheckIn),
+                                DateFormat.yMMMMd('pt_BR').format(
+                                    DateTime.parse(
+                                        getReservaInfo()['checkIn'])),
                               ),
-                              _buildRichText(
+                              buildWrappedText(
                                 'Data do check-out: ',
-                                DateFormat.yMMMMd('pt_BR')
-                                    .format(reserva.dataCheckOut),
+                                DateFormat.yMMMMd('pt_BR').format(
+                                    DateTime.parse(
+                                        getReservaInfo()['checkOut'])),
                               ),
                             ],
                           ),

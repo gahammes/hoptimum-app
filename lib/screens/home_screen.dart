@@ -43,6 +43,20 @@ class HomePage extends StatelessWidget {
     return reservas;
   }
 
+  DateTime getDatas(String qual) {
+    var reservas = globals.loginData as Map;
+    return qual == 'checkIn'
+        ? DateTime.parse(
+            reservas['hospede']['reservas'][getIndex()]['reserva']['checkIn'])
+        : DateTime.parse(
+            reservas['hospede']['reservas'][getIndex()]['reserva']['checkOut']);
+  }
+
+  void printReserva() {
+    var reservas = globals.loginData as Map;
+    print(reservas['hospede']['reservas'][getIndex()]['reserva']);
+  }
+
   int getIndex() {
     var dados = globals.loginData as Map;
     var reservas = [];
@@ -107,6 +121,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // printCarros();
+    printReserva();
     return Column(
       children: [
         Container(
@@ -126,20 +141,6 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              // Container(
-              //   padding: EdgeInsets.only(
-              //     left: 10,
-              //     top: 10,
-              //   ),
-              //   child: Text(
-              //     'H\'Optimum',
-              //     style: TextStyle(
-              //       fontSize: 40,
-              //       fontFamily: 'Gabriola',
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -344,7 +345,7 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '${HOSPEDES[2].reserva.dataCheckOut.difference(DateTime.now()).inDays.toString()} dias para o check-out'
+                          '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
                               .toUpperCase(),
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,

@@ -106,6 +106,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
+    globals.naoTenta = false;
     return _authenticate(email, password, 'http', 'api/login');
   }
 
@@ -115,6 +116,7 @@ class Auth with ChangeNotifier {
     globals.email = null;
     globals.password = null;
     globals.perfil = null;
+    globals.naoTenta = true;
     SEGURANCA_DATA.clear();
     globals.channel?.sink.close();
     notifyListeners();

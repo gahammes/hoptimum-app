@@ -34,15 +34,15 @@ var QUARTOS = [
   //   url:
   //       'https://cdn.pixabay.com/photo/2020/09/02/05/17/hotel-room-5537364_960_720.jpg',
   // ),
-  // Quarto(
-  //   id: 100,
-  //   nome: 'Double Room',
-  //   tipo: 'Quarto casal',
-  //   preco: 100.0,
-  //   rating: '4.8',
-  //   url:
-  //       'https://cdn.pixabay.com/photo/2016/09/18/03/28/travel-1677347_960_720.jpg',
-  // ),
+  Quarto(
+    id: 100,
+    nome: 'Double Room',
+    tipo: 'Quarto casal',
+    preco: 100.0,
+    rating: '4.8',
+    url:
+        'https://cdn.pixabay.com/photo/2016/09/18/03/28/travel-1677347_960_720.jpg',
+  ),
   Quarto(
     id: 100,
     nome: 'Family Room',

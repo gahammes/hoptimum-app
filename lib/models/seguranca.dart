@@ -165,17 +165,7 @@ void addLog(Map<dynamic, dynamic> res) {
       );
       SEGURANCA_DATA.insert(0, newData);
     }
-  } else {
-    var newData = Seguranca(
-      id: res['_id'].toString(),
-      title: 'Acesso ao quarto',
-      info: res['quarto']['numero'],
-      date: res['createdAt'],
-      tag: 'tag',
-    );
-    SEGURANCA_DATA.insert(0, newData);
-  }
-  if (res.containsKey('status')) {
+  } else if (res.containsKey('status')) {
     var newData = Seguranca(
       id: res['_id'].toString(),
       title: res['status'].toString().toLowerCase().contains('entrou')
@@ -184,6 +174,15 @@ void addLog(Map<dynamic, dynamic> res) {
       info: res['carro']['placa'].toString(),
       date: res['createdAt'],
       tag: 'car',
+    );
+    SEGURANCA_DATA.insert(0, newData);
+  } else {
+    var newData = Seguranca(
+      id: res['_id'].toString(),
+      title: 'Acesso ao quarto',
+      info: res['quarto']['numero'],
+      date: res['createdAt'],
+      tag: 'tag',
     );
     SEGURANCA_DATA.insert(0, newData);
   }

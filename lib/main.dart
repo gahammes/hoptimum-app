@@ -94,7 +94,9 @@ class _HoptimumAppState extends State<HoptimumApp> {
               globals.password != null &&
               !globals.email.toString().isEmpty &&
               !globals.password.toString().isEmpty) {
-            reLogin();
+            if (globals.naoTenta) {
+              reLogin();
+            }
           }
           if (globals.email == null && globals.password == null) {
             final prefs = await SharedPreferences.getInstance();
