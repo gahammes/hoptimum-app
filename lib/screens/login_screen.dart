@@ -1,17 +1,15 @@
 import 'dart:convert';
-import 'dart:math';
-
-import 'package:dashboard_tcc/models/http_exception.dart';
-import 'package:dashboard_tcc/models/providers/auth.dart';
-import 'package:dashboard_tcc/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import '../globals.dart' as globals;
 
-import 'funcSolicitacaoScreen.dart';
-import 'funcSegurancaScreen.dart';
+import '../globals.dart' as globals;
+import '../models/http_exception.dart';
+import '../models/providers/auth.dart';
+import '../screens/tabs_screen.dart';
+import 'func_solicitacao_screen.dart';
+import 'func_seguranca_screen.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -75,7 +73,10 @@ class LoginScreen extends StatelessWidget {
                       //     fontWeight: FontWeight.bold,
                       //   ),
                       // ),
-                      AuthPart(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 40.0),
+                        child: AuthPart(),
+                      ),
                     ],
                   ),
                 ),

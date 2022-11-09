@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, use_key_in_widget_constructors
-
-import 'package:dashboard_tcc/screens/funcLimpezaScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
@@ -16,8 +14,8 @@ import 'models/quarto.dart';
 import 'models/seguranca.dart';
 import 'screens/category_meals_screen.dart';
 import 'screens/configuracoes_screen.dart';
-import 'screens/funcSolicitacaoScreen.dart';
-import 'screens/funcSegurancaScreen.dart';
+import 'screens/func_solicitacao_screen.dart';
+import 'screens/func_seguranca_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/info_sceen.dart';
 import 'screens/login_screen.dart';
@@ -27,6 +25,8 @@ import 'screens/tela_reserva.dart';
 import 'screens/meal_detail_screen.dart';
 import 'screens/categories_screen.dart';
 import 'models/providers/auth.dart';
+import 'screens/func_limpeza_screen.dart';
+import 'screens/info_hospede_screen.dart';
 import 'globals.dart' as globals;
 
 void main() {
@@ -63,11 +63,14 @@ Future<void> reLogin() async {
   // print(encoder.convert(json.decode(response.body)));
   globals.loginData = json.decode(response.body);
   final data = json.decode(response.body) as Map;
+  //print(data);
 
   if (data.containsKey('hospede')) {
     getLog();
   }
-  if (data.containsKey('funcionario')) {}
+  if (data.containsKey('funcionario')) {
+    getLogFunc();
+  }
 }
 
 class _HoptimumAppState extends State<HoptimumApp> {
@@ -114,21 +117,25 @@ class _HoptimumAppState extends State<HoptimumApp> {
           setState(() {
             addLog(res);
           });
-          print(encoder.convert(json.decode(data)));
+          print('🧄');
+          //print(encoder.convert(json.decode(data)));
         }
         if (res.containsKey('funcionario')) {
           setState(() {
             addLog(res);
           });
-          print(encoder.convert(json.decode(data)));
+          //print(encoder.convert(json.decode(data)));
+          print('🤢');
+          print(res['quarto']);
         }
 
         if (res.containsKey('status')) {
           setState(() {
             addLog(res);
           });
+          print('👌');
         }
-        print(encoder.convert(json.decode(data)));
+        //print(encoder.convert(json.decode(data)));
 
         // globals.listenData = data;
         // DateTime teste = DateTime.parse(
@@ -221,8 +228,9 @@ class _HoptimumAppState extends State<HoptimumApp> {
             FuncSegurancaScreen.routeName: (ctx) => FuncSegurancaScreen(),
             TelaReserva.routeName: (ctx) => TelaReserva(),
             ReservaInfo.routeName: (ctx) =>
-                ReservaInfo(reserva: HOSPEDES[2].reserva, quarto: QUARTOS[3]),
+                ReservaInfo(reserva: HOSPEDES[2].reserva, quarto: QUARTOS[0]),
             FuncLimpezaScreen.routeName: (ctx) => FuncLimpezaScreen(),
+            InfoHospedeScreen.routeName: (ctx) => InfoHospedeScreen(),
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => HomePage());

@@ -87,24 +87,89 @@ void getLog() {
   });
 }
 
+void getLogFunc() {
+  var logs = [];
+  var registros = [];
+  var listCarros = [];
+  listCarros = globals.loginData['funcionario']['carros'];
+  logs = globals.loginData['funcionario']['registros'];
+
+  for (var i = 0; i < logs.length; i++) {
+    var logMap = logs[i] as Map;
+    SEGURANCA_DATA.add(
+      Seguranca(
+        id: logMap['_id'].toString(),
+        title: 'Acesso ao quarto',
+        info: logMap['quarto']['numero'].toString(),
+        date: logMap['createdAt'],
+        tag: 'tag',
+      ),
+    );
+  }
+
+  if (listCarros.isNotEmpty) {
+    for (var i = 0; i < listCarros.length; i++) {
+      var listRegistros = [];
+      var placa = listCarros[i]['placa'].toString();
+      var index = i;
+      listRegistros =
+          globals.loginData['funcionario']['carros'][i]['registros'];
+      if (listRegistros.isNotEmpty) {
+        registros =
+            globals.loginData['funcionario']['carros'][index]['registros'];
+        for (var i = 0; i < registros.length; i++) {
+          var registroMap = registros[i] as Map;
+          SEGURANCA_DATA.add(
+            Seguranca(
+              id: registroMap['_id'].toString(),
+              title: registroMap['status']
+                      .toString()
+                      .toLowerCase()
+                      .contains('entrou')
+                  ? 'Entrada de veículo'
+                  : 'Saída de veículo',
+              info: 'Placa: $placa',
+              date: registroMap['createdAt'],
+              tag: 'car',
+            ),
+          );
+        }
+      }
+    }
+  }
+  SEGURANCA_DATA.sort((a, b) {
+    return -DateTime.parse(a.date).compareTo(DateTime.parse(b.date));
+  });
+}
+
 void addLog(Map<dynamic, dynamic> res) {
+  var loginData = globals.loginData as Map;
   if (res.containsKey('reserva')) {
     var newData = Seguranca(
-      id: 's1',
+      id: res['_id'].toString(),
       title: 'Acesso ao quarto',
       info: 'Hóspede',
-      //date: DateTime.now().toIso8601String(),
       date: res['createdAt'],
       tag: 'tag',
     );
     SEGURANCA_DATA.insert(0, newData);
   }
-  if (res.containsKey('funcionario')) {
+  if (!loginData.containsKey('funcionario')) {
+    if (res.containsKey('funcionario')) {
+      var newData = Seguranca(
+        id: res['_id'].toString(),
+        title: 'Acesso ao quarto',
+        info: 'Funcionário',
+        date: res['createdAt'],
+        tag: 'tag',
+      );
+      SEGURANCA_DATA.insert(0, newData);
+    }
+  } else {
     var newData = Seguranca(
-      id: 's1',
+      id: res['_id'].toString(),
       title: 'Acesso ao quarto',
-      info: 'Funcionário',
-      //date: DateTime.now().toIso8601String(),
+      info: res['quarto']['numero'],
       date: res['createdAt'],
       tag: 'tag',
     );
@@ -116,8 +181,7 @@ void addLog(Map<dynamic, dynamic> res) {
       title: res['status'].toString().toLowerCase().contains('entrou')
           ? 'Entrada de veículo'
           : 'Saída de veículo',
-      info: globals.loginData['hospede']['carros'][0]['placa'],
-      //date: DateTime.now().toIso8601String(),
+      info: res['carro']['placa'].toString(),
       date: res['createdAt'],
       tag: 'car',
     );

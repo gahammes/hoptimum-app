@@ -112,7 +112,7 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
         return Text('Solicitação em espera...',
             style: TextStyle(color: Colors.red));
       case Status.Recebido:
-        return Text('Solicitação recebido',
+        return Text('Solicitação recebida',
             style: TextStyle(color: Colors.yellow));
       case Status.Preparando:
         return Text("Realizando serviço de quarto",

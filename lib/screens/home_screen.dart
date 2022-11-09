@@ -147,7 +147,6 @@ class HomePage extends StatelessWidget {
         Container(
           //height: 230,
           child: CarouselSlider(
-            //TODO: IMPLEMENTAR BUILDER
             options: CarouselOptions(
               enableInfiniteScroll: getHospCount() > 1 ? true : false,
               autoPlay: false,

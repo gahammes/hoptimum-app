@@ -83,6 +83,7 @@ class Auth with ChangeNotifier {
       }
       if (responseData.containsKey('funcionario')) {
         _userId = responseData['funcionario']['_id'];
+        getLogFunc();
       }
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();

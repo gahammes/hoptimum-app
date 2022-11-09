@@ -1,14 +1,15 @@
+import 'package:dashboard_tcc/models/data/seguranca_data.dart';
 import 'package:dashboard_tcc/models/hospede.dart';
 import 'package:dashboard_tcc/models/providers/auth.dart';
 import 'package:dashboard_tcc/models/report.dart';
 import 'package:dashboard_tcc/widgets/lista_hospedes.dart';
 import 'package:dashboard_tcc/widgets/report_card.dart';
+import 'package:dashboard_tcc/widgets/seguranca_list.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
-import 'login_screen.dart';
 import '../globals.dart' as globals;
 
 class FuncSegurancaScreen extends StatefulWidget {
@@ -23,6 +24,9 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
   static const List<Tab> myTabs = [
     Tab(
       icon: Icon(Icons.notification_important),
+    ),
+    Tab(
+      icon: Icon(Icons.key),
     ),
     Tab(
       icon: Icon(Icons.list),
@@ -48,10 +52,15 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
     super.dispose();
   }
 
+  void printCoiso() {
+    print(globals.loginData['funcionario']['registros']);
+  }
+
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting();
-    print(globals.loginData['funcionario']['cartoesChave']);
+    //printCoiso();
+    //print(globals.loginData['funcionario']['cartoesChave']);
     return Scaffold(
       appBar: AppBar(
         title: Text('${globals.loginData['funcionario']['nome']} - Segurança'
@@ -105,6 +114,23 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
                     },
                   ),
                 ),
+              ),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    height: 640, //TODO: aqui da overflow
+                    //margin: EdgeInsets.only(top: 0),
+
+                    child: SEGURANCA_DATA.isEmpty
+                        ? null
+                        : SegurancaList(
+                            SEGURANCA_DATA), //TODO:tratar na main.dart
+                  ),
+                ],
               ),
             ),
             SingleChildScrollView(

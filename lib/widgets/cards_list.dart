@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:dashboard_tcc/screens/info_hospede_screen.dart';
+import 'package:dashboard_tcc/screens/info_sceen.dart';
 import 'package:flutter/material.dart';
 
 // List<Info> lista = [
@@ -16,6 +18,10 @@ class CardsList extends StatelessWidget {
   final String carro;
 
   CardsList(this.nome, this.tipo, this.info, this.carro);
+
+  void _selectInfoHosp(BuildContext context) {
+    Navigator.of(context).pushNamed(InfoHospedeScreen.routeName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +95,10 @@ class CardsList extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            child: content,
+            child: InkWell(
+              onTap: () => _selectInfoHosp(context),
+              child: content,
+            ),
             height: 155.0,
             margin: EdgeInsets.only(
               top: 20.0,
