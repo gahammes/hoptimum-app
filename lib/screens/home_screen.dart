@@ -1,16 +1,26 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hoptimum/models/despesa.dart';
+import 'package:hoptimum/screens/tabs_screen.dart';
+import 'package:hoptimum/widgets/constrained_view.dart';
+import 'package:hoptimum/widgets/custom_rect_tween.dart';
+import 'package:hoptimum/widgets/hero_dialog_route.dart';
+import 'package:hoptimum/widgets/info_card.dart';
 
-import '../screens/info_sceen.dart';
+import 'info_screen.dart';
 import '../screens/reserva_info.dart';
 import '../widgets/cards_list.dart';
 import '../widgets/gradient_text.dart';
 import '../globals.dart' as globals;
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   void _selectInfo(BuildContext context) {
     Navigator.of(context).pushNamed(InfoScreen.routeName);
   }
@@ -111,9 +121,6 @@ class HomePage extends StatelessWidget {
   }
 
   // void printCarros() {
-  //   print(globals.loginData['hospede']['carros'][0]['registros']);
-  // }
-
   @override
   Widget build(BuildContext context) {
     var gradient = const LinearGradient(
@@ -178,20 +185,116 @@ class HomePage extends StatelessWidget {
             FittedBox(
               child: Row(
                 children: [
+                  GestureDetector(
+                    //onTap: () => _selectInfo(context),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        HeroDialogRoute(builder: (context) {
+                          return const InfoCard();
+                        }),
+                      );
+                    },
+                    child: Hero(
+                      tag: globals.heroInfoCard,
+                      createRectTween: (begin, end) {
+                        return CustomRectTween(begin: begin!, end: end!);
+                      },
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 10, top: 0),
+                          height: 160,
+                          width: 180,
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 0, bottom: 0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.secondary,
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(50.0),
+                                topLeft: Radius.circular(10.0),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondary
+                                      .withOpacity(0.3),
+                                  offset: const Offset(-10.0, 0.0),
+                                  blurRadius: 20.0,
+                                  spreadRadius: 4.0,
+                                ),
+                              ],
+                            ),
+                            padding: const EdgeInsets.only(
+                              left: 10,
+                              top: 40,
+                              bottom: 20,
+                              right: 20,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Material(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  child: GradientText(
+                                    'INFORMAÇÕES',
+                                    gradient: gradient,
+                                    style: textStyle,
+                                  ),
+                                ),
+                                // Text(
+                                //   'INFORMAÇÕES',
+                                //   style: TextStyle(
+                                //     color: Theme.of(context).colorScheme.primary,
+                                //     fontSize: 17,
+                                //     fontWeight: FontWeight.bold,
+                                //   ),
+                                // ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Material(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  child: const Text(
+                                    'Toque para saber mais informações sobre o hotel e horários.',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   InkWell(
-                    onTap: () => _selectInfo(context),
+                    onTap: () {
+                      setState(() {
+                        globals.tabIndex = 1;
+                      });
+                      Navigator.of(context)
+                          .pushReplacementNamed(TabsScreen.routeName);
+                    },
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 10, top: 0),
                       height: 160,
-                      width: 180,
+                      width: 200,
                       padding:
-                          const EdgeInsets.only(left: 20, right: 0, bottom: 0),
+                          const EdgeInsets.only(left: 20, right: 15, bottom: 0),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.secondary,
                           borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(50.0),
-                            topLeft: Radius.circular(10.0),
+                            topRight: Radius.circular(50.0),
+                            bottomRight: Radius.circular(10.0),
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -206,115 +309,52 @@ class HomePage extends StatelessWidget {
                           ],
                         ),
                         padding: const EdgeInsets.only(
-                          left: 10,
+                          left: 15,
                           top: 40,
                           bottom: 20,
                           right: 20,
                         ),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            //TODO:COISO AQUI CONSUMO
                             GradientText(
-                              'INFORMAÇÕES',
+                              'CONSUMO',
                               gradient: gradient,
                               style: textStyle,
                             ),
-                            // Text(
-                            //   'INFORMAÇÕES',
-                            //   style: TextStyle(
-                            //     color: Theme.of(context).colorScheme.primary,
-                            //     fontSize: 17,
-                            //     fontWeight: FontWeight.bold,
-                            //   ),
-                            // ),
+
                             const SizedBox(
                               height: 10,
                             ),
-                            const Text(
-                              'Toque para saber mais informações sobre o hotel e horários.',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontStyle: FontStyle.italic,
-                              ),
-                              textAlign: TextAlign.right,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'R\$ ${_getConsumo().toStringAsFixed(2)}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    //fontStyle: FontStyle.italic,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                const Text(
+                                  'Mais detalhes na aba de despesas.',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                    //fontStyle: FontStyle.italic,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                )
+                              ],
                             )
                           ],
                         ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 10, top: 0),
-                    height: 160,
-                    width: 200,
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 15, bottom: 0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondary,
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(50.0),
-                          bottomRight: Radius.circular(10.0),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondary
-                                .withOpacity(0.3),
-                            offset: const Offset(-10.0, 0.0),
-                            blurRadius: 20.0,
-                            spreadRadius: 4.0,
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.only(
-                        left: 15,
-                        top: 40,
-                        bottom: 20,
-                        right: 20,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //TODO:COISO AQUI CONSUMO
-                          GradientText(
-                            'CONSUMO',
-                            gradient: gradient,
-                            style: textStyle,
-                          ),
-
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'R\$ ${_getConsumo().toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 25,
-                                  //fontStyle: FontStyle.italic,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Text(
-                                'Mais detalhes na aba de despesas.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  //fontStyle: FontStyle.italic,
-                                ),
-                                textAlign: TextAlign.left,
-                              )
-                            ],
-                          )
-                        ],
                       ),
                     ),
                   ),

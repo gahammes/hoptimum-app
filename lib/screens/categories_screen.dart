@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/data/refeicoes_data.dart';
 import '../widgets/category_item.dart';
+import '../models/solicitacao.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({Key? key}) : super(key: key);

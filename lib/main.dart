@@ -14,7 +14,7 @@ import '../screens/configuracoes_screen.dart';
 import '../screens/func_solicitacao_screen.dart';
 import '../screens/func_seguranca_screen.dart';
 import '../screens/home_screen.dart';
-import '../screens/info_sceen.dart';
+import '../screens/info_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/reserva_info.dart';
 import '../screens/tabs_screen.dart';

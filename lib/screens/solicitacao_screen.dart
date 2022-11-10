@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/data/refeicoes_data.dart';
 import '../widgets/solicitacao_item.dart';
+import '../models/solicitacao.dart';
 
 class SolicitacaoScreen extends StatelessWidget {
   const SolicitacaoScreen({Key? key}) : super(key: key);

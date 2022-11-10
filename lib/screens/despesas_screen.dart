@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/despesa.dart';
 import '../widgets/grafico.dart';
-import '../widgets/transaction_list.dart';
+import '../widgets/despesa_list.dart';
 
 class DespesasScreen extends StatefulWidget {
   const DespesasScreen({Key? key}) : super(key: key);
@@ -82,7 +82,7 @@ class _DespesasScreen extends State<DespesasScreen> {
                   0.23,
             ),
             SizedBox(
-              child: TransactionList(_userTransactions, _deleteTransaction),
+              child: DespesaList(_userTransactions, _deleteTransaction),
               height: (MediaQuery.of(context).size.height -
                       MediaQuery.of(context).padding.top) *
                   0.59,

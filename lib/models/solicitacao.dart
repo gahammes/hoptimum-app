@@ -13,3 +13,17 @@ class Solicitacao {
     this.color = Colors.red,
   });
 }
+
+const solicitacaoCategories = [
+  //SOLICITACAO
+  Solicitacao(
+    id: 'c01',
+    title: 'Refeições',
+    tipo: 'ref',
+  ),
+  Solicitacao(
+    id: 'c02',
+    title: 'Serviços',
+    tipo: 'serv',
+  ),
+];

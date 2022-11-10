@@ -3,11 +3,11 @@ import 'package:intl/intl.dart';
 
 import '../models/despesa.dart';
 
-class TransactionList extends StatelessWidget {
+class DespesaList extends StatelessWidget {
   final List<Despesa> transactions;
   final Function deleteTx;
 
-  const TransactionList(this.transactions, this.deleteTx, {Key? key})
+  const DespesaList(this.transactions, this.deleteTx, {Key? key})
       : super(key: key);
 
   @override

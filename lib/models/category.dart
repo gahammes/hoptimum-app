@@ -13,3 +13,31 @@ class Category {
     this.color = Colors.red,
   });
 }
+
+const refeicoesCategories = [
+  //DUMMY_CATEGORIES
+  Category(
+    id: 'c100',
+    title: 'Café da Manhã',
+    tipo: 'ref',
+    color: Colors.red,
+  ),
+  Category(
+    id: 'c200',
+    title: 'Almoço',
+    tipo: 'ref',
+    color: Colors.red,
+  ),
+  Category(
+    id: 'c300',
+    title: 'Jantar',
+    tipo: 'ref',
+    color: Colors.red,
+  ),
+  Category(
+    id: 's1',
+    title: 'Serviço de quarto',
+    tipo: 'serv',
+    color: Colors.red,
+  ),
+];

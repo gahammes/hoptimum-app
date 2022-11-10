@@ -9,7 +9,8 @@ import '../screens/notificacao_screen.dart';
 import '../screens/seguranca_screen.dart';
 import '../screens/tela_reserva.dart';
 import '../models/despesa.dart';
-import 'solicitacao_screen.dart';
+import '../screens/solicitacao_screen.dart';
+import '../globals.dart' as globals;
 
 class TabsScreen extends StatefulWidget {
   static const routeName = '/tabs-screen';
@@ -27,7 +28,7 @@ class _TabsScreenState extends State<TabsScreen> {
 
   void _selectPage(int index) {
     setState(() {
-      _selectedPageIndex = index;
+      globals.tabIndex = index;
     });
   }
 
@@ -60,13 +61,6 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
-  void _refresh1() {
-    // var url =
-    //     'http://b850-2804-7f4-3590-1900-91ab-d012-172e-5985.sa.ngrok.io/api';
-    // var access = getString(url);
-    // access.then(handleContent);
-  }
-
   Future<String?> openDialog() => showDialog<String>(
         context: context,
         builder: (contex) => AlertDialog(
@@ -93,11 +87,12 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
           actions: [
             TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  //inputController.clear();
-                },
-                child: const Text('Cancelar')),
+              onPressed: () {
+                Navigator.of(context).pop();
+                //inputController.clear();
+              },
+              child: const Text('Cancelar'),
+            ),
             TextButton(onPressed: submitInput, child: const Text('Enviar')),
           ],
         ),
@@ -170,7 +165,7 @@ class _TabsScreenState extends State<TabsScreen> {
             ),
           ),
           IconButton(
-            onPressed: _refresh1,
+            onPressed: _refresh,
             icon: const Icon(Icons.refresh),
           ),
         ],
@@ -186,11 +181,11 @@ class _TabsScreenState extends State<TabsScreen> {
       // ),
       //TODO: fazer drawer
       title: Text(
-        _pages[_selectedPageIndex]['title'],
+        _pages[globals.tabIndex]['title'],
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.headline6,
       ),
-      actions: _pages[_selectedPageIndex]['actions'],
+      actions: _pages[globals.tabIndex]['actions'],
     );
 
     final navBar = BottomNavigationBar(
@@ -198,7 +193,7 @@ class _TabsScreenState extends State<TabsScreen> {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       unselectedItemColor: Colors.white,
       selectedItemColor: Theme.of(context).colorScheme.primary,
-      currentIndex: _selectedPageIndex,
+      currentIndex: globals.tabIndex,
       type: BottomNavigationBarType.shifting,
       items: [
         BottomNavigationBarItem(
@@ -285,7 +280,7 @@ class _TabsScreenState extends State<TabsScreen> {
           ],
         ),
       ),
-      body: _pages[_selectedPageIndex]['page'],
+      body: _pages[globals.tabIndex]['page'],
       bottomNavigationBar: navBar,
     );
   }
