@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'data/seguranca_data.dart';
 import '../globals.dart' as globals;
 
@@ -144,29 +146,30 @@ void getLogFunc() {
 
 void addLog(Map<dynamic, dynamic> res) {
   var loginData = globals.loginData as Map;
+  var newData;
+  final listKey = GlobalKey<AnimatedListState>();
   if (loginData.containsKey('hospede')) {
     if (res.containsKey('reserva')) {
-      var newData = Seguranca(
+      newData = Seguranca(
         id: res['_id'].toString(),
         title: 'Acesso ao quarto',
         info: 'Hóspede',
         date: res['createdAt'],
         tag: 'tag',
       );
-      SEGURANCA_DATA.insert(0, newData);
     }
     if (res.containsKey('funcionario')) {
-      var newData = Seguranca(
+      newData = Seguranca(
         id: res['_id'].toString(),
         title: 'Acesso ao quarto',
         info: 'Funcionário',
         date: res['createdAt'],
         tag: 'tag',
       );
-      SEGURANCA_DATA.insert(0, newData);
+      //SEGURANCA_DATA.insert(0, newData);
     }
     if (res.containsKey('status')) {
-      var newData = Seguranca(
+      newData = Seguranca(
         id: res['_id'].toString(),
         title: res['status'].toString().toLowerCase().contains('entrou')
             ? 'Entrada de veículo'
@@ -175,13 +178,13 @@ void addLog(Map<dynamic, dynamic> res) {
         date: res['createdAt'],
         tag: 'car',
       );
-      SEGURANCA_DATA.insert(0, newData);
+      //SEGURANCA_DATA.insert(0, newData);
     }
   }
 
   if (loginData.containsKey('funcionario')) {
     if (res.containsKey('status')) {
-      var newData = Seguranca(
+      newData = Seguranca(
         id: res['_id'].toString(),
         title: res['status'].toString().toLowerCase().contains('entrou')
             ? 'Entrada de veículo'
@@ -190,16 +193,21 @@ void addLog(Map<dynamic, dynamic> res) {
         date: res['createdAt'],
         tag: 'car',
       );
-      SEGURANCA_DATA.insert(0, newData);
+      //SEGURANCA_DATA.insert(0, newData);
     } else {
-      var newData = Seguranca(
+      newData = Seguranca(
         id: res['_id'].toString(),
         title: 'Acesso ao quarto',
         info: res['quarto']['numero'],
         date: res['createdAt'],
         tag: 'tag',
       );
-      SEGURANCA_DATA.insert(0, newData);
+      //SEGURANCA_DATA.insert(0, newData);
     }
   }
+  SEGURANCA_DATA.insert(0, newData);
+  globals.listKey.currentState!.insertItem(
+    0,
+    duration: Duration(milliseconds: 350),
+  );
 }

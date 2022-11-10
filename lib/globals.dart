@@ -1,5 +1,7 @@
 library hoptimum.globals;
 
+import 'package:flutter/material.dart';
+
 import 'package:web_socket_channel/io.dart';
 
 IOWebSocketChannel? channel;
@@ -12,7 +14,7 @@ var urlApi =
 //://0c87-2804-7f4-3593-5911-3dd2-1958-e783-a23.sa.ngrok.io/ dudu
 // var url = (String start, String end) =>
 //     '$start://0c87-2804-7f4-3593-5911-3dd2-1958-e783-a23.sa.ngrok.io/$end';
-String url = 'http://ea6f-2804-7f4-3593-5911-4e59-8a0e-3eb-baf8.sa.ngrok.io/';
+String url = 'http://6c9c-2804-14c-8793-8e03-85be-b613-108b-effb.sa.ngrok.io/';
 
 String getUrl(String start, String end) {
   url = url.replaceAll('http', '');
@@ -32,3 +34,4 @@ var chave;
 var chaveBackUp;
 var rememberMe;
 bool naoTenta = true;
+var listKey = GlobalKey<AnimatedListState>();

@@ -1,8 +1,11 @@
+import 'package:dashboard_tcc/models/data/seguranca_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import '../models/seguranca.dart';
+import '../globals.dart' as globals;
 
 class SegurancaList extends StatefulWidget {
   List<Seguranca> informationLogs;
@@ -15,6 +18,7 @@ class SegurancaList extends StatefulWidget {
 
 class _SegurancaListState extends State<SegurancaList> {
   late TextEditingController inputController;
+  final listKey = GlobalKey<AnimatedListState>();
   var userInput = '';
 
   @override
@@ -70,6 +74,184 @@ class _SegurancaListState extends State<SegurancaList> {
   //   inputController.clear();
   // }
 
+  Card buildCard(BuildContext context, String title, String info, String date,
+      String tag) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      color: tag == 'car'
+          ? Color(0xfff5f5f5)
+          : Theme.of(context).colorScheme.secondary, //aqui muda
+      elevation: 5,
+      margin: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 20,
+      ),
+      child: ListTile(
+        leading: SizedBox(
+          //width: 85,
+          height: 55,
+          child: Card(
+            color: Theme.of(context).colorScheme.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: FittedBox(
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 8,
+                ),
+                child: tag == 'car'
+                    ? Icon(
+                        Icons.directions_car, //aqui muda
+                        color: Colors.black, //aqui muda
+                        size: 50,
+                      )
+                    : Icon(
+                        Icons.key,
+                        color: Colors.white,
+                        size: 50,
+                      ),
+              ),
+            ),
+          ),
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            color: tag == 'car' ? Colors.black : Colors.white, //aqui muda
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              info,
+              style: TextStyle(
+                  color:
+                      tag == 'car' ? Colors.black : Colors.white), //aqui muda
+            ),
+            Text(
+              // widget.informationLogs[index].date,
+              DateFormat.MMMMEEEEd('pt_BR')
+                  .add_Hms()
+                  .format(DateTime.parse(date).subtract(Duration(hours: 3))),
+              style: TextStyle(
+                  color:
+                      tag == 'car' ? Colors.black : Colors.white), //aqui muda
+            ),
+          ],
+        ),
+        trailing: null,
+      ),
+    );
+  }
+
+  SizeTransition buildCardAni(BuildContext context, String title, String info,
+      String date, String tag, Animation<double> animation) {
+    return SizeTransition(
+      sizeFactor: animation,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        color: tag == 'car'
+            ? Color(0xfff5f5f5)
+            : Theme.of(context).colorScheme.secondary, //aqui muda
+        elevation: 5,
+        margin: EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 20,
+        ),
+        child: ListTile(
+          leading: SizedBox(
+            //width: 85,
+            height: 55,
+            child: Card(
+              color: Theme.of(context).colorScheme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: FittedBox(
+                child: Container(
+                  margin: EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 8,
+                  ),
+                  child: tag == 'car'
+                      ? Icon(
+                          Icons.directions_car, //aqui muda
+                          color: Colors.black, //aqui muda
+                          size: 50,
+                        )
+                      : Icon(
+                          Icons.key,
+                          color: Colors.white,
+                          size: 50,
+                        ),
+                ),
+              ),
+            ),
+          ),
+          title: Text(
+            title,
+            style: TextStyle(
+              color: tag == 'car' ? Colors.black : Colors.white, //aqui muda
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                info,
+                style: TextStyle(
+                    color:
+                        tag == 'car' ? Colors.black : Colors.white), //aqui muda
+              ),
+              Text(
+                // widget.informationLogs[index].date,
+                DateFormat.MMMMEEEEd('pt_BR')
+                    .add_Hms()
+                    .format(DateTime.parse(date).subtract(Duration(hours: 3))),
+                style: TextStyle(
+                    color:
+                        tag == 'car' ? Colors.black : Colors.white), //aqui muda
+              ),
+            ],
+          ),
+          trailing: null,
+        ),
+      ),
+    );
+  }
+
+  AnimatedList animatedList() {
+    var listItems = widget.informationLogs;
+    return AnimatedList(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      //physics: AlwaysScrollableScrollPhysics(),
+      key: globals.listKey,
+      initialItemCount: widget.informationLogs.length,
+      itemBuilder: (context, index, animation) {
+        return buildCardAni(
+          context,
+          listItems[index].title,
+          listItems[index].info,
+          listItems[index].date,
+          listItems[index].tag,
+          animation,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting();
@@ -109,150 +291,16 @@ class _SegurancaListState extends State<SegurancaList> {
                 setState(() {});
               });
             },
-            child: ListView.builder(
-              physics: AlwaysScrollableScrollPhysics(),
-              itemCount: widget.informationLogs.length,
-              itemBuilder: (ctx, index) {
-                return widget.informationLogs[index].tag != 'tag'
-                    ? Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        color: Color(0xfff5f5f5),
-                        elevation: 5,
-                        margin: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        child: ListTile(
-                          leading: SizedBox(
-                            //width: 85,
-                            height: 55,
-                            child: Card(
-                              color: Theme.of(context).colorScheme.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: FittedBox(
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 8,
-                                  ),
-                                  child: Icon(
-                                    Icons.directions_car,
-                                    color: Colors.black,
-                                    size: 50,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          title: Text(
-                            widget.informationLogs[index].title,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.informationLogs[index].info,
-                              ),
-                              Text(
-                                // widget.informationLogs[index].date,
-                                DateFormat.MMMMEEEEd('pt_BR').add_Hms().format(
-                                    DateTime.parse(
-                                            widget.informationLogs[index].date)
-                                        .subtract(Duration(hours: 3))),
-                              ),
-                            ],
-                          ),
-                          trailing: null,
-                        ),
-                      )
-                    : Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        color: Theme.of(context).colorScheme.secondary,
-                        elevation: 5,
-                        margin: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        child: ListTile(
-                          leading: SizedBox(
-                            //width: 85,
-                            height: 55,
-                            child: Card(
-                              color: Theme.of(context).colorScheme.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: FittedBox(
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 8,
-                                  ),
-                                  child: Icon(
-                                    Icons.key,
-                                    color: Colors.white,
-                                    size: 50,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          title: Text(
-                            widget.informationLogs[index].title,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.informationLogs[index].info,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Text(
-                                // widget.informationLogs[index].date,
-                                DateFormat.MMMEd('pt_BR').add_Hms().format(
-                                    DateTime.parse(
-                                            widget.informationLogs[index].date)
-                                        .subtract(Duration(hours: 3))),
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                          trailing: null, //IconButton(
-                          //   padding: EdgeInsets.zero,
-                          //   constraints: BoxConstraints(),
-                          //   onPressed: () async {
-                          //     final userInput = await openDialog();
-                          //     if (userInput == null || userInput.isEmpty)
-                          //       return;
-                          //     setState(() {
-                          //       this.userInput = userInput;
-                          //     });
-                          //   },
-                          //   icon: Icon(
-                          //     Icons.report,
-                          //     color: Colors.red,
-                          //   ),
-                          // ),
-                        ),
-                      );
-              },
-            ),
+            child: animatedList(),
           );
   }
 }
+
+// AnimatedList aniList() {
+//   return AnimatedList(
+//     initialItemCount: SEGURANCA_DATA.length,
+//     itemBuilder: (context, index, animation) {
+//       return 
+//     },
+//   );
+// }
