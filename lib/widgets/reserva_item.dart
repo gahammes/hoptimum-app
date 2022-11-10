@@ -1,9 +1,10 @@
-import 'package:dashboard_tcc/models/quarto.dart';
 import 'package:flutter/material.dart';
+
+import '../models/quarto.dart';
 
 class ReservaItem extends StatelessWidget {
   final Quarto quarto;
-  ReservaItem({required this.quarto});
+  const ReservaItem({Key? key, required this.quarto}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +14,13 @@ class ReservaItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(25),
       ),
       elevation: 2,
-      margin: EdgeInsets.all(15),
+      margin: const EdgeInsets.all(15),
       child: Column(
         children: [
           Stack(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(25.0)),
                 child: Image.network(
                   quarto.url,
                   height: 200,
@@ -30,7 +31,7 @@ class ReservaItem extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               top: 10,
               right: 20,
               left: 20,
@@ -44,20 +45,20 @@ class ReservaItem extends StatelessWidget {
                   children: [
                     Text(
                       quarto.nome,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 22,
                         fontFamily: 'Quicksand',
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           quarto.tipo,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 16,
                           ),
@@ -72,7 +73,7 @@ class ReservaItem extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text(
+                            const Text(
                               ' / noite',
                               style: TextStyle(
                                 color: Colors.grey,
@@ -84,7 +85,7 @@ class ReservaItem extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -94,8 +95,8 @@ class ReservaItem extends StatelessWidget {
                               Icons.pin_drop_outlined,
                               color: Theme.of(context).colorScheme.primary,
                             ),
-                            SizedBox(width: 5),
-                            Text(
+                            const SizedBox(width: 5),
+                            const Text(
                               'Local',
                               style: TextStyle(
                                 color: Colors.grey,
@@ -110,10 +111,10 @@ class ReservaItem extends StatelessWidget {
                               Icons.star,
                               color: Theme.of(context).colorScheme.primary,
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             Text(
                               quarto.rating,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 16,
                               ),
@@ -125,7 +126,7 @@ class ReservaItem extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: const EdgeInsets.only(top: 10),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).colorScheme.primary,
@@ -135,11 +136,11 @@ class ReservaItem extends StatelessWidget {
                     ),
                     onPressed: () {},
                     child: Container(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 10,
                         vertical: 10,
                       ),
-                      child: Text(
+                      child: const Text(
                         'RESERVAR',
                         style: TextStyle(
                           fontSize: 16,
@@ -149,7 +150,6 @@ class ReservaItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                //TODO: colocar aqui as tags de veggie etc
               ],
             ),
           ),

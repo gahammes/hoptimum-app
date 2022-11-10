@@ -1,8 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'package:dashboard_tcc/screens/info_hospede_screen.dart';
-import 'package:dashboard_tcc/screens/info_sceen.dart';
 import 'package:flutter/material.dart';
+
+import '../screens/info_hospede_screen.dart';
 
 // List<Info> lista = [
 //   Info('Nome', 'Titular', '3 dependentes', '1 carro e 4 tags'),
@@ -17,7 +15,8 @@ class CardsList extends StatelessWidget {
   final String info;
   final String carro;
 
-  CardsList(this.nome, this.tipo, this.info, this.carro);
+  const CardsList(this.nome, this.tipo, this.info, this.carro, {Key? key})
+      : super(key: key);
 
   void _selectInfoHosp(BuildContext context) {
     Navigator.of(context).pushNamed(InfoHospedeScreen.routeName);
@@ -26,8 +25,8 @@ class CardsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final content = Container(
-      margin: EdgeInsets.fromLTRB(70, 16, 10, 0),
-      constraints: BoxConstraints.expand(),
+      margin: const EdgeInsets.fromLTRB(70, 16, 10, 0),
+      constraints: const BoxConstraints.expand(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -50,7 +49,7 @@ class CardsList extends StatelessWidget {
           ),
           Text(
             tipo,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'Quicksand',
               fontWeight: FontWeight.w500,
@@ -58,14 +57,14 @@ class CardsList extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 14.0),
+            margin: const EdgeInsets.symmetric(vertical: 14.0),
             height: 1.0,
             width: 25.0,
             color: Theme.of(context).colorScheme.secondary,
           ),
           Text(
             info,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontStyle: FontStyle.italic,
               fontSize: 15,
@@ -76,7 +75,7 @@ class CardsList extends StatelessWidget {
           ),
           Text(
             carro,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontStyle: FontStyle.italic,
               fontSize: 12,
@@ -100,13 +99,13 @@ class CardsList extends StatelessWidget {
               child: content,
             ),
             height: 155.0,
-            margin: EdgeInsets.only(
+            margin: const EdgeInsets.only(
               top: 20.0,
               left: 50,
             ),
             decoration: BoxDecoration(
               //color: Theme.of(context).colorScheme.primary,
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.centerRight,
                 end: Alignment.centerLeft,
                 colors: [
@@ -119,7 +118,7 @@ class CardsList extends StatelessWidget {
               ),
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(15.0),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.black12,
                   blurRadius: 10.0,
@@ -129,9 +128,9 @@ class CardsList extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 5),
+            margin: const EdgeInsets.only(top: 5),
             alignment: FractionalOffset.centerLeft,
-            child: Image(
+            child: const Image(
               image: AssetImage('assets/images/profile.png'),
               height: 120,
               width: 120,

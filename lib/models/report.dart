@@ -14,7 +14,8 @@ class Report {
   });
 }
 
-var REPORTES = [
+var reportesList = [
+  //REPORTES
   Report(
     nome: 'Felipe Vergueiro Salvado',
     tag: 'cartao',

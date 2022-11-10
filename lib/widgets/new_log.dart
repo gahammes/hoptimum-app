@@ -5,7 +5,7 @@ import 'package:intl/date_symbol_data_local.dart';
 class NewLog extends StatefulWidget {
   final Function addTx;
 
-  NewLog(this.addTx);
+  const NewLog(this.addTx, {Key? key}) : super(key: key);
 
   @override
   State<NewLog> createState() => _NewLog();
@@ -28,7 +28,7 @@ class _NewLog extends State<NewLog> {
 
     if (enteredTitle.isEmpty ||
         enteredAmount.isEmpty ||
-        _selectedDate == null ||
+        //_selectedDate == null ||
         enteredTag.isEmpty) {
       return;
     }
@@ -76,7 +76,7 @@ class _NewLog extends State<NewLog> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Title',
                 ),
                 controller: _titleController,
@@ -86,7 +86,7 @@ class _NewLog extends State<NewLog> {
                 // },
               ),
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Placa',
                 ),
                 controller: _placaController,
@@ -97,7 +97,7 @@ class _NewLog extends State<NewLog> {
                 // },
               ),
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Tag',
                 ),
                 controller: _tagController,
@@ -106,7 +106,7 @@ class _NewLog extends State<NewLog> {
                 //   amountInput = value;
                 // },
               ),
-              Container(
+              SizedBox(
                 height: 70,
                 child: Row(
                   children: [
@@ -119,7 +119,7 @@ class _NewLog extends State<NewLog> {
                     ),
                     TextButton(
                       onPressed: _presentDatePicker,
-                      child: Text(
+                      child: const Text(
                         'Choose Date',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -134,7 +134,7 @@ class _NewLog extends State<NewLog> {
               ),
               ElevatedButton(
                 onPressed: _submitData,
-                child: Text(
+                child: const Text(
                   'Add Transaction',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),

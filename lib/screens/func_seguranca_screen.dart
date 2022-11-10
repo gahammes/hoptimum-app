@@ -1,19 +1,20 @@
-import 'package:dashboard_tcc/models/data/seguranca_data.dart';
-import 'package:dashboard_tcc/models/hospede.dart';
-import 'package:dashboard_tcc/models/providers/auth.dart';
-import 'package:dashboard_tcc/models/report.dart';
-import 'package:dashboard_tcc/widgets/lista_hospedes.dart';
-import 'package:dashboard_tcc/widgets/report_card.dart';
-import 'package:dashboard_tcc/widgets/seguranca_list.dart';
 import 'package:flutter/material.dart';
-
+import 'package:hoptimum/models/seguranca.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
+import '../models/hospede.dart';
+import '../models/providers/auth.dart';
+import '../models/report.dart';
+import '../widgets/lista_hospedes.dart';
+import '../widgets/report_card.dart';
+import '../widgets/seguranca_list.dart';
 import '../globals.dart' as globals;
 
 class FuncSegurancaScreen extends StatefulWidget {
   static const routeName = '/funcSeguranca-screen';
+
+  const FuncSegurancaScreen({Key? key}) : super(key: key);
 
   @override
   State<FuncSegurancaScreen> createState() => _FuncSegurancaScreenState();
@@ -69,7 +70,7 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
         actions: [
           IconButton(
             onPressed: _logout,
-            icon: Icon(
+            icon: const Icon(
               Icons.logout,
               color: Colors.red,
             ),
@@ -95,21 +96,21 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
                 height: 648,
                 child: RefreshIndicator(
                   onRefresh: () {
-                    return Future.delayed(Duration(seconds: 1), () {
+                    return Future.delayed(const Duration(seconds: 1), () {
                       setState(() {});
                     });
                   },
                   child: ListView.builder(
-                    itemCount: REPORTES.length,
+                    itemCount: reportesList.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                           left: 10,
                           right: 10,
                           top: 10,
                           bottom: 0,
                         ),
-                        child: ReportCard(REPORTES[index]),
+                        child: ReportCard(reportesList[index]),
                       );
                     },
                   ),
@@ -121,14 +122,14 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 640, //TODO: aqui da overflow
                     //margin: EdgeInsets.only(top: 0),
 
-                    child: SEGURANCA_DATA.isEmpty
+                    child: segurancaLog.isEmpty
                         ? null
                         : SegurancaList(
-                            SEGURANCA_DATA), //TODO:tratar na main.dart
+                            segurancaLog), //TODO:tratar na main.dart
                   ),
                 ],
               ),
@@ -136,8 +137,8 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
             SingleChildScrollView(
               child: Container(
                 height: 647,
-                padding: EdgeInsets.all(0.0),
-                child: ListaHospedes(HOSPEDES),
+                padding: const EdgeInsets.all(0.0),
+                child: ListaHospedes(hospedeList),
               ),
             ),
           ],

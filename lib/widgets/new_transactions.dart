@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
 
-  NewTransaction(this.addTx);
+  const NewTransaction(this.addTx, {Key? key}) : super(key: key);
 
   @override
   State<NewTransaction> createState() => _NewTransactionState();
@@ -69,7 +68,7 @@ class _NewTransactionState extends State<NewTransaction> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Title',
                 ),
                 controller: _titleController,
@@ -79,7 +78,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 // },
               ),
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Amount',
                 ),
                 controller: _amountController,
@@ -89,7 +88,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 //   amountInput = value;
                 // },
               ),
-              Container(
+              SizedBox(
                 height: 70,
                 child: Row(
                   children: [
@@ -102,7 +101,7 @@ class _NewTransactionState extends State<NewTransaction> {
                     ),
                     TextButton(
                       onPressed: _presentDatePicker,
-                      child: Text(
+                      child: const Text(
                         'Choose Date',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -117,7 +116,7 @@ class _NewTransactionState extends State<NewTransaction> {
               ),
               ElevatedButton(
                 onPressed: _submitData,
-                child: Text(
+                child: const Text(
                   'Add Transaction',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),

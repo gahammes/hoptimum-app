@@ -1,6 +1,4 @@
-import 'package:dashboard_tcc/models/data/seguranca_data.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -8,9 +6,9 @@ import '../models/seguranca.dart';
 import '../globals.dart' as globals;
 
 class SegurancaList extends StatefulWidget {
-  List<Seguranca> informationLogs;
+  final List<Seguranca> informationLogs;
 
-  SegurancaList(this.informationLogs);
+  const SegurancaList(this.informationLogs, {Key? key}) : super(key: key);
 
   @override
   State<SegurancaList> createState() => _SegurancaListState();
@@ -81,10 +79,10 @@ class _SegurancaListState extends State<SegurancaList> {
         borderRadius: BorderRadius.circular(20),
       ),
       color: tag == 'car'
-          ? Color(0xfff5f5f5)
+          ? const Color(0xfff5f5f5)
           : Theme.of(context).colorScheme.secondary, //aqui muda
       elevation: 5,
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         vertical: 10,
         horizontal: 20,
       ),
@@ -99,17 +97,17 @@ class _SegurancaListState extends State<SegurancaList> {
             ),
             child: FittedBox(
               child: Container(
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                   vertical: 10,
                   horizontal: 8,
                 ),
                 child: tag == 'car'
-                    ? Icon(
+                    ? const Icon(
                         Icons.directions_car, //aqui muda
                         color: Colors.black, //aqui muda
                         size: 50,
                       )
-                    : Icon(
+                    : const Icon(
                         Icons.key,
                         color: Colors.white,
                         size: 50,
@@ -137,9 +135,8 @@ class _SegurancaListState extends State<SegurancaList> {
             ),
             Text(
               // widget.informationLogs[index].date,
-              DateFormat.MMMMEEEEd('pt_BR')
-                  .add_Hms()
-                  .format(DateTime.parse(date).subtract(Duration(hours: 3))),
+              DateFormat.MMMMEEEEd('pt_BR').add_Hms().format(
+                  DateTime.parse(date).subtract(const Duration(hours: 3))),
               style: TextStyle(
                   color:
                       tag == 'car' ? Colors.black : Colors.white), //aqui muda
@@ -160,10 +157,10 @@ class _SegurancaListState extends State<SegurancaList> {
           borderRadius: BorderRadius.circular(20),
         ),
         color: tag == 'car'
-            ? Color(0xfff5f5f5)
+            ? const Color(0xfff5f5f5)
             : Theme.of(context).colorScheme.secondary, //aqui muda
         elevation: 5,
-        margin: EdgeInsets.symmetric(
+        margin: const EdgeInsets.symmetric(
           vertical: 10,
           horizontal: 20,
         ),
@@ -178,7 +175,7 @@ class _SegurancaListState extends State<SegurancaList> {
               ),
               child: Container(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
@@ -193,17 +190,17 @@ class _SegurancaListState extends State<SegurancaList> {
                 ),
                 child: FittedBox(
                   child: Container(
-                    margin: EdgeInsets.symmetric(
+                    margin: const EdgeInsets.symmetric(
                       vertical: 10,
                       horizontal: 8,
                     ),
                     child: tag == 'car'
-                        ? Icon(
+                        ? const Icon(
                             Icons.directions_car, //aqui muda
                             color: Colors.black, //aqui muda
                             size: 50,
                           )
-                        : Icon(
+                        : const Icon(
                             Icons.key,
                             color: Colors.white,
                             size: 50,
@@ -232,9 +229,8 @@ class _SegurancaListState extends State<SegurancaList> {
               ),
               Text(
                 // widget.informationLogs[index].date,
-                DateFormat.MMMMEEEEd('pt_BR')
-                    .add_Hms()
-                    .format(DateTime.parse(date).subtract(Duration(hours: 3))),
+                DateFormat.MMMMEEEEd('pt_BR').add_Hms().format(
+                    DateTime.parse(date).subtract(const Duration(hours: 3))),
                 style: TextStyle(
                     color:
                         tag == 'car' ? Colors.black : Colors.white), //aqui muda
@@ -273,7 +269,7 @@ class _SegurancaListState extends State<SegurancaList> {
     initializeDateFormatting();
     return widget.informationLogs.isEmpty
         ? Container(
-            margin: EdgeInsets.only(top: 10),
+            margin: const EdgeInsets.only(top: 10),
             child: Column(
               children: [
                 // Text(
@@ -281,17 +277,17 @@ class _SegurancaListState extends State<SegurancaList> {
                 //   style: Theme.of(context).textTheme.headline6,
                 // ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     'Log de segurança vazio',
                     style: Theme.of(context).textTheme.headline6,
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
-                Container(
+                SizedBox(
                   height: 200,
                   child: Image.asset(
                     'assets/images/tw.png',
@@ -303,7 +299,7 @@ class _SegurancaListState extends State<SegurancaList> {
           )
         : RefreshIndicator(
             onRefresh: () {
-              return Future.delayed(Duration(seconds: 1), () {
+              return Future.delayed(const Duration(seconds: 1), () {
                 setState(() {});
               });
             },

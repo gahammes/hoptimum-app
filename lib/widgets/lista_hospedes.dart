@@ -1,11 +1,10 @@
-import 'package:dashboard_tcc/models/hospede.dart';
-import 'package:dashboard_tcc/models/pedido.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
+import '../models/hospede.dart';
 
 class ListaHospedes extends StatefulWidget {
-  List<Hospede> hospedes;
-  ListaHospedes(this.hospedes, {Key? key}) : super(key: key);
+  final List<Hospede> hospedes;
+  const ListaHospedes(this.hospedes, {Key? key}) : super(key: key);
   @override
   State<ListaHospedes> createState() => _ListaHospedesState();
 }
@@ -14,30 +13,31 @@ class _ListaHospedesState extends State<ListaHospedes> {
   Widget _buildExpansionTile(int index, Color color) {
     return ExpansionTile(
       maintainState: true,
-      collapsedBackgroundColor: Color(0xfff5f5f5),
-      backgroundColor: Color(0xfff5f5f5),
+      collapsedBackgroundColor: const Color(0xfff5f5f5),
+      backgroundColor: const Color(0xfff5f5f5),
       //collapsedBackgroundColor: Colors.white,
-      title: Text(
+      title: const Text(
         'Detalhes',
         style: TextStyle(fontSize: 16),
       ),
       textColor: Theme.of(context).colorScheme.primary,
-      childrenPadding: EdgeInsets.only(left: 16.0, bottom: 10.0, right: 10.0),
+      childrenPadding:
+          const EdgeInsets.only(left: 16.0, bottom: 10.0, right: 10.0),
       expandedCrossAxisAlignment: CrossAxisAlignment.start,
       expandedAlignment: Alignment.centerLeft,
       children: [
         _buildRichText('Titular: ', widget.hospedes[index].nome),
-        SizedBox(height: 7.0),
+        const SizedBox(height: 7.0),
         _buildRichText('CPF: ', widget.hospedes[index].cpf),
-        SizedBox(height: 7.0),
+        const SizedBox(height: 7.0),
         _buildRichText('Telefone: ', widget.hospedes[index].telefone),
-        SizedBox(height: 7.0),
+        const SizedBox(height: 7.0),
         _buildRichText('Email: ', widget.hospedes[index].email),
-        SizedBox(height: 7.0),
+        const SizedBox(height: 7.0),
         _buildListaCartoes(widget.hospedes[index].reserva.numCartaoChave),
-        SizedBox(height: 7.0),
+        const SizedBox(height: 7.0),
         _buildRichText('Placa do carro: ', widget.hospedes[index].carro.placa),
-        SizedBox(height: 7.0),
+        const SizedBox(height: 7.0),
         _buildListDependentes(index),
       ],
     );
@@ -46,10 +46,10 @@ class _ListaHospedesState extends State<ListaHospedes> {
   Widget _buildListaCartoes(List<int> numLista) {
     return RichText(
       text: TextSpan(
-        style: TextStyle(
+        style: const TextStyle(
             fontSize: 16, fontFamily: 'Quicksand', color: Colors.black),
         children: [
-          TextSpan(
+          const TextSpan(
             text: 'Cartões-Chave: ',
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -68,12 +68,12 @@ class _ListaHospedesState extends State<ListaHospedes> {
   Widget _buildRichText(String title, String subtitle) {
     return RichText(
       text: TextSpan(
-        style: TextStyle(
+        style: const TextStyle(
             fontSize: 16, fontFamily: 'Quicksand', color: Colors.black),
         children: [
           TextSpan(
             text: title,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -84,29 +84,29 @@ class _ListaHospedesState extends State<ListaHospedes> {
   }
 
   Widget _buildListDependentes(int index) {
-    return widget.hospedes[index].dependentes.length != 0
+    return widget.hospedes[index].dependentes.isNotEmpty
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Dependentes: ',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5.0,
               ),
               for (var dependente in widget.hospedes[index].dependentes)
                 Container(
-                  margin: EdgeInsets.only(left: 20.0, bottom: 5.0),
+                  margin: const EdgeInsets.only(left: 20.0, bottom: 5.0),
                   child: Text(
                     dependente.nome,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ),
             ],
           )
-        : SizedBox(height: 0);
+        : const SizedBox(height: 0);
   }
 
   Widget _buildCard(int index) {
@@ -114,7 +114,7 @@ class _ListaHospedesState extends State<ListaHospedes> {
     var fontColor = Colors.white;
 
     return Container(
-      margin: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+      margin: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
       child: Card(
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
@@ -122,7 +122,7 @@ class _ListaHospedesState extends State<ListaHospedes> {
         ),
         color: bgColor,
         elevation: 5,
-        margin: EdgeInsets.symmetric(
+        margin: const EdgeInsets.symmetric(
           vertical: 10,
           horizontal: 10,
         ),
@@ -139,11 +139,11 @@ class _ListaHospedesState extends State<ListaHospedes> {
                   ),
                   child: FittedBox(
                     child: Container(
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 8,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.person,
                         color: Colors.black,
                         size: 50,
@@ -162,9 +162,9 @@ class _ListaHospedesState extends State<ListaHospedes> {
               ),
               subtitle: Text(
                 widget.hospedes[index].nome,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
-              trailing: Icon(
+              trailing: const Icon(
                 Icons.edit,
                 color: Colors.white,
               ),
@@ -183,7 +183,7 @@ class _ListaHospedesState extends State<ListaHospedes> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () {
-        return Future.delayed(Duration(seconds: 1), () {
+        return Future.delayed(const Duration(seconds: 1), () {
           setState(() {});
         });
       },

@@ -14,7 +14,7 @@ var urlApi =
 //://0c87-2804-7f4-3593-5911-3dd2-1958-e783-a23.sa.ngrok.io/ dudu
 // var url = (String start, String end) =>
 //     '$start://0c87-2804-7f4-3593-5911-3dd2-1958-e783-a23.sa.ngrok.io/$end';
-String url = 'http://6c9c-2804-14c-8793-8e03-85be-b613-108b-effb.sa.ngrok.io/';
+String url = 'http://a30f-2804-14c-8793-8e03-85be-b613-108b-effb.sa.ngrok.io/';
 
 String getUrl(String start, String end) {
   url = url.replaceAll('http', '');

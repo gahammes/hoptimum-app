@@ -1,7 +1,6 @@
-import 'package:dashboard_tcc/screens/categories_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/category_meals_screen.dart';
+import '../screens/categories_screen.dart';
 
 class SolicitacaoItem extends StatelessWidget {
   final String id;
@@ -9,7 +8,8 @@ class SolicitacaoItem extends StatelessWidget {
   final String tipo;
   final Color color;
 
-  SolicitacaoItem(this.id, this.title, this.tipo, this.color);
+  const SolicitacaoItem(this.id, this.title, this.tipo, this.color, {Key? key})
+      : super(key: key);
 
   void selectCategory(BuildContext context) {
     Navigator.of(context).pushNamed(
@@ -40,7 +40,7 @@ class SolicitacaoItem extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         child: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,

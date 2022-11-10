@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../globals.dart' as globals;
 
 class InfoHospedeScreen extends StatelessWidget {
@@ -9,7 +10,7 @@ class InfoHospedeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Informações'),
+        title: const Text('Informações'),
         backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
       body: SingleChildScrollView(

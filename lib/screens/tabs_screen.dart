@@ -1,28 +1,20 @@
-import 'package:dashboard_tcc/models/data/despesas_data.dart';
-import 'package:dashboard_tcc/models/data/seguranca_data.dart';
-import 'package:dashboard_tcc/models/providers/auth.dart';
-import 'package:dashboard_tcc/screens/configuracoes_screen.dart';
-import 'package:dashboard_tcc/screens/despesas_screen.dart';
-import 'package:dashboard_tcc/screens/home_screen.dart';
-import 'package:dashboard_tcc/screens/login_screen.dart';
-import 'package:dashboard_tcc/screens/notificacao_screen.dart';
-import 'package:dashboard_tcc/screens/seguranca_screen.dart';
-import 'package:dashboard_tcc/screens/tela_reserva.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
-import 'dart:convert';
 
-import '../models/transaction.dart';
-import '../widgets/new_transactions.dart';
-import 'categories_screen.dart';
+import '../models/providers/auth.dart';
+import '../screens/configuracoes_screen.dart';
+import '../screens/despesas_screen.dart';
+import '../screens/home_screen.dart';
+import '../screens/notificacao_screen.dart';
+import '../screens/seguranca_screen.dart';
+import '../screens/tela_reserva.dart';
+import '../models/despesa.dart';
 import 'solicitacao_screen.dart';
-import 'package:dashboard_tcc/globals.dart' as globals;
-import '../models/seguranca.dart';
 
 class TabsScreen extends StatefulWidget {
   static const routeName = '/tabs-screen';
+
+  const TabsScreen({Key? key}) : super(key: key);
 
   @override
   State<TabsScreen> createState() => _TabsScreenState();
@@ -31,7 +23,7 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   var _selectedPageIndex = 0;
 
-  var _userTransactions = DESPESAS_DATA;
+  var _userTransactions = despesasLog;
 
   void _selectPage(int index) {
     setState(() {
@@ -63,7 +55,7 @@ class _TabsScreenState extends State<TabsScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => this.widget,
+            builder: (BuildContext context) => widget,
           ));
     });
   }
@@ -89,7 +81,7 @@ class _TabsScreenState extends State<TabsScreen> {
             onSubmitted: (_) => submitInput(),
             //controller: inputController,
             maxLength: 100,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
               hintText: 'Digite aqui...',
               hintStyle: TextStyle(
@@ -105,8 +97,8 @@ class _TabsScreenState extends State<TabsScreen> {
                   Navigator.of(context).pop();
                   //inputController.clear();
                 },
-                child: Text('Cancelar')),
-            TextButton(onPressed: submitInput, child: Text('Enviar')),
+                child: const Text('Cancelar')),
+            TextButton(onPressed: submitInput, child: const Text('Enviar')),
           ],
         ),
       );
@@ -124,62 +116,62 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> _pages = [
       {
-        'page': HomePage(),
+        'page': const HomePage(),
         'title': 'Home',
         'actions': [
           IconButton(
             onPressed: _reservaRoute,
-            icon: Icon(Icons.hotel),
+            icon: const Icon(Icons.hotel),
           ),
           IconButton(
             onPressed: _logout,
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
           ),
         ],
       },
       {
-        'page': DespesasScreen(),
+        'page': const DespesasScreen(),
         'title': 'Despesas',
         'actions': [
           IconButton(
             onPressed: _refresh,
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
           ),
         ],
       },
       {
-        'page': SolicitacaoScreen(),
+        'page': const SolicitacaoScreen(),
         'title': 'Solicitações',
         'actions': null,
       },
       {
-        'page': NotificacaoScreen(),
+        'page': const NotificacaoScreen(),
         'title': 'Notificações',
         'actions': [
           IconButton(
             onPressed: _refresh,
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
           ),
         ],
       },
       {
-        'page': SegurancaScreen(),
+        'page': const SegurancaScreen(),
         'title': 'Segurança',
         'actions': [
           IconButton(
             //padding: EdgeInsets.zero,
-            constraints: BoxConstraints(),
+            constraints: const BoxConstraints(),
             onPressed: () async {
               final userInput = await openDialog();
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.report,
               color: Colors.red,
             ),
           ),
           IconButton(
             onPressed: _refresh1,
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
           ),
         ],
       },
@@ -211,27 +203,27 @@ class _TabsScreenState extends State<TabsScreen> {
       items: [
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          icon: Icon(Icons.home),
+          icon: const Icon(Icons.home),
           label: 'Home',
         ),
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          icon: Icon(Icons.attach_money),
+          icon: const Icon(Icons.attach_money),
           label: 'Despesas',
         ),
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          icon: Icon(Icons.add_circle),
+          icon: const Icon(Icons.add_circle),
           label: 'Solicitações',
         ),
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          icon: Icon(Icons.notifications),
+          icon: const Icon(Icons.notifications),
           label: 'Notificações',
         ),
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          icon: Icon(Icons.shield),
+          icon: const Icon(Icons.shield),
           label: 'Segurança',
         ),
       ],
@@ -251,16 +243,16 @@ class _TabsScreenState extends State<TabsScreen> {
                     radius: 35,
                     backgroundColor: Theme.of(context).colorScheme.secondary,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     'Nome do Titular',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
+                  const Text(
                     'hospede@email.com',
                     style: TextStyle(
                       color: Colors.grey,
@@ -273,16 +265,16 @@ class _TabsScreenState extends State<TabsScreen> {
             //   color: Theme.of(context).colorScheme.secondary,
             // ),
             ListTile(
-              leading: Icon(Icons.settings),
+              leading: const Icon(Icons.settings),
               title: const Text('Configurações'),
               onTap: _settings,
             ),
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.logout,
                 color: Colors.red,
               ),
-              title: Text(
+              title: const Text(
                 'Sair',
                 style: TextStyle(
                   color: Colors.red,

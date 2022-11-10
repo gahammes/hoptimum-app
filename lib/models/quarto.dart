@@ -15,7 +15,8 @@ class Quarto {
   });
 }
 
-var QUARTOS = [
+var quartosList = [
+  //QUARTOS
   Quarto(
     id: 100,
     nome: 'Single Room',

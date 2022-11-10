@@ -1,10 +1,10 @@
 enum Status {
-  Espera,
-  Recebido,
-  Preparando,
-  Caminho,
-  Entregue,
-  Finalizado,
+  espera,
+  recebido,
+  preparando,
+  caminho,
+  entregue,
+  finalizado,
 }
 
 class Pedido {
@@ -25,7 +25,8 @@ class Pedido {
   });
 }
 
-var PEDIDOS = [
+var pedidosList = [
+  //PEDIDOS
   Pedido(
     id: 98256,
     refeicao: [
@@ -34,7 +35,7 @@ var PEDIDOS = [
     numQuarto: 109,
     total: 15.0,
     data: DateTime(2022, 6, 15, 21, 03),
-    status: Status.Espera,
+    status: Status.espera,
   ),
   Pedido(
     id: 53729,
@@ -42,7 +43,7 @@ var PEDIDOS = [
     numQuarto: 226,
     total: 15.0,
     data: DateTime(2022, 6, 15, 13, 47),
-    status: Status.Espera,
+    status: Status.espera,
   ),
   Pedido(
     id: 36523,
@@ -50,7 +51,7 @@ var PEDIDOS = [
     numQuarto: 101,
     total: 15.0,
     data: DateTime(2022, 6, 15, 12, 36),
-    status: Status.Espera,
+    status: Status.espera,
   ),
   Pedido(
     id: 31517,
@@ -58,7 +59,7 @@ var PEDIDOS = [
     numQuarto: 319,
     total: 15.0,
     data: DateTime(2022, 6, 15, 9, 54),
-    status: Status.Espera,
+    status: Status.espera,
   ),
   Pedido(
     id: 18240,
@@ -66,18 +67,19 @@ var PEDIDOS = [
     numQuarto: 109,
     total: 15.0,
     data: DateTime(2022, 6, 15, 7, 14),
-    status: Status.Espera,
+    status: Status.espera,
   ),
 ];
 
-var PEDIDOS_FINALIZADOS = [
+var pedidosFinalizadosList = [
+  //PEDIDOS_FINALIZADOS
   Pedido(
     id: 27310,
     refeicao: ['Spaghetti com Molho de Tomate'],
     numQuarto: 226,
     total: 15.0,
     data: DateTime(2022, 6, 14, 21, 10),
-    status: Status.Finalizado,
+    status: Status.finalizado,
   ),
   Pedido(
     id: 83522,
@@ -85,7 +87,7 @@ var PEDIDOS_FINALIZADOS = [
     numQuarto: 101,
     total: 15.0,
     data: DateTime(2022, 6, 14, 12, 45),
-    status: Status.Finalizado,
+    status: Status.finalizado,
   ),
   Pedido(
     id: 74417,
@@ -93,7 +95,7 @@ var PEDIDOS_FINALIZADOS = [
     numQuarto: 319,
     total: 15.0,
     data: DateTime(2022, 6, 14, 10, 02),
-    status: Status.Finalizado,
+    status: Status.finalizado,
   ),
   Pedido(
     id: 86173,
@@ -101,6 +103,6 @@ var PEDIDOS_FINALIZADOS = [
     numQuarto: 109,
     total: 15.0,
     data: DateTime(2022, 6, 14, 8, 23),
-    status: Status.Finalizado,
+    status: Status.finalizado,
   ),
 ];

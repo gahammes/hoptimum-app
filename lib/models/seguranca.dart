@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'data/seguranca_data.dart';
 import '../globals.dart' as globals;
 
 class Seguranca {
@@ -18,6 +15,8 @@ class Seguranca {
     required this.tag,
   });
 }
+
+List<Seguranca> segurancaLog = [];
 
 int getIndex() {
   var dados = globals.loginData as Map;
@@ -45,7 +44,7 @@ void getLog() {
 
   for (var i = 0; i < logs.length; i++) {
     var logMap = logs[i] as Map;
-    SEGURANCA_DATA.add(
+    segurancaLog.add(
       Seguranca(
         id: logMap['_id'],
         title: 'Acesso ao quarto',
@@ -66,7 +65,7 @@ void getLog() {
         registros = globals.loginData['hospede']['carros'][index]['registros'];
         for (var i = 0; i < registros.length; i++) {
           var registroMap = registros[i] as Map;
-          SEGURANCA_DATA.add(
+          segurancaLog.add(
             Seguranca(
               id: registroMap['_id'].toString(),
               title: registroMap['status']
@@ -84,7 +83,7 @@ void getLog() {
       }
     }
   }
-  SEGURANCA_DATA.sort((a, b) {
+  segurancaLog.sort((a, b) {
     return -DateTime.parse(a.date).compareTo(DateTime.parse(b.date));
   });
 }
@@ -98,7 +97,7 @@ void getLogFunc() {
 
   for (var i = 0; i < logs.length; i++) {
     var logMap = logs[i] as Map;
-    SEGURANCA_DATA.add(
+    segurancaLog.add(
       Seguranca(
         id: logMap['_id'].toString(),
         title: 'Acesso ao quarto',
@@ -121,7 +120,7 @@ void getLogFunc() {
             globals.loginData['funcionario']['carros'][index]['registros'];
         for (var i = 0; i < registros.length; i++) {
           var registroMap = registros[i] as Map;
-          SEGURANCA_DATA.add(
+          segurancaLog.add(
             Seguranca(
               id: registroMap['_id'].toString(),
               title: registroMap['status']
@@ -139,15 +138,20 @@ void getLogFunc() {
       }
     }
   }
-  SEGURANCA_DATA.sort((a, b) {
+  segurancaLog.sort((a, b) {
     return -DateTime.parse(a.date).compareTo(DateTime.parse(b.date));
   });
 }
 
 void addLog(Map<dynamic, dynamic> res) {
   var loginData = globals.loginData as Map;
-  var newData;
-  final listKey = GlobalKey<AnimatedListState>();
+  Seguranca newData = Seguranca(
+    id: '',
+    title: '',
+    info: '',
+    date: DateTime.now().toIso8601String(),
+    tag: '',
+  );
   if (loginData.containsKey('hospede')) {
     if (res.containsKey('reserva')) {
       newData = Seguranca(
@@ -205,9 +209,9 @@ void addLog(Map<dynamic, dynamic> res) {
       //SEGURANCA_DATA.insert(0, newData);
     }
   }
-  SEGURANCA_DATA.insert(0, newData);
+  segurancaLog.insert(0, newData);
   globals.listKey.currentState!.insertItem(
     0,
-    duration: Duration(milliseconds: 350),
+    duration: const Duration(milliseconds: 350),
   );
 }

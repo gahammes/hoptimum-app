@@ -1,17 +1,11 @@
-import 'dart:convert';
-
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dashboard_tcc/models/data/despesas_data.dart';
-import 'package:dashboard_tcc/models/hospede.dart';
-import 'package:dashboard_tcc/screens/info_sceen.dart';
-import 'package:dashboard_tcc/screens/reserva_info.dart';
-import 'package:dashboard_tcc/widgets/cards_list.dart';
-import 'package:dashboard_tcc/screens/home_screen.dart';
-import 'package:dashboard_tcc/widgets/gradient_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/services.dart';
+import 'package:hoptimum/models/despesa.dart';
+
+import '../screens/info_sceen.dart';
+import '../screens/reserva_info.dart';
+import '../widgets/cards_list.dart';
+import '../widgets/gradient_text.dart';
 import '../globals.dart' as globals;
 
 class HomePage extends StatelessWidget {
@@ -108,10 +102,11 @@ class HomePage extends StatelessWidget {
 
   double _getConsumo() {
     var subTotal = 0.0;
-    for (var valor in DESPESAS_DATA)
+    for (var valor in despesasLog) {
       !valor.title.contains('Diária')
           ? subTotal += valor.amount
           : subTotal += 0;
+    }
     return subTotal;
   }
 
@@ -121,7 +116,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var gradient = LinearGradient(
+    var gradient = const LinearGradient(
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
       colors: [
@@ -144,18 +139,16 @@ class HomePage extends StatelessWidget {
       children: [
         Container(
           height: 90,
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           alignment: Alignment.center,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                child: Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(top: 10.0),
-                    child: Image(
-                      image: AssetImage('assets/images/new_logo.png'),
-                    ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: const Image(
+                    image: AssetImage('assets/images/new_logo.png'),
                   ),
                 ),
               ),
@@ -163,109 +156,42 @@ class HomePage extends StatelessWidget {
           ),
         ),
         //SizedBox(height: height * 0.03),
-        Container(
-          //height: 230,
-          child: CarouselSlider(
-            options: CarouselOptions(
-              enableInfiniteScroll: getHospCount() > 1 ? true : false,
-              autoPlay: false,
-              enlargeCenterPage: true,
-              enlargeStrategy: CenterPageEnlargeStrategy.height,
-            ),
-            items: [
-              for (var i = 0; i < getHospCount(); i++)
-                CardsList(
-                    getNome(i),
-                    getTitular(i) == true ? 'Titular' : 'Dependente',
-                    'Quarto ${getQuarto(i)}',
-                    'Clique para informações'),
-            ],
+        CarouselSlider(
+          options: CarouselOptions(
+            enableInfiniteScroll: getHospCount() > 1 ? true : false,
+            autoPlay: false,
+            enlargeCenterPage: true,
+            enlargeStrategy: CenterPageEnlargeStrategy.height,
           ),
+          items: [
+            for (var i = 0; i < getHospCount(); i++)
+              CardsList(
+                  getNome(i),
+                  getTitular(i) == true ? 'Titular' : 'Dependente',
+                  'Quarto ${getQuarto(i)}',
+                  'Clique para informações'),
+          ],
         ),
-        Container(
-          //height: 200,
-          child: Column(
-            //padding: EdgeInsets.all(0),
-            children: [
-              FittedBox(
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () => _selectInfo(context),
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 10, top: 0),
-                        height: 160,
-                        width: 180,
-                        padding: EdgeInsets.only(left: 20, right: 0, bottom: 0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(50.0),
-                              topLeft: Radius.circular(10.0),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondary
-                                    .withOpacity(0.3),
-                                offset: Offset(-10.0, 0.0),
-                                blurRadius: 20.0,
-                                spreadRadius: 4.0,
-                              ),
-                            ],
-                          ),
-                          padding: EdgeInsets.only(
-                            left: 10,
-                            top: 40,
-                            bottom: 20,
-                            right: 20,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              GradientText(
-                                'INFORMAÇÕES',
-                                gradient: gradient,
-                                style: textStyle,
-                              ),
-                              // Text(
-                              //   'INFORMAÇÕES',
-                              //   style: TextStyle(
-                              //     color: Theme.of(context).colorScheme.primary,
-                              //     fontSize: 17,
-                              //     fontWeight: FontWeight.bold,
-                              //   ),
-                              // ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                'Toque para saber mais informações sobre o hotel e horários.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                                textAlign: TextAlign.right,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10, top: 0),
+        Column(
+          //padding: EdgeInsets.all(0),
+          children: [
+            FittedBox(
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () => _selectInfo(context),
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 10, top: 0),
                       height: 160,
-                      width: 200,
-                      padding: EdgeInsets.only(left: 20, right: 15, bottom: 0),
+                      width: 180,
+                      padding:
+                          const EdgeInsets.only(left: 20, right: 0, bottom: 0),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.secondary,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(50.0),
-                            bottomRight: Radius.circular(10.0),
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(50.0),
+                            topLeft: Radius.circular(10.0),
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -273,132 +199,195 @@ class HomePage extends StatelessWidget {
                                   .colorScheme
                                   .secondary
                                   .withOpacity(0.3),
-                              offset: Offset(-10.0, 0.0),
+                              offset: const Offset(-10.0, 0.0),
                               blurRadius: 20.0,
                               spreadRadius: 4.0,
                             ),
                           ],
                         ),
-                        padding: EdgeInsets.only(
-                          left: 15,
+                        padding: const EdgeInsets.only(
+                          left: 10,
                           top: 40,
                           bottom: 20,
                           right: 20,
                         ),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            //TODO:COISO AQUI CONSUMO
                             GradientText(
-                              'CONSUMO',
+                              'INFORMAÇÕES',
                               gradient: gradient,
                               style: textStyle,
                             ),
-
-                            SizedBox(
+                            // Text(
+                            //   'INFORMAÇÕES',
+                            //   style: TextStyle(
+                            //     color: Theme.of(context).colorScheme.primary,
+                            //     fontSize: 17,
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
+                            const SizedBox(
                               height: 10,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'R\$ ${_getConsumo().toStringAsFixed(2)}',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    //fontStyle: FontStyle.italic,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  'Mais detalhes na aba de despesas.',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                    //fontStyle: FontStyle.italic,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                )
-                              ],
+                            const Text(
+                              'Toque para saber mais informações sobre o hotel e horários.',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontStyle: FontStyle.italic,
+                              ),
+                              textAlign: TextAlign.right,
                             )
                           ],
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              InkWell(
-                onTap: () => _selectReservaInfo(context),
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 10, top: 30),
-                  height: 100,
-                  width: 385,
-                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20.0),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondary
-                              .withOpacity(0.3),
-                          offset: Offset(-10.0, 0.0),
-                          blurRadius: 20.0,
-                          spreadRadius: 4.0,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 10, top: 0),
+                    height: 160,
+                    width: 200,
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 15, bottom: 0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondary,
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(50.0),
+                          bottomRight: Radius.circular(10.0),
                         ),
-                      ],
-                    ),
-                    padding: EdgeInsets.only(
-                      left: 5,
-                      top: 15,
-                      bottom: 20,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GradientText(
-                          '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
-                              .toUpperCase(),
-                          gradient: gradient,
-                          style: textStyle,
-                        ),
-                        // Text(
-                        //   '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
-                        //       .toUpperCase(),
-                        //   style: TextStyle(
-                        //     color: Theme.of(context).colorScheme.primary,
-                        //     fontSize: 17,
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        //   textAlign: TextAlign.center,
-                        // ),
-                        SizedBox(
-                          height: 9,
-                        ),
-                        Text(
-                          'Toque para conferir as informações da sua reserva!',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontStyle: FontStyle.italic,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.3),
+                            offset: const Offset(-10.0, 0.0),
+                            blurRadius: 20.0,
+                            spreadRadius: 4.0,
                           ),
-                          textAlign: TextAlign.left,
-                        )
-                      ],
+                        ],
+                      ),
+                      padding: const EdgeInsets.only(
+                        left: 15,
+                        top: 40,
+                        bottom: 20,
+                        right: 20,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //TODO:COISO AQUI CONSUMO
+                          GradientText(
+                            'CONSUMO',
+                            gradient: gradient,
+                            style: textStyle,
+                          ),
+
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'R\$ ${_getConsumo().toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  //fontStyle: FontStyle.italic,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              const Text(
+                                'Mais detalhes na aba de despesas.',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  //fontStyle: FontStyle.italic,
+                                ),
+                                textAlign: TextAlign.left,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
+                  ),
+                ],
+              ),
+            ),
+            InkWell(
+              onTap: () => _selectReservaInfo(context),
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 10, top: 30),
+                height: 100,
+                width: 385,
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(20.0),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.3),
+                        offset: const Offset(-10.0, 0.0),
+                        blurRadius: 20.0,
+                        spreadRadius: 4.0,
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.only(
+                    left: 5,
+                    top: 15,
+                    bottom: 20,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GradientText(
+                        '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
+                            .toUpperCase(),
+                        gradient: gradient,
+                        style: textStyle,
+                      ),
+                      // Text(
+                      //   '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
+                      //       .toUpperCase(),
+                      //   style: TextStyle(
+                      //     color: Theme.of(context).colorScheme.primary,
+                      //     fontSize: 17,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      //   textAlign: TextAlign.center,
+                      // ),
+                      const SizedBox(
+                        height: 9,
+                      ),
+                      const Text(
+                        'Toque para conferir as informações da sua reserva!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        textAlign: TextAlign.left,
+                      )
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );

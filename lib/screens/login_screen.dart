@@ -8,13 +8,15 @@ import '../globals.dart' as globals;
 import '../models/http_exception.dart';
 import '../models/providers/auth.dart';
 import '../screens/tabs_screen.dart';
-import 'func_solicitacao_screen.dart';
-import 'func_seguranca_screen.dart';
+import '../screens/func_solicitacao_screen.dart';
+import '../screens/func_seguranca_screen.dart';
 
-enum AuthMode { Signup, Login }
+enum AuthMode { signup, login }
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/login-screen';
+
+  const LoginScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +29,7 @@ class LoginScreen extends StatelessWidget {
               Container(
                 height: double.infinity,
                 width: double.infinity,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -42,21 +44,21 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 50),
-                padding: EdgeInsets.symmetric(
+                margin: const EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.symmetric(
                   horizontal: 10.0,
                   vertical: 10.0,
                 ),
                 height: 200,
-                child: Image(
+                child: const Image(
                   image: AssetImage('assets/images/logo-black.png'),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: double.infinity,
                 child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.only(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.only(
                     left: 40.0,
                     right: 40.0,
                     bottom: 80.0,
@@ -64,7 +66,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       // Text(
                       //   'Entrar',
                       //   style: TextStyle(
@@ -74,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                       //   ),
                       // ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 40.0),
+                        padding: EdgeInsets.only(top: 40.0),
                         child: AuthPart(),
                       ),
                     ],
@@ -103,7 +105,7 @@ class _AuthPartState extends State<AuthPart> {
   final passwordController = TextEditingController();
   final _passwordFocusNode = FocusNode();
 
-  final AuthMode _authMode = AuthMode.Login;
+  final AuthMode _authMode = AuthMode.login;
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
@@ -115,7 +117,7 @@ class _AuthPartState extends State<AuthPart> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('An Error Occurred!'),
+        title: const Text('An Error Occurred!'),
         content: Text(message),
         actions: [
           TextButton(
@@ -125,7 +127,7 @@ class _AuthPartState extends State<AuthPart> {
                 _isLoading = false;
               });
             },
-            child: Text('Okay'),
+            child: const Text('Okay'),
           ),
         ],
       ),
@@ -141,7 +143,7 @@ class _AuthPartState extends State<AuthPart> {
       _isLoading = true;
     });
     try {
-      if (_authMode == AuthMode.Login) {
+      if (_authMode == AuthMode.login) {
         await Provider.of<Auth>(context, listen: false).login(
           _authData['email']!,
           _authData['password']!,
@@ -179,27 +181,27 @@ class _AuthPartState extends State<AuthPart> {
   }
 
   void _switchAuthMode() {
-    if (_authMode == AuthMode.Login) {
+    if (_authMode == AuthMode.login) {
       setState(() {
-        _authMode == AuthMode.Signup;
+        _authMode == AuthMode.signup;
       });
     } else {
       setState(() {
-        _authMode == AuthMode.Login;
+        _authMode == AuthMode.login;
       });
     }
   }
 
-  final kLabelStyle = TextStyle(
+  final kLabelStyle = const TextStyle(
     color: Colors.white,
     fontFamily: 'OpenSans',
     fontWeight: FontWeight.bold,
   );
 
   final kBoxDecorationStyle = BoxDecoration(
-    color: Color.fromARGB(255, 255, 129, 101),
+    color: const Color.fromARGB(255, 255, 129, 101),
     borderRadius: BorderRadius.circular(10.0),
-    boxShadow: [
+    boxShadow: const [
       BoxShadow(
         color: Colors.black12,
         blurRadius: 6.0,
@@ -208,7 +210,7 @@ class _AuthPartState extends State<AuthPart> {
     ],
   );
 
-  final kHintTextStyle = TextStyle(
+  final kHintTextStyle = const TextStyle(
     color: Colors.white54,
     fontFamily: 'OpenSans',
   );
@@ -218,7 +220,7 @@ class _AuthPartState extends State<AuthPart> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Email', style: kLabelStyle),
-        SizedBox(height: 10.0),
+        const SizedBox(height: 10.0),
         Container(
           alignment: Alignment.center,
           decoration: kBoxDecorationStyle,
@@ -244,14 +246,14 @@ class _AuthPartState extends State<AuthPart> {
 
             //controller: emailController,
 
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
+              contentPadding: const EdgeInsets.only(top: 14.0),
+              prefixIcon: const Icon(
                 Icons.email,
                 color: Colors.white,
               ),
@@ -269,7 +271,7 @@ class _AuthPartState extends State<AuthPart> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Senha', style: kLabelStyle),
-        SizedBox(height: 10.0),
+        const SizedBox(height: 10.0),
         Container(
           alignment: Alignment.center,
           decoration: kBoxDecorationStyle,
@@ -289,14 +291,14 @@ class _AuthPartState extends State<AuthPart> {
             controller: _passwordController,
             cursorColor: Colors.white,
             obscureText: true,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
+              contentPadding: const EdgeInsets.only(top: 14.0),
+              prefixIcon: const Icon(
                 Icons.lock,
                 color: Colors.white,
               ),
@@ -305,16 +307,17 @@ class _AuthPartState extends State<AuthPart> {
             ),
           ),
         ),
-        if (_authMode == AuthMode.Signup)
+        if (_authMode == AuthMode.signup)
           TextFormField(
-            enabled: _authMode == AuthMode.Signup,
-            decoration: InputDecoration(labelText: 'Confirm Password'),
+            enabled: _authMode == AuthMode.signup,
+            decoration: const InputDecoration(labelText: 'Confirm Password'),
             obscureText: true,
-            validator: _authMode == AuthMode.Signup
+            validator: _authMode == AuthMode.signup
                 ? (value) {
                     if (value != _passwordController.text) {
                       return 'A senha n e a mesma';
                     }
+                    return null;
                   }
                 : null,
           ),
@@ -336,7 +339,7 @@ class _AuthPartState extends State<AuthPart> {
   }
 
   Widget _buildRememberMeCB() {
-    return Container(
+    return SizedBox(
       height: 20.0,
       child: Row(
         children: [
@@ -365,16 +368,16 @@ class _AuthPartState extends State<AuthPart> {
 
   Widget _buildLoginButton(bool isLoading) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
+      padding: const EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
         //TODO:pegar os dados aqui
         onPressed: _submit,
         child: isLoading
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : Text(
+            : const Text(
                 'Entrar',
                 style: TextStyle(
                   color: Color.fromARGB(255, 246, 106, 75),
@@ -385,14 +388,15 @@ class _AuthPartState extends State<AuthPart> {
                 ),
               ),
         style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
             ),
-            elevation: MaterialStateProperty.all(5.0),
-            padding: MaterialStateProperty.all(EdgeInsets.all(15.0)),
-            backgroundColor: MaterialStateProperty.all(Colors.white)),
+          ),
+          elevation: MaterialStateProperty.all(5.0),
+          padding: MaterialStateProperty.all(const EdgeInsets.all(15.0)),
+          backgroundColor: MaterialStateProperty.all(Colors.white),
+        ),
       ),
     );
   }
@@ -401,7 +405,7 @@ class _AuthPartState extends State<AuthPart> {
     return GestureDetector(
       onTap: () => print('Sign Up Button pressed'),
       child: RichText(
-        text: TextSpan(
+        text: const TextSpan(
           children: [
             TextSpan(
               text: 'Não possui uma conta? ',
@@ -439,7 +443,7 @@ class _AuthPartState extends State<AuthPart> {
       body: negocio,
     );
 
-    JsonEncoder encoder = JsonEncoder.withIndent('  ');
+    JsonEncoder encoder = const JsonEncoder.withIndent('  ');
 
     //print(encoder.convert(json.decode(response.body)));
     //print(json.decode(response.body)['hospede']['_id']);
@@ -480,9 +484,9 @@ class _AuthPartState extends State<AuthPart> {
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(height: 30.0),
+          const SizedBox(height: 30.0),
           _buildEmailTF(),
-          SizedBox(height: 30.0),
+          const SizedBox(height: 30.0),
           _buildPasswordTF(),
           _buildForgotPasswordBtn(),
           _buildRememberMeCB(),

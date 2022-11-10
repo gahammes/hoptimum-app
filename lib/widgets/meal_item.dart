@@ -1,44 +1,45 @@
 import 'package:flutter/material.dart';
 
-import '../models/meal.dart';
+import '../models/refeicao.dart';
 import '../screens/meal_detail_screen.dart';
 
-class MealItem extends StatelessWidget {
+class RefeicaoItem extends StatelessWidget {
   final String id;
   final String title;
   final String imageUrl;
   final int duration;
-  final Affordability affordability;
+  final Preco affordability;
   final double price;
 
-  MealItem({
+  const RefeicaoItem({
+    Key? key,
     required this.id,
     required this.affordability,
     required this.duration,
     required this.imageUrl,
     required this.title,
     required this.price,
-  });
+  }) : super(key: key);
 
-  String get affordabilitytext {
-    switch (affordability) {
-      case Affordability.Affordable:
-        return 'Affordable';
-      case Affordability.Pricey:
-        return 'Pricey';
-      case Affordability.Luxurious:
-        return 'Luxurious';
-      default:
-        return 'Unknown';
-    }
-  }
+  // String get affordabilitytext {
+  //   switch (affordability) {
+  //     case Preco.barato:
+  //       return 'Affordable';
+  //     case Preco.razoavel:
+  //       return 'Pricey';
+  //     case Preco.caro:
+  //       return 'Luxurious';
+  //     default:
+  //       return 'Unknown';
+  //   }
+  // }
 
   Widget affordabilityIcons(BuildContext context) {
     final iconColorOrange = Theme.of(context).colorScheme.primary;
     final iconColorGrey = Colors.grey[700];
 
     switch (affordability) {
-      case Affordability.Affordable:
+      case Preco.barato:
         return Row(
           children: [
             Icon(
@@ -56,7 +57,7 @@ class MealItem extends StatelessWidget {
             ),
           ],
         );
-      case Affordability.Pricey:
+      case Preco.razoavel:
         return Row(
           children: [
             Icon(
@@ -73,7 +74,7 @@ class MealItem extends StatelessWidget {
             ),
           ],
         );
-      case Affordability.Luxurious:
+      case Preco.caro:
         return Row(
           children: [
             Icon(
@@ -137,13 +138,13 @@ class MealItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
         ),
         elevation: 4,
-        margin: EdgeInsets.all(15),
+        margin: const EdgeInsets.all(15),
         child: Column(
           children: [
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15),
                   ),
@@ -160,10 +161,11 @@ class MealItem extends StatelessWidget {
                   child: Container(
                     width: 300,
                     color: Colors.black54,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                     child: Text(
                       title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 26,
                         color: Colors.white,
                       ),
@@ -175,7 +177,7 @@ class MealItem extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 top: 20,
                 right: 20,
                 left: 20,
@@ -192,12 +194,12 @@ class MealItem extends StatelessWidget {
                             Icons.schedule,
                             color: iconColor,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 6,
                           ),
                           Text(
                             '$duration min',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: fontColor,
                               fontSize: 16,
                             ),
@@ -220,7 +222,7 @@ class MealItem extends StatelessWidget {
                           ),
                           Text(
                             price.toStringAsFixed(2),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18,
                             ),
@@ -252,7 +254,7 @@ class MealItem extends StatelessWidget {
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: Colors.green,
@@ -262,11 +264,11 @@ class MealItem extends StatelessWidget {
                         ),
                         onPressed: () {},
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 15,
                             vertical: 10,
                           ),
-                          child: Text(
+                          child: const Text(
                             'PEDIR',
                             style: TextStyle(
                               fontSize: 16,

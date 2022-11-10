@@ -1,5 +1,6 @@
-import 'package:dashboard_tcc/models/data/hotel_data.dart';
 import 'package:flutter/material.dart';
+
+import '../models/hotel.dart';
 
 class InfoScreen extends StatelessWidget {
   const InfoScreen({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class InfoScreen extends StatelessWidget {
     const fontSize1 = 18.0;
     final fontColor = Theme.of(context).colorScheme.secondary;
     final fontColorTitle = Theme.of(context).colorScheme.primary;
-    Widget separator = SizedBox(
+    Widget separator = const SizedBox(
       height: 25,
     );
     Widget divider = Divider(
@@ -23,11 +24,11 @@ class InfoScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Informações'),
+        title: const Text('Informações'),
         backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
       body: Container(
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -38,7 +39,7 @@ class InfoScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: fontSize),
             ),
-            Text(HOTEL_DATA[0].nome,
+            Text(hotelDados[0].nome,
                 style: TextStyle(
                   fontSize: fontSize1,
                   color: fontColor,
@@ -52,7 +53,7 @@ class InfoScreen extends StatelessWidget {
                 color: fontColorTitle,
               ),
             ),
-            Text(HOTEL_DATA[0].local,
+            Text(hotelDados[0].local,
                 style: TextStyle(
                   fontSize: fontSize1,
                   color: fontColor,
@@ -66,12 +67,12 @@ class InfoScreen extends StatelessWidget {
                 color: fontColorTitle,
               ),
             ),
-            Text(HOTEL_DATA[0].telefone,
+            Text(hotelDados[0].telefone,
                 style: TextStyle(
                   fontSize: fontSize1,
                   color: fontColor,
                 )),
-            Text(HOTEL_DATA[0].email,
+            Text(hotelDados[0].email,
                 style: TextStyle(
                   fontSize: fontSize1,
                   color: fontColor,
@@ -85,44 +86,44 @@ class InfoScreen extends StatelessWidget {
                 color: fontColorTitle,
               ),
             ),
-            Text(HOTEL_DATA[0].horariosRef[0],
+            Text(hotelDados[0].horariosRef[0],
                 style: TextStyle(
                   fontSize: fontSize1,
                   color: fontColor,
                 )),
-            Text(HOTEL_DATA[0].horariosRef[1],
+            Text(hotelDados[0].horariosRef[1],
                 style: TextStyle(
                   fontSize: fontSize1,
                   color: fontColor,
                 )),
-            Text(HOTEL_DATA[0].horariosRef[2],
-                style: TextStyle(
-                  fontSize: fontSize1,
-                  color: fontColor,
-                )),
-            divider,
-            Text(HOTEL_DATA[0].horariosLaz[0],
-                style: TextStyle(
-                  fontSize: fontSize1,
-                  color: fontColor,
-                )),
-            Text(HOTEL_DATA[0].horariosLaz[1],
-                style: TextStyle(
-                  fontSize: fontSize1,
-                  color: fontColor,
-                )),
-            Text(HOTEL_DATA[0].horariosLaz[2],
+            Text(hotelDados[0].horariosRef[2],
                 style: TextStyle(
                   fontSize: fontSize1,
                   color: fontColor,
                 )),
             divider,
-            Text(HOTEL_DATA[0].horariosServ[0],
+            Text(hotelDados[0].horariosLaz[0],
                 style: TextStyle(
                   fontSize: fontSize1,
                   color: fontColor,
                 )),
-            Text(HOTEL_DATA[0].horariosServ[1],
+            Text(hotelDados[0].horariosLaz[1],
+                style: TextStyle(
+                  fontSize: fontSize1,
+                  color: fontColor,
+                )),
+            Text(hotelDados[0].horariosLaz[2],
+                style: TextStyle(
+                  fontSize: fontSize1,
+                  color: fontColor,
+                )),
+            divider,
+            Text(hotelDados[0].horariosServ[0],
+                style: TextStyle(
+                  fontSize: fontSize1,
+                  color: fontColor,
+                )),
+            Text(hotelDados[0].horariosServ[1],
                 style: TextStyle(
                   fontSize: fontSize1,
                   color: fontColor,

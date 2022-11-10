@@ -8,7 +8,8 @@ class CategoryItem extends StatelessWidget {
   final String tipo;
   final Color color;
 
-  CategoryItem(this.id, this.title, this.tipo, this.color);
+  const CategoryItem(this.id, this.title, this.tipo, this.color, {Key? key})
+      : super(key: key);
 
   void selectCategory(BuildContext context) {
     Navigator.of(context).pushNamed(
@@ -39,7 +40,7 @@ class CategoryItem extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         child: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,

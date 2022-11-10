@@ -11,23 +11,23 @@ class CategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final routeArgs =
         ModalRoute.of(context)?.settings.arguments as Map<String, String>;
-    final Ctitle = routeArgs['title'];
+    final ctitle = routeArgs['title'];
     final cTipo = routeArgs['tipo'];
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        title: Text(Ctitle!),
+        title: Text(ctitle!),
       ),
       body: GridView(
         padding: const EdgeInsets.all(25),
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200,
           childAspectRatio: 3 / 2,
           crossAxisSpacing: 25,
           mainAxisSpacing: 25,
         ),
-        children: DUMMY_CATEGORIES
+        children: solicitacaoCategories
             .where((cat) {
               return cat.tipo.contains(cTipo!);
             })

@@ -1,20 +1,17 @@
-import 'package:dashboard_tcc/models/notificacao.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
-import '../models/seguranca.dart';
+import '../models/notificacao.dart';
 
 class NotificacaoList extends StatelessWidget {
-  List<Notificacao> notificacaoLogs;
+  final List<Notificacao> notificacaoLogs;
 
-  NotificacaoList(this.notificacaoLogs);
+  const NotificacaoList(this.notificacaoLogs, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return notificacaoLogs.isEmpty
         ? Container(
-            margin: EdgeInsets.only(top: 10),
+            margin: const EdgeInsets.only(top: 10),
             child: Column(
               children: [
                 // Text(
@@ -22,17 +19,17 @@ class NotificacaoList extends StatelessWidget {
                 //   style: Theme.of(context).textTheme.headline6,
                 // ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     'Toque em + para fazer solicitações e pedidos.',
                     style: Theme.of(context).textTheme.headline6,
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
-                Container(
+                SizedBox(
                   height: 200,
                   child: Image.asset(
                     'assets/images/tw.png',
@@ -49,9 +46,9 @@ class NotificacaoList extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      color: Color(0xfff5f5f5),
+                      color: const Color(0xfff5f5f5),
                       elevation: 5,
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 20,
                       ),
@@ -66,11 +63,11 @@ class NotificacaoList extends StatelessWidget {
                             ),
                             child: FittedBox(
                               child: Container(
-                                margin: EdgeInsets.symmetric(
+                                margin: const EdgeInsets.symmetric(
                                   vertical: 10,
                                   horizontal: 8,
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.restaurant,
                                   color: Colors.black,
                                   size: 50,
@@ -81,12 +78,11 @@ class NotificacaoList extends StatelessWidget {
                         ),
                         title: Text(
                           notificacaoLogs[index].title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                           ),
-                          //TODO:asd
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +103,7 @@ class NotificacaoList extends StatelessWidget {
                       ),
                       color: Theme.of(context).colorScheme.secondary,
                       elevation: 5,
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 20,
                       ),
@@ -122,11 +118,11 @@ class NotificacaoList extends StatelessWidget {
                             ),
                             child: FittedBox(
                               child: Container(
-                                margin: EdgeInsets.symmetric(
+                                margin: const EdgeInsets.symmetric(
                                   vertical: 10,
                                   horizontal: 8,
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.king_bed,
                                   color: Colors.white,
                                   size: 50,
@@ -137,7 +133,7 @@ class NotificacaoList extends StatelessWidget {
                         ),
                         title: Text(
                           notificacaoLogs[index].title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -148,11 +144,11 @@ class NotificacaoList extends StatelessWidget {
                           children: [
                             Text(
                               notificacaoLogs[index].cod,
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                             Text(
                               notificacaoLogs[index].date,
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ],
                         ),

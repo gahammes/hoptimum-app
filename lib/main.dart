@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, use_key_in_widget_constructors
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
@@ -9,25 +8,23 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-import 'models/hospede.dart';
-import 'models/quarto.dart';
-import 'models/seguranca.dart';
-import 'screens/category_meals_screen.dart';
-import 'screens/configuracoes_screen.dart';
-import 'screens/func_solicitacao_screen.dart';
-import 'screens/func_seguranca_screen.dart';
-import 'screens/home_screen.dart';
-import 'screens/info_sceen.dart';
-import 'screens/login_screen.dart';
-import 'screens/reserva_info.dart';
-import 'screens/tabs_screen.dart';
-import 'screens/tela_reserva.dart';
-import 'screens/meal_detail_screen.dart';
-import 'screens/categories_screen.dart';
-import 'models/providers/auth.dart';
-import 'screens/func_limpeza_screen.dart';
-import 'screens/info_hospede_screen.dart';
-import 'globals.dart' as globals;
+import '../models/seguranca.dart';
+import '../screens/category_meals_screen.dart';
+import '../screens/configuracoes_screen.dart';
+import '../screens/func_solicitacao_screen.dart';
+import '../screens/func_seguranca_screen.dart';
+import '../screens/home_screen.dart';
+import '../screens/info_sceen.dart';
+import '../screens/login_screen.dart';
+import '../screens/reserva_info.dart';
+import '../screens/tabs_screen.dart';
+import '../screens/tela_reserva.dart';
+import '../screens/meal_detail_screen.dart';
+import '../screens/categories_screen.dart';
+import '../models/providers/auth.dart';
+import '../screens/func_limpeza_screen.dart';
+import '../screens/info_hospede_screen.dart';
+import '../globals.dart' as globals;
 
 void main() {
   Intl.defaultLocale = 'pt_BR';
@@ -36,10 +33,12 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(HoptimumApp());
+  runApp(const HoptimumApp());
 }
 
 class HoptimumApp extends StatefulWidget {
+  const HoptimumApp({Key? key}) : super(key: key);
+
   @override
   State<HoptimumApp> createState() => _HoptimumAppState();
 }
@@ -77,7 +76,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
   void _connect() {
     globals.channel = IOWebSocketChannel.connect(globals.getUrl('ws', ''));
     print('💩💩💩💩💩💩💩💩💩💩💩💩💩');
-    JsonEncoder encoder = JsonEncoder.withIndent('  ');
+    JsonEncoder encoder = const JsonEncoder.withIndent('  ');
     globals.channel?.stream.listen(
       (data) async {
         var res = json.decode(data) as Map;
@@ -92,8 +91,8 @@ class _HoptimumAppState extends State<HoptimumApp> {
           globals.chave = res['loginId'];
           if (globals.email != null &&
               globals.password != null &&
-              !globals.email.toString().isEmpty &&
-              !globals.password.toString().isEmpty) {
+              globals.email.toString().isNotEmpty &&
+              globals.password.toString().isNotEmpty) {
             if (!globals.naoTenta) {
               print('ta tentando aqui');
               reLogin();
@@ -177,7 +176,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
           title: 'H\'Optimum',
           theme: ThemeData(
             fontFamily: 'Quicksand',
-            textTheme: TextTheme(
+            textTheme: const TextTheme(
               headline6: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 22,
@@ -188,7 +187,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
                 color: Colors.white,
               ),
             ),
-            appBarTheme: AppBarTheme(
+            appBarTheme: const AppBarTheme(
               titleTextStyle: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 20,
@@ -196,52 +195,53 @@ class _HoptimumAppState extends State<HoptimumApp> {
               ),
             ),
             colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: Color(0xffF75E3B),
-              secondary: Color.fromARGB(255, 49, 50, 61),
+              primary: const Color(0xffF75E3B),
+              secondary: const Color.fromARGB(255, 49, 50, 61),
             ),
           ),
           home: auth.isAuth
               ? globals.perfil == 'hospede'
-                  ? TabsScreen()
+                  ? const TabsScreen()
                   : globals.perfil == 'limpeza'
-                      ? FuncLimpezaScreen()
+                      ? const FuncLimpezaScreen()
                       : globals.perfil == 'cozinha'
-                          ? FuncSolicitacaoScreen()
+                          ? const FuncSolicitacaoScreen()
                           : globals.perfil == 'seguranca'
-                              ? FuncSegurancaScreen()
+                              ? const FuncSegurancaScreen()
                               : null
               : FutureBuilder(
                   future: auth.tryAutoLogin(),
                   builder: (ctx, snapshot) =>
                       snapshot.connectionState == ConnectionState.waiting
-                          ? Scaffold(
+                          ? const Scaffold(
                               body: Center(
                                 child: CircularProgressIndicator(),
                               ),
                             )
-                          : LoginScreen(),
+                          : const LoginScreen(),
                 ),
           routes: {
             //'/': (context) => LoginScreen(),
-            CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
-            CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
-            MealDetailScreen1.routeName: (ctx) => MealDetailScreen1(),
-            InfoScreen.routeName: (ctx) => InfoScreen(),
-            TabsScreen.routeName: (ctx) => TabsScreen(),
-            LoginScreen.routeName: (ctx) => LoginScreen(),
-            ConfiguracoesScreen.routeName: (ctx) => ConfiguracoesScreen(),
-            FuncSolicitacaoScreen.routeName: (ctx) => FuncSolicitacaoScreen(),
-            FuncSegurancaScreen.routeName: (ctx) => FuncSegurancaScreen(),
-            TelaReserva.routeName: (ctx) => TelaReserva(),
-            ReservaInfo.routeName: (ctx) => ReservaInfo(),
-            FuncLimpezaScreen.routeName: (ctx) => FuncLimpezaScreen(),
-            InfoHospedeScreen.routeName: (ctx) => InfoHospedeScreen(),
+            CategoriesScreen.routeName: (ctx) => const CategoriesScreen(),
+            CategoryMealsScreen.routeName: (ctx) => const CategoryMealsScreen(),
+            MealDetailScreen1.routeName: (ctx) => const MealDetailScreen1(),
+            InfoScreen.routeName: (ctx) => const InfoScreen(),
+            TabsScreen.routeName: (ctx) => const TabsScreen(),
+            LoginScreen.routeName: (ctx) => const LoginScreen(),
+            ConfiguracoesScreen.routeName: (ctx) => const ConfiguracoesScreen(),
+            FuncSolicitacaoScreen.routeName: (ctx) =>
+                const FuncSolicitacaoScreen(),
+            FuncSegurancaScreen.routeName: (ctx) => const FuncSegurancaScreen(),
+            TelaReserva.routeName: (ctx) => const TelaReserva(),
+            ReservaInfo.routeName: (ctx) => const ReservaInfo(),
+            FuncLimpezaScreen.routeName: (ctx) => const FuncLimpezaScreen(),
+            InfoHospedeScreen.routeName: (ctx) => const InfoHospedeScreen(),
           },
           onGenerateRoute: (settings) {
-            return MaterialPageRoute(builder: (context) => HomePage());
+            return MaterialPageRoute(builder: (context) => const HomePage());
           },
           onUnknownRoute: (settings) {
-            return MaterialPageRoute(builder: (context) => HomePage());
+            return MaterialPageRoute(builder: (context) => const HomePage());
           },
         ),
       ),

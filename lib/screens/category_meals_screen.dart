@@ -1,10 +1,12 @@
-import 'package:dashboard_tcc/models/data/refeicoes_data.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/meal_item.dart';
+import '../models/data/refeicoes_data.dart';
 
 class CategoryMealsScreen extends StatelessWidget {
   static const routeName = '/category-meals';
+
+  const CategoryMealsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class CategoryMealsScreen extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     final categoryTitle = routeArgs['title'];
     final categoryId = routeArgs['id'];
-    final categoryMeals = DUMMY_MEALS.where((meal) {
+    final categoryMeals = refeitcoesList.where((meal) {
       return meal.categories.contains(categoryId);
     }).toList();
 
@@ -24,7 +26,7 @@ class CategoryMealsScreen extends StatelessWidget {
       body: ListView.builder(
         itemCount: categoryMeals.length,
         itemBuilder: (ctx, index) {
-          return MealItem(
+          return RefeicaoItem(
             id: categoryMeals[index].id,
             title: categoryMeals[index].title,
             imageUrl: categoryMeals[index].imageUrl,

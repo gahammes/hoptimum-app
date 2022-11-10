@@ -69,7 +69,8 @@ class Reserva {
   });
 }
 
-var HOSPEDES = [
+var hospedeList = [
+  //HOSPEDES
   Hospede(
     cpf: '050.841.280-32',
     nome: 'Felipe Vergueiro Salvado',

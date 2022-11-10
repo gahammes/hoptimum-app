@@ -1,8 +1,8 @@
 enum Status {
-  Espera,
-  Recebido,
-  Preparando,
-  Finalizado,
+  espera,
+  recebido,
+  preparando,
+  finalizado,
 }
 
 class Servico {
@@ -21,22 +21,24 @@ class Servico {
   });
 }
 
-var SERVICOS = [
+var servicosList = [
+  //SERVICOS
   Servico(
     id: '123',
     title: 'Serviço de quarto',
     numQuarto: '25a',
     data: DateTime(2022, 6, 14, 10, 10),
-    status: Status.Espera,
+    status: Status.espera,
   )
 ];
 
-var SERVICOS_FINALIZADOS = [
+var servicosFinalizadosList = [
+  //SERVICOS_FINALIZADOS
   Servico(
     id: '321',
     title: 'Serviço de quarto',
     numQuarto: '25a',
     data: DateTime(2022, 6, 13, 15, 10),
-    status: Status.Finalizado,
+    status: Status.finalizado,
   )
 ];

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
-import '../models/transaction.dart';
+import '../models/despesa.dart';
 
 class TransactionList extends StatelessWidget {
-  List<Transaction> transactions;
+  final List<Despesa> transactions;
   final Function deleteTx;
 
-  TransactionList(this.transactions, this.deleteTx);
+  const TransactionList(this.transactions, this.deleteTx, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    transactions = transactions.toList();
+    //transactions = transactions.toList();
     return transactions.isEmpty
         ? Container(
-            margin: EdgeInsets.only(top: 10),
+            margin: const EdgeInsets.only(top: 10),
             child: Column(
               children: [
                 // Text(
@@ -23,17 +23,17 @@ class TransactionList extends StatelessWidget {
                 //   style: Theme.of(context).textTheme.headline6,
                 // ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     'Toque em + para fazer solicitações e pedidos.',
                     style: Theme.of(context).textTheme.headline6,
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
-                Container(
+                SizedBox(
                   height: 200,
                   child: Image.asset(
                     'assets/images/tw.png',
@@ -58,9 +58,9 @@ class TransactionList extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      color: Color(0xfff5f5f5),
+                      color: const Color(0xfff5f5f5),
                       elevation: 5,
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         vertical: 8,
                         horizontal: 20,
                       ),
@@ -75,7 +75,7 @@ class TransactionList extends StatelessWidget {
                             ),
                             child: Container(
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                   begin: Alignment.centerRight,
                                   end: Alignment.centerLeft,
                                   colors: [
@@ -90,13 +90,13 @@ class TransactionList extends StatelessWidget {
                               ),
                               child: FittedBox(
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                     vertical: 10,
                                     horizontal: 8,
                                   ),
                                   child: Text(
                                     'R\$${transactions[index].amount.toStringAsFixed(2)}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
@@ -108,7 +108,7 @@ class TransactionList extends StatelessWidget {
                         ),
                         title: Text(
                           transactions[index].title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -143,7 +143,7 @@ class TransactionList extends StatelessWidget {
                       ),
                       color: Theme.of(context).colorScheme.secondary,
                       elevation: 5,
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                         vertical: 8,
                         horizontal: 20,
                       ),
@@ -158,7 +158,7 @@ class TransactionList extends StatelessWidget {
                             ),
                             child: Container(
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                   begin: Alignment.centerRight,
                                   end: Alignment.centerLeft,
                                   colors: [
@@ -173,13 +173,13 @@ class TransactionList extends StatelessWidget {
                               ),
                               child: FittedBox(
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                     vertical: 10,
                                     horizontal: 8,
                                   ),
                                   child: Text(
                                     'R\$${transactions[index].amount.toStringAsFixed(2)}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
@@ -191,7 +191,7 @@ class TransactionList extends StatelessWidget {
                         ),
                         title: Text(
                           transactions[index].title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -203,12 +203,12 @@ class TransactionList extends StatelessWidget {
                             Text(
                               DateFormat.MMMMEEEEd('pt_BR')
                                   .format(transactions[index].date),
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                             Text(
                               DateFormat.Hm('pt_BR')
                                   .format(transactions[index].date),
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ],
                         ),

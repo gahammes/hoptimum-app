@@ -1,13 +1,14 @@
-import 'package:dashboard_tcc/models/hospede.dart';
-import 'package:dashboard_tcc/models/quarto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import '../globals.dart' as globals;
-
 import 'package:intl/intl.dart';
+
+import '../globals.dart' as globals;
+import '../models/quarto.dart';
 
 class ReservaInfo extends StatelessWidget {
   static const routeName = '/reserva-info-screen';
+
+  const ReservaInfo({Key? key}) : super(key: key);
 
   int getIndex() {
     var dados = globals.loginData as Map;
@@ -34,13 +35,13 @@ class ReservaInfo extends StatelessWidget {
   Quarto getQuartoInfo() {
     switch (getReservaInfo()['quarto']['nome'].toString().toLowerCase()) {
       case 'quarto top':
-        return QUARTOS.firstWhere((quarto) => quarto.nome == 'Family Room');
+        return quartosList.firstWhere((quarto) => quarto.nome == 'Family Room');
       case 'quarto nao tao top':
-        return QUARTOS.firstWhere((quarto) => quarto.nome == 'Double Room');
+        return quartosList.firstWhere((quarto) => quarto.nome == 'Double Room');
       case 'quarto lixo':
-        return QUARTOS.firstWhere((quarto) => quarto.nome == 'Single Room');
+        return quartosList.firstWhere((quarto) => quarto.nome == 'Single Room');
       default:
-        return QUARTOS[0];
+        return quartosList[0];
     }
   }
 
@@ -49,7 +50,7 @@ class ReservaInfo extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
             fontFamily: 'Quicksand',
             color: Colors.black,
@@ -62,7 +63,7 @@ class ReservaInfo extends StatelessWidget {
               subtitle,
               softWrap: false,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontFamily: 'Quicksand',
                 color: Colors.black,
@@ -77,12 +78,12 @@ class ReservaInfo extends StatelessWidget {
   Widget _buildRichText(String title, String subtitle) {
     return RichText(
       text: TextSpan(
-        style: TextStyle(
+        style: const TextStyle(
             fontSize: 16, fontFamily: 'Quicksand', color: Colors.black),
         children: [
           TextSpan(
             text: title,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -99,7 +100,7 @@ class ReservaInfo extends StatelessWidget {
     initializeDateFormatting();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalhes da Reserva'),
+        title: const Text('Detalhes da Reserva'),
         backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
       body: Column(
@@ -110,13 +111,14 @@ class ReservaInfo extends StatelessWidget {
               borderRadius: BorderRadius.circular(25),
             ),
             elevation: 2,
-            margin: EdgeInsets.all(15),
+            margin: const EdgeInsets.all(15),
             child: Column(
               children: [
                 Stack(
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(25.0)),
                       child: Image.network(
                         getQuartoInfo().url,
                         height: 200,
@@ -127,7 +129,7 @@ class ReservaInfo extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: 10,
                     right: 20,
                     left: 20,
@@ -141,20 +143,20 @@ class ReservaInfo extends StatelessWidget {
                         children: [
                           Text(
                             getQuartoInfo().nome,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 22,
                               fontFamily: 'Quicksand',
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 getQuartoInfo().tipo,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 16,
                                 ),
@@ -170,7 +172,7 @@ class ReservaInfo extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Text(
+                                  const Text(
                                     ' / noite',
                                     style: TextStyle(
                                       color: Colors.grey,
@@ -182,13 +184,13 @@ class ReservaInfo extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Divider(
                             height: 2,
                             thickness: 1,
                             color: Theme.of(context).colorScheme.primary,
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -198,13 +200,13 @@ class ReservaInfo extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Divider(
                             height: 2,
                             thickness: 1,
                             color: Theme.of(context).colorScheme.primary,
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -232,7 +234,7 @@ class ReservaInfo extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),

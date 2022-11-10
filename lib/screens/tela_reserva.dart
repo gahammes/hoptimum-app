@@ -1,6 +1,7 @@
-import 'package:dashboard_tcc/models/quarto.dart';
-import 'package:dashboard_tcc/widgets/reserva_item.dart';
 import 'package:flutter/material.dart';
+
+import '../models/quarto.dart';
+import '../widgets/reserva_item.dart';
 
 class TelaReserva extends StatelessWidget {
   const TelaReserva({Key? key}) : super(key: key);
@@ -11,14 +12,14 @@ class TelaReserva extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          title: Text('RESERVAS'),
+          title: const Text('RESERVAS'),
         ),
         body: SizedBox(
           height: 700,
           child: ListView.builder(
-            itemCount: QUARTOS.length,
+            itemCount: quartosList.length,
             itemBuilder: (context, index) {
-              return ReservaItem(quarto: QUARTOS[index]);
+              return ReservaItem(quarto: quartosList[index]);
             },
           ),
         ));

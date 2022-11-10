@@ -1,4 +1,4 @@
-package com.example.dashboard_tcc
+package com.hoptimum
 
 import io.flutter.embedding.android.FlutterActivity
 

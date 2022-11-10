@@ -1,20 +1,18 @@
-import 'package:dashboard_tcc/models/data/seguranca_data.dart';
-import 'package:dashboard_tcc/models/pedido.dart';
-import 'package:dashboard_tcc/models/providers/auth.dart';
-import 'package:dashboard_tcc/models/servico.dart';
-import 'package:dashboard_tcc/widgets/func_limpeza_item.dart';
-import 'package:dashboard_tcc/widgets/func_solicitacao_item.dart';
-import 'package:dashboard_tcc/widgets/seguranca_list.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:hoptimum/models/seguranca.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
+import '../models/providers/auth.dart';
+import '../models/servico.dart';
+import '../widgets/func_limpeza_item.dart';
+import '../widgets/seguranca_list.dart';
 import '../globals.dart' as globals;
-import 'login_screen.dart';
 
 class FuncLimpezaScreen extends StatefulWidget {
   static const routeName = '/funcLimpeza-screen';
+
+  const FuncLimpezaScreen({Key? key}) : super(key: key);
 
   @override
   State<FuncLimpezaScreen> createState() => _FuncLimpezaScreenState();
@@ -69,11 +67,12 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
         backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(
-              onPressed: _logout,
-              icon: Icon(
-                Icons.logout,
-                color: Colors.red,
-              ))
+            onPressed: _logout,
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.red,
+            ),
+          )
         ],
         bottom: TabBar(
           controller: _tabController,
@@ -92,8 +91,8 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
             SingleChildScrollView(
               child: Container(
                 height: 647,
-                padding: EdgeInsets.all(0.0),
-                child: FuncLimpezaItem(SERVICOS, SERVICOS_FINALIZADOS),
+                padding: const EdgeInsets.all(0.0),
+                child: FuncLimpezaItem(servicosList, servicosFinalizadosList),
               ),
             ),
             //TODO: historico do cartao aqui!!!
@@ -102,13 +101,13 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    height: 640, //TODO: aqui da overflow
+                  SizedBox(
+                    height: 640, //TODO: aqui da overflow MENTIRA
                     //margin: EdgeInsets.only(top: 0),
-                    child: SEGURANCA_DATA.isEmpty
+                    child: segurancaLog.isEmpty
                         ? null
                         : SegurancaList(
-                            SEGURANCA_DATA), //TODO:tratar na main.dart
+                            segurancaLog), //TODO:tratar na main.dart
                   ),
                 ],
               ),
@@ -116,9 +115,9 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
             SingleChildScrollView(
               child: Container(
                 height: 647,
-                padding: EdgeInsets.all(0.0),
-                child:
-                    FuncLimpezaItem(SERVICOS_FINALIZADOS, SERVICOS_FINALIZADOS),
+                padding: const EdgeInsets.all(0.0),
+                child: FuncLimpezaItem(
+                    servicosFinalizadosList, servicosFinalizadosList),
               ),
             ),
           ],

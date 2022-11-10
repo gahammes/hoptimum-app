@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'dart:async';
-import 'package:dashboard_tcc/models/data/seguranca_data.dart';
-import 'package:dashboard_tcc/models/seguranca.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../globals.dart' as globals;
 
+import '../../globals.dart' as globals;
 import '../http_exception.dart';
+import '../../models/seguranca.dart';
 
 class Auth with ChangeNotifier {
   String? _token;
@@ -118,7 +117,7 @@ class Auth with ChangeNotifier {
     globals.password = null;
     globals.perfil = null;
     globals.naoTenta = false;
-    SEGURANCA_DATA.clear();
+    segurancaLog.clear();
     globals.channel?.sink.close();
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();

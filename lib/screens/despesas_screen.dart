@@ -1,18 +1,18 @@
-import 'package:dashboard_tcc/models/data/despesas_data.dart';
 import 'package:flutter/material.dart';
 
-import '../models/transaction.dart';
-import '../widgets/chart.dart';
-import '../widgets/new_transactions.dart';
+import '../models/despesa.dart';
+import '../widgets/grafico.dart';
 import '../widgets/transaction_list.dart';
 
 class DespesasScreen extends StatefulWidget {
+  const DespesasScreen({Key? key}) : super(key: key);
+
   @override
   State<DespesasScreen> createState() => _DespesasScreen();
 }
 
 class _DespesasScreen extends State<DespesasScreen> {
-  final List<Transaction> _userTransactions = DESPESAS_DATA;
+  final List<Despesa> _userTransactions = despesasLog;
   DateTime latestDate = DateTime(2022);
 
   // void _addNewTransaction(String title, double amount, DateTime chosenDate) {
@@ -29,7 +29,7 @@ class _DespesasScreen extends State<DespesasScreen> {
   // }
 
   DateTime getLatestDate() {
-    for (var elem in DESPESAS_DATA) {
+    for (var elem in despesasLog) {
       if (elem.date.isAfter(latestDate)) {
         latestDate = elem.date;
       }
@@ -37,11 +37,11 @@ class _DespesasScreen extends State<DespesasScreen> {
     return latestDate;
   }
 
-  List<Transaction> get _recentTransactions {
-    return DESPESAS_DATA.where((element) {
+  List<Despesa> get _recentTransactions {
+    return despesasLog.where((element) {
       return element.date.isAfter(
         getLatestDate().subtract(
-          Duration(days: 7),
+          const Duration(days: 7),
         ),
       );
     }).toList();
@@ -69,22 +69,24 @@ class _DespesasScreen extends State<DespesasScreen> {
     // final actions = routeArgs['actions'];
 
     return Scaffold(
-      backgroundColor: Color(0xffe1e1e1),
+      backgroundColor: const Color(0xffe1e1e1),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-                height: (MediaQuery.of(context).size.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.23,
-                child: Chart(_recentTransactions)),
-            Container(
-                height: (MediaQuery.of(context).size.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.59,
-                child: TransactionList(_userTransactions, _deleteTransaction)),
+            SizedBox(
+              child: Grafico(_recentTransactions),
+              height: (MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.23,
+            ),
+            SizedBox(
+              child: TransactionList(_userTransactions, _deleteTransaction),
+              height: (MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.59,
+            ),
           ],
         ),
       ),

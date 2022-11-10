@@ -10,6 +10,8 @@ import '../widgets/func_solicitacao_item.dart';
 class FuncSolicitacaoScreen extends StatefulWidget {
   static const routeName = '/funcSolicitacao-screen';
 
+  const FuncSolicitacaoScreen({Key? key}) : super(key: key);
+
   @override
   State<FuncSolicitacaoScreen> createState() => _FuncSolicitacaoScreenState();
 }
@@ -58,11 +60,12 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
         backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(
-              onPressed: _logout,
-              icon: Icon(
-                Icons.logout,
-                color: Colors.red,
-              ))
+            onPressed: _logout,
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.red,
+            ),
+          )
         ],
         bottom: TabBar(
           controller: _tabController,
@@ -82,17 +85,17 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
             SingleChildScrollView(
               child: Container(
                 height: 647,
-                padding: EdgeInsets.all(0.0),
-                child: FuncSolicitacaoItem(PEDIDOS, PEDIDOS_FINALIZADOS),
+                padding: const EdgeInsets.all(0.0),
+                child: FuncSolicitacaoItem(pedidosList, pedidosFinalizadosList),
               ),
             ),
             //HISTORICO DE PEDIDOS
             SingleChildScrollView(
               child: Container(
                 height: 647,
-                padding: EdgeInsets.all(0.0),
+                padding: const EdgeInsets.all(0.0),
                 child: FuncSolicitacaoItem(
-                    PEDIDOS_FINALIZADOS, PEDIDOS_FINALIZADOS),
+                    pedidosFinalizadosList, pedidosFinalizadosList),
               ),
             ),
             //TODO: historico do cartao aqui!!!
