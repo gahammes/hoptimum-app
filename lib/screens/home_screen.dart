@@ -7,6 +7,7 @@ import 'package:dashboard_tcc/screens/info_sceen.dart';
 import 'package:dashboard_tcc/screens/reserva_info.dart';
 import 'package:dashboard_tcc/widgets/cards_list.dart';
 import 'package:dashboard_tcc/screens/home_screen.dart';
+import 'package:dashboard_tcc/widgets/gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
@@ -120,8 +121,25 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var gradient = LinearGradient(
+      begin: Alignment.centerLeft,
+      end: Alignment.centerRight,
+      colors: [
+        Color.fromARGB(255, 255, 135, 108),
+        Color.fromARGB(255, 248, 128, 101),
+        Color.fromARGB(255, 246, 106, 75),
+        Color(0xffF75E3B),
+      ],
+      stops: [0.1, 0.4, 0.7, 0.9],
+    );
+
+    var textStyle = TextStyle(
+      color: Theme.of(context).colorScheme.primary,
+      fontSize: 17,
+      fontWeight: FontWeight.bold,
+    );
     // printCarros();
-    printReserva();
+    //printReserva();
     return Column(
       children: [
         Container(
@@ -207,14 +225,19 @@ class HomePage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(
+                              GradientText(
                                 'INFORMAÇÕES',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                gradient: gradient,
+                                style: textStyle,
                               ),
+                              // Text(
+                              //   'INFORMAÇÕES',
+                              //   style: TextStyle(
+                              //     color: Theme.of(context).colorScheme.primary,
+                              //     fontSize: 17,
+                              //     fontWeight: FontWeight.bold,
+                              //   ),
+                              // ),
                               SizedBox(
                                 height: 10,
                               ),
@@ -266,15 +289,12 @@ class HomePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             //TODO:COISO AQUI CONSUMO
-                            Text(
+                            GradientText(
                               'CONSUMO',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
+                              gradient: gradient,
+                              style: textStyle,
                             ),
+
                             SizedBox(
                               height: 10,
                             ),
@@ -344,16 +364,22 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
+                        GradientText(
                           '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
                               .toUpperCase(),
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
+                          gradient: gradient,
+                          style: textStyle,
                         ),
+                        // Text(
+                        //   '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
+                        //       .toUpperCase(),
+                        //   style: TextStyle(
+                        //     color: Theme.of(context).colorScheme.primary,
+                        //     fontSize: 17,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        //   textAlign: TextAlign.center,
+                        // ),
                         SizedBox(
                           height: 9,
                         ),

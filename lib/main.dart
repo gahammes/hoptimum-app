@@ -233,8 +233,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
             FuncSolicitacaoScreen.routeName: (ctx) => FuncSolicitacaoScreen(),
             FuncSegurancaScreen.routeName: (ctx) => FuncSegurancaScreen(),
             TelaReserva.routeName: (ctx) => TelaReserva(),
-            ReservaInfo.routeName: (ctx) =>
-                ReservaInfo(reserva: HOSPEDES[2].reserva, quarto: QUARTOS[0]),
+            ReservaInfo.routeName: (ctx) => ReservaInfo(),
             FuncLimpezaScreen.routeName: (ctx) => FuncLimpezaScreen(),
             InfoHospedeScreen.routeName: (ctx) => InfoHospedeScreen(),
           },

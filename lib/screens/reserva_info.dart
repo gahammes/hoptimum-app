@@ -7,9 +7,6 @@ import '../globals.dart' as globals;
 import 'package:intl/intl.dart';
 
 class ReservaInfo extends StatelessWidget {
-  final Reserva reserva;
-  final Quarto quarto;
-  ReservaInfo({required this.reserva, required this.quarto});
   static const routeName = '/reserva-info-screen';
 
   int getIndex() {
