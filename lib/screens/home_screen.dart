@@ -6,6 +6,7 @@ import 'package:hoptimum/widgets/constrained_view.dart';
 import 'package:hoptimum/widgets/custom_rect_tween.dart';
 import 'package:hoptimum/widgets/hero_dialog_route.dart';
 import 'package:hoptimum/widgets/info_card.dart';
+import 'package:hoptimum/widgets/reserva_info_card.dart';
 
 import 'info_screen.dart';
 import '../screens/reserva_info.dart';
@@ -361,70 +362,88 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            InkWell(
-              onTap: () => _selectReservaInfo(context),
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 10, top: 30),
-                height: 100,
-                width: 385,
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .secondary
-                            .withOpacity(0.3),
-                        offset: const Offset(-10.0, 0.0),
-                        blurRadius: 20.0,
-                        spreadRadius: 4.0,
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.only(
-                    left: 5,
-                    top: 15,
-                    bottom: 20,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GradientText(
-                        '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
-                            .toUpperCase(),
-                        gradient: gradient,
-                        style: textStyle,
-                      ),
-                      // Text(
-                      //   '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
-                      //       .toUpperCase(),
-                      //   style: TextStyle(
-                      //     color: Theme.of(context).colorScheme.primary,
-                      //     fontSize: 17,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      //   textAlign: TextAlign.center,
-                      // ),
-                      const SizedBox(
-                        height: 9,
-                      ),
-                      const Text(
-                        'Toque para conferir as informações da sua reserva!',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic,
+            GestureDetector(
+              //onTap: () => _selectReservaInfo(context),
+              onTap: () {
+                Navigator.of(context).push(
+                  HeroDialogRoute(builder: (context) {
+                    return const ReservaInfoCard();
+                  }),
+                );
+              },
+              child: Hero(
+                tag: globals.heroReservaInfoCard,
+                createRectTween: (begin, end) {
+                  return CustomRectTween(begin: begin!, end: end!);
+                },
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 10, top: 30),
+                    height: 100,
+                    width: 385,
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondary,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(20.0),
                         ),
-                        textAlign: TextAlign.left,
-                      )
-                    ],
+                        boxShadow: [
+                          BoxShadow(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.3),
+                            offset: const Offset(-10.0, 0.0),
+                            blurRadius: 20.0,
+                            spreadRadius: 4.0,
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.only(
+                        left: 5,
+                        top: 15,
+                        bottom: 20,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GradientText(
+                            '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
+                                .toUpperCase(),
+                            gradient: gradient,
+                            style: textStyle,
+                          ),
+                          // Text(
+                          //   '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
+                          //       .toUpperCase(),
+                          //   style: TextStyle(
+                          //     color: Theme.of(context).colorScheme.primary,
+                          //     fontSize: 17,
+                          //     fontWeight: FontWeight.bold,
+                          //   ),
+                          //   textAlign: TextAlign.center,
+                          // ),
+                          const SizedBox(
+                            height: 9,
+                          ),
+                          const Text(
+                            'Toque para conferir as informações da sua reserva!',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                            ),
+                            textAlign: TextAlign.left,
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ),
+                //aqui
               ),
             ),
           ],

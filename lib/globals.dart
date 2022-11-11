@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
 IOWebSocketChannel? channel;
-var urlWs = 'ws://17e0-2804-7f4-3592-bac2-9858-fe99-1e1f-7ed7.sa.ngrok.io/';
-String url = 'http://a30f-2804-14c-8793-8e03-85be-b613-108b-effb.sa.ngrok.io/';
+String url = 'http://4fef-2804-14c-8793-8e03-85be-b613-108b-effb.sa.ngrok.io/';
 
 String getUrl(String start, String end) {
   url = url.replaceAll('http', '');
@@ -15,6 +14,7 @@ String getUrl(String start, String end) {
 }
 
 const String heroInfoCard = 'info-card-hero';
+const String heroReservaInfoCard = 'reserva-info-card-hero';
 
 var perfil;
 
