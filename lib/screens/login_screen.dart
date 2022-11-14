@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hoptimum/screens/cadastro_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -403,7 +404,17 @@ class _AuthPartState extends State<AuthPart> {
 
   Widget _buildSignUpButton() {
     return GestureDetector(
-      onTap: () => print('Botao de cadastro pressionado'),
+      onTap: () {
+        // Navigator.push(
+        //     context,
+        //     PageRouteBuilder(
+        //       pageBuilder: (_, __, ___) => CadastroScreen(),
+        //       transitionDuration: Duration(seconds: 4),
+        //       transitionsBuilder: (_, a, __, c) =>
+        //           FadeTransition(opacity: a, child: c),
+        //     ));
+        Navigator.of(context).pushNamed(CadastroScreen.routeName);
+      },
       child: RichText(
         text: const TextSpan(
           children: [

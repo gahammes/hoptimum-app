@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hoptimum/screens/cadastro_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -80,16 +81,20 @@ class _HoptimumAppState extends State<HoptimumApp> {
     print('💩💩💩💩💩💩💩💩💩💩💩💩💩');
     JsonEncoder encoder = const JsonEncoder.withIndent('  ');
 
-    final url = Uri.parse(globals.getUrl('http', 'api/servicos'));
-    final response = await http.get(url);
-    globals.servicoList = json.decode(response.body);
+    try {
+      final url = Uri.parse(globals.getUrl('http', 'api/servicos'));
+      final response = await http.get(url);
+      globals.servicoList = json.decode(response.body);
+    } catch (error) {
+      print(error);
+    }
 
     globals.channel?.stream.listen(
       (data) async {
         var res = json.decode(data) as Map;
         globals.listenData = data;
 
-        //print(encoder.convert(json.decode(res)));
+        print(encoder.convert(json.decode(data)));
 
         //print(data);
 
@@ -244,6 +249,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
             ReservaInfo.routeName: (ctx) => const ReservaInfo(),
             FuncLimpezaScreen.routeName: (ctx) => const FuncLimpezaScreen(),
             InfoHospedeScreen.routeName: (ctx) => const InfoHospedeScreen(),
+            CadastroScreen.routeName: (ctx) => const CadastroScreen(),
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => const HomePage());
