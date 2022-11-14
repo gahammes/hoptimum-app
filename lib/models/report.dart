@@ -1,7 +1,7 @@
 class Report {
   final String nome;
   final String tag;
-  final int numQuart;
+  final String numQuart;
   final String detalhes;
   final DateTime hora;
 
@@ -17,32 +17,33 @@ class Report {
 var reportesList = [
   //REPORTES
   Report(
-    nome: 'Felipe Vergueiro Salvado',
+    nome: 'Pessoa #1',
     tag: 'cartao',
-    numQuart: 109,
-    detalhes: 'Perdi meu cartao chave e ele foi usado para fazer pedidos',
+    numQuart: '25a',
+    detalhes:
+        'Perdi meu cartao chave e ele foi usado para entrar no meu quarto',
     hora: DateTime(2022, 6, 15, 21, 08),
   ),
   Report(
-    nome: 'Bruna Maciel',
+    nome: 'Pessoa #2',
     tag: 'cartao',
-    numQuart: 319,
+    numQuart: '25b',
     detalhes:
         'Minha carteira foi roubada e alguém usou o cartão para entrar no meu quarto',
     hora: DateTime(2022, 6, 15, 17, 45),
   ),
-  Report(
-    nome: 'Eveline Álvares',
-    tag: 'carro',
-    numQuart: 226,
-    detalhes: 'O histórico mostra meu carro saindo do hotel mas nao foi eu',
-    hora: DateTime(2022, 6, 15, 13, 22),
-  ),
-  Report(
-    nome: 'Kenny Barreiros Monjardim',
-    tag: 'cartao',
-    numQuart: 101,
-    detalhes: 'Perdi meu cartão, poderia bloqueá-lo?',
-    hora: DateTime(2022, 6, 15, 10, 31),
-  ),
+  // Report(
+  //   nome: 'Eveline Álvares',
+  //   tag: 'carro',
+  //   numQuart: 226,
+  //   detalhes: 'O histórico mostra meu carro saindo do hotel mas nao foi eu',
+  //   hora: DateTime(2022, 6, 15, 13, 22),
+  // ),
+  // Report(
+  //   nome: 'Kenny Barreiros Monjardim',
+  //   tag: 'cartao',
+  //   numQuart: 101,
+  //   detalhes: 'Perdi meu cartão, poderia bloqueá-lo?',
+  //   hora: DateTime(2022, 6, 15, 10, 31),
+  // ),
 ];

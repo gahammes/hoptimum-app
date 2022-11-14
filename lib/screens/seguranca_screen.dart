@@ -23,7 +23,7 @@ class _SegurancaScreen extends State<SegurancaScreen> {
             SizedBox(
               height: 640, //TODO: aqui da overflow
               //margin: EdgeInsets.only(top: 0),
-              child: segurancaLog.isEmpty ? null : SegurancaList(segurancaLog),
+              child: SegurancaList(segurancaLog),
             ),
           ],
         ),

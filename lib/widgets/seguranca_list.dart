@@ -267,52 +267,13 @@ class _SegurancaListState extends State<SegurancaList> {
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting();
-    return widget.informationLogs.isEmpty
-        ? Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: Column(
-              children: [
-                // Text(
-                //   'Sem despesas ainda....',
-                //   style: Theme.of(context).textTheme.headline6,
-                // ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    'Log de segurança vazio',
-                    style: Theme.of(context).textTheme.headline6,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                SizedBox(
-                  height: 200,
-                  child: Image.asset(
-                    'assets/images/tw.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
-          )
-        : RefreshIndicator(
-            onRefresh: () {
-              return Future.delayed(const Duration(seconds: 1), () {
-                setState(() {});
-              });
-            },
-            child: animatedList(),
-          );
+    return RefreshIndicator(
+      onRefresh: () {
+        return Future.delayed(const Duration(seconds: 1), () {
+          setState(() {});
+        });
+      },
+      child: animatedList(),
+    );
   }
 }
-
-// AnimatedList aniList() {
-//   return AnimatedList(
-//     initialItemCount: SEGURANCA_DATA.length,
-//     itemBuilder: (context, index, animation) {
-//       return 
-//     },
-//   );
-// }

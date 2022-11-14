@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import '../globals.dart' as globals;
+
 class Despesa {
   final String id;
   final String title;
@@ -11,54 +15,75 @@ class Despesa {
       required this.date});
 }
 
-var despesasLog = [
-  //DESPESAS_DATA
-  Despesa(
-    id: 'd67',
-    title: 'Pedido',
-    amount: 79.90,
-    date: DateTime(2022, 6, 15, 21, 03),
-  ),
-  Despesa(
-    id: 'd1',
-    title: 'Diária',
-    amount: 100.00,
-    date: DateTime(2022, 6, 15, 0, 0),
-  ),
-  Despesa(
-    id: 'd4',
-    title: 'Diária',
-    amount: 100.00,
-    date: DateTime(2022, 6, 14, 0, 0),
-  ),
-  Despesa(
-    id: 'd2',
-    title: 'Bar',
-    amount: 46.59,
-    date: DateTime(2022, 6, 13, 23, 52),
-  ),
-  Despesa(
-    id: 'd6',
-    title: 'Diária',
-    amount: 100.00,
-    date: DateTime(2022, 6, 13, 0, 0),
-  ),
-  Despesa(
-    id: 'd3',
-    title: 'Restaurante',
-    amount: 89.99,
-    date: DateTime(2022, 6, 12, 13, 22),
-  ),
-  Despesa(
-    id: 'd7',
-    title: 'Diária',
-    amount: 100.00,
-    date: DateTime(2022, 6, 12, 0, 0),
-  ),
-  Despesa(
-    id: 'd7',
-    title: 'Restaurante',
-    amount: 40.79,
-    date: DateTime(2022, 6, 11, 9, 20),
-  ),
-];
+int getIndex() {
+  var dados = globals.loginData as Map;
+  var reservas = [];
+
+  reservas = dados['hospede']['reservas'];
+  int index = reservas.indexWhere((reserva) {
+    Map mapa = reserva as Map;
+    if (mapa['reserva']['status'].toString().toLowerCase() == 'ativa') {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  //print('INDEX DA RESERVA ATIVA $index');
+  return index;
+}
+
+DateTime getDatas(String qual) {
+  var reservas = globals.loginData as Map;
+  return qual == 'checkIn'
+      ? DateTime.parse(
+          reservas['hospede']['reservas'][getIndex()]['reserva']['checkIn'])
+      : DateTime.parse(
+          reservas['hospede']['reservas'][getIndex()]['reserva']['checkOut']);
+}
+
+double getDiaria() {
+  var reservas = globals.loginData as Map;
+  return double.parse(reservas['hospede']['reservas'][getIndex()]['reserva']
+          ['quarto']['precoBase']
+      .toString());
+}
+
+void getDepesaLog() {
+  var logs = [];
+
+  logs = globals.loginData['hospede']['reservas'][getIndex()]['reserva']
+      ['servicos'];
+
+  for (var i = 0; i < logs.length; i++) {
+    var logMap = logs[i] as Map;
+    despesasLog.add(
+      Despesa(
+        id: logMap['_id'],
+        title: logMap['servico']['nome'].toString(),
+        amount: double.parse(logMap['servico']['preco'].toString()),
+        date: DateTime.parse(logMap['createdAt'].toString())
+            .subtract(Duration(hours: 3)),
+      ),
+    );
+  }
+
+  var diferenca = getDatas('checkOut').difference(getDatas('checkIn')).inDays;
+  for (var i = 0; i < diferenca; i++) {
+    DateTime data = getDatas('checkIn').add(Duration(days: i));
+    if (!getDatas('checkIn').add(Duration(days: i)).isAfter(DateTime.now())) {
+      despesasLog.add(
+        Despesa(
+          id: (Random().nextInt(9999)).toString(),
+          title: 'Diária',
+          amount: getDiaria(),
+          date: DateTime(data.year, data.month, data.day, 0, 0, 0),
+        ),
+      );
+    }
+  }
+  despesasLog.sort((a, b) {
+    return -a.date.compareTo(b.date);
+  });
+}
+
+List<Despesa> despesasLog = [];

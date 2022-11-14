@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../globals.dart' as globals;
 import '../http_exception.dart';
 import '../../models/seguranca.dart';
+import '../../models/despesa.dart';
 
 class Auth with ChangeNotifier {
   String? _token;
@@ -79,6 +80,7 @@ class Auth with ChangeNotifier {
       if (responseData.containsKey('hospede')) {
         _userId = responseData['hospede']['_id'];
         getLog();
+        getDepesaLog();
       }
       if (responseData.containsKey('funcionario')) {
         _userId = responseData['funcionario']['_id'];
@@ -118,6 +120,7 @@ class Auth with ChangeNotifier {
     globals.perfil = null;
     globals.naoTenta = false;
     segurancaLog.clear();
+    despesasLog.clear();
     globals.channel?.sink.close();
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();

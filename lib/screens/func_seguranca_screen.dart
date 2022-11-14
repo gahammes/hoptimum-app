@@ -60,6 +60,7 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting();
+    print(globals.loginData['funcionario']['servicos']);
     //printCoiso();
     //print(globals.loginData['funcionario']['cartoesChave']);
     return Scaffold(
@@ -126,10 +127,8 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
                     height: 640, //TODO: aqui da overflow
                     //margin: EdgeInsets.only(top: 0),
 
-                    child: segurancaLog.isEmpty
-                        ? null
-                        : SegurancaList(
-                            segurancaLog), //TODO:tratar na main.dart
+                    child:
+                        SegurancaList(segurancaLog), //TODO:tratar na main.dart
                   ),
                 ],
               ),

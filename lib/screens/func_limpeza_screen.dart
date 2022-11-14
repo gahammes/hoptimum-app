@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hoptimum/models/seguranca.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/providers/auth.dart';
 import '../models/servico.dart';
@@ -22,7 +25,7 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
     with TickerProviderStateMixin {
   static const List<Tab> myTabs = [
     Tab(
-      icon: Icon(Icons.king_bed),
+      icon: Icon(Icons.airline_seat_individual_suite_rounded),
     ),
     Tab(
       icon: Icon(Icons.key),
@@ -33,6 +36,10 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
   ];
 
   late TabController _tabController;
+
+  void printFunc() {
+    print(globals.loginData);
+  }
 
   @override
   void initState() {
@@ -50,6 +57,13 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
     print(globals.loginData);
   }
 
+  void getServList() async {
+    // final url = Uri.parse(globals.getUrl('http', 'api/servicos'));
+    // final response = await http.get(url);
+    // globals.servList = json.decode(response.body);
+    print(globals.servicoList);
+  }
+
   @override
   Widget build(BuildContext context) {
     void _logout() {
@@ -57,7 +71,8 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
       Navigator.of(context).pushReplacementNamed('/');
     }
 
-    print(globals.loginData['funcionario']['cartoesChave']);
+    //print(globals.loginData['funcionario']['servicos']);
+    getServList();
 
     initializeDateFormatting();
     return Scaffold(

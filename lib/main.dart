@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/seguranca.dart';
+import '../models/despesa.dart';
 import '../screens/category_meals_screen.dart';
 import '../screens/configuracoes_screen.dart';
 import '../screens/func_solicitacao_screen.dart';
@@ -66,6 +67,7 @@ Future<void> reLogin() async {
 
   if (data.containsKey('hospede')) {
     getLog();
+    getDepesaLog();
   }
   if (data.containsKey('funcionario')) {
     getLogFunc();
@@ -73,10 +75,15 @@ Future<void> reLogin() async {
 }
 
 class _HoptimumAppState extends State<HoptimumApp> {
-  void _connect() {
+  void _connect() async {
     globals.channel = IOWebSocketChannel.connect(globals.getUrl('ws', ''));
     print('💩💩💩💩💩💩💩💩💩💩💩💩💩');
     JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+
+    final url = Uri.parse(globals.getUrl('http', 'api/servicos'));
+    final response = await http.get(url);
+    globals.servicoList = json.decode(response.body);
+
     globals.channel?.stream.listen(
       (data) async {
         var res = json.decode(data) as Map;
@@ -94,7 +101,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
               globals.email.toString().isNotEmpty &&
               globals.password.toString().isNotEmpty) {
             if (!globals.naoTenta) {
-              print('ta tentando aqui');
+              print('ta relogando aqui em cima 💕');
               reLogin();
             }
           }
@@ -107,8 +114,9 @@ class _HoptimumAppState extends State<HoptimumApp> {
                   .decode(prefs.getString('userData')!) as Map<String, dynamic>;
               globals.email = extractedUserData['email'] as String;
               globals.password = extractedUserData['password'] as String;
-              print('ta tentando aqui mais embaixo');
+
               if (!globals.naoTenta) {
+                print('ta relogando aqui mais embaixo 🤣');
                 reLogin();
               }
             }

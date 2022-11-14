@@ -20,7 +20,7 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
     with TickerProviderStateMixin {
   static const List<Tab> myTabs = [
     Tab(
-      icon: Icon(Icons.home),
+      icon: Icon(Icons.restaurant),
     ),
     Tab(
       icon: Icon(Icons.history),
@@ -50,6 +50,8 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
       Provider.of<Auth>(context, listen: false).logout();
       Navigator.of(context).pushReplacementNamed('/');
     }
+
+    print(globals.loginData['funcionario']['servicos']);
 
     initializeDateFormatting();
     //print(globals.loginData['funcionario']['cartoesChave']);

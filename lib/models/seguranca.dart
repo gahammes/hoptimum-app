@@ -210,8 +210,11 @@ void addLog(Map<dynamic, dynamic> res) {
     }
   }
   segurancaLog.insert(0, newData);
-  globals.listKey.currentState!.insertItem(
-    0,
-    duration: const Duration(milliseconds: 350),
-  );
+  if (globals.listKey.currentState == null) {
+  } else {
+    globals.listKey.currentState!.insertItem(
+      0,
+      duration: const Duration(milliseconds: 350),
+    );
+  }
 }

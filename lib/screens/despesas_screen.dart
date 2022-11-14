@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/despesa.dart';
 import '../widgets/grafico.dart';
 import '../widgets/despesa_list.dart';
+import '../globals.dart' as globals;
 
 class DespesasScreen extends StatefulWidget {
   const DespesasScreen({Key? key}) : super(key: key);
@@ -14,6 +15,11 @@ class DespesasScreen extends StatefulWidget {
 class _DespesasScreen extends State<DespesasScreen> {
   final List<Despesa> _userTransactions = despesasLog;
   DateTime latestDate = DateTime(2022);
+
+  // void printServicos() {
+  //   var reservas = globals.loginData as Map;
+  //   print(reservas['hospede']['reservas'][getIndex()]['reserva']['servicos']);
+  // }
 
   // void _addNewTransaction(String title, double amount, DateTime chosenDate) {
   //   final newTx = Transaction(

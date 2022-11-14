@@ -39,18 +39,33 @@ class _ReportCardState extends State<ReportCard> {
                 ),
                 child: FittedBox(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 8,
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color.fromARGB(255, 255, 135, 108),
+                          Color.fromARGB(255, 248, 128, 101),
+                          Color.fromARGB(255, 246, 106, 75),
+                          Color(0xffF75E3B),
+                        ],
+                        stops: [0.1, 0.4, 0.7, 0.9],
+                      ),
+                      borderRadius: BorderRadius.circular(15),
                     ),
+                    // margin: const EdgeInsets.symmetric(
+                    //   vertical: 10,
+                    //   horizontal: 8,
+                    // ),
                     child: widget.report.tag == 'cartao'
                         ? const Icon(
-                            Icons.key,
+                            Icons.warning_rounded,
                             color: Colors.black,
                             size: 50,
                           )
                         : const Icon(
-                            Icons.directions_car,
+                            Icons.warning_rounded,
                             color: Colors.black,
                             size: 50,
                           ),
@@ -83,12 +98,6 @@ class _ReportCardState extends State<ReportCard> {
                 ),
               ],
             ),
-            trailing: widget.report.tag == 'carro'
-                ? const Icon(null)
-                : const Icon(
-                    Icons.block,
-                    color: Colors.red,
-                  ),
           ),
           ExpansionTile(
             collapsedBackgroundColor: const Color(0xfff5f5f5),

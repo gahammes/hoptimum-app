@@ -340,7 +340,7 @@ class _AuthPartState extends State<AuthPart> {
 
   Widget _buildRememberMeCB() {
     return SizedBox(
-      height: 20.0,
+      height: 60.0,
       child: Row(
         children: [
           Theme(
@@ -403,7 +403,7 @@ class _AuthPartState extends State<AuthPart> {
 
   Widget _buildSignUpButton() {
     return GestureDetector(
-      onTap: () => print('Sign Up Button pressed'),
+      onTap: () => print('Botao de cadastro pressionado'),
       child: RichText(
         text: const TextSpan(
           children: [
@@ -488,7 +488,7 @@ class _AuthPartState extends State<AuthPart> {
           _buildEmailTF(),
           const SizedBox(height: 30.0),
           _buildPasswordTF(),
-          _buildForgotPasswordBtn(),
+          // _buildForgotPasswordBtn(),
           _buildRememberMeCB(),
           _buildLoginButton(_isLoading),
           _buildSignUpButton(),

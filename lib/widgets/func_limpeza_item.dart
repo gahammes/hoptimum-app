@@ -156,12 +156,26 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
                   ),
                   child: FittedBox(
                     child: Container(
-                      margin: const EdgeInsets.symmetric(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color.fromARGB(255, 255, 135, 108),
+                            Color.fromARGB(255, 248, 128, 101),
+                            Color.fromARGB(255, 246, 106, 75),
+                            Color(0xffF75E3B),
+                          ],
+                          stops: [0.1, 0.4, 0.7, 0.9],
+                        ),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      padding: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 8,
                       ),
                       child: const Icon(
-                        Icons.king_bed,
+                        Icons.airline_seat_individual_suite_rounded,
                         color: Colors.black,
                         size: 50,
                       ),

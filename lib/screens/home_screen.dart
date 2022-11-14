@@ -1,12 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:hoptimum/models/despesa.dart';
-import 'package:hoptimum/screens/tabs_screen.dart';
-import 'package:hoptimum/widgets/constrained_view.dart';
-import 'package:hoptimum/widgets/custom_rect_tween.dart';
-import 'package:hoptimum/widgets/hero_dialog_route.dart';
-import 'package:hoptimum/widgets/info_card.dart';
-import 'package:hoptimum/widgets/reserva_info_card.dart';
+import '../models/despesa.dart';
+import '../screens/tabs_screen.dart';
+import '../widgets/custom_rect_tween.dart';
+import '../widgets/hero_dialog_route.dart';
+import '../widgets/info_card.dart';
+import '../widgets/reserva_info_card.dart';
 
 import 'info_screen.dart';
 import '../screens/reserva_info.dart';
@@ -22,14 +21,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void _selectInfo(BuildContext context) {
-    Navigator.of(context).pushNamed(InfoScreen.routeName);
-  }
-
-  void _selectReservaInfo(BuildContext context) {
-    Navigator.of(context).pushNamed(ReservaInfo.routeName);
-  }
-
   int getHospCount() {
     //var hospCount;
     //var decodedData;
@@ -60,7 +51,8 @@ class _HomePageState extends State<HomePage> {
 
   void printReserva() {
     var reservas = globals.loginData as Map;
-    print(reservas['hospede']['reservas'][getIndex()]['reserva']);
+    print(
+        reservas['hospede']['reservas'][getIndex()]['reserva']['servicos'][0]);
   }
 
   int getIndex() {
@@ -411,7 +403,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           GradientText(
-                            '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
+                            '${getDatas('checkOut').difference(DateTime.now()).inDays.toString()} dias para o check-out'
                                 .toUpperCase(),
                             gradient: gradient,
                             style: textStyle,
