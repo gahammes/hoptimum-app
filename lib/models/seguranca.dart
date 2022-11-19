@@ -83,9 +83,11 @@ void getLog() {
       }
     }
   }
-  segurancaLog.sort((a, b) {
-    return -DateTime.parse(a.date).compareTo(DateTime.parse(b.date));
-  });
+  if (segurancaLog.isNotEmpty) {
+    segurancaLog.sort((a, b) {
+      return -DateTime.parse(a.date).compareTo(DateTime.parse(b.date));
+    });
+  }
 }
 
 void getLogFunc() {

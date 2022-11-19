@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../widgets/meal_item.dart';
 import '../models/refeicao.dart';
+import '../globals.dart' as globals;
 
 class CategoryMealsScreen extends StatelessWidget {
   static const routeName = '/category-meals';
@@ -10,12 +11,18 @@ class CategoryMealsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String getImageUrl(String nome) {
+      List<Refeicao> ref =
+          refeitcoesList.where((element) => element.title == nome).toList();
+      return ref[0].imageUrl;
+    }
+
     final routeArgs =
         ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     final categoryTitle = routeArgs['title'];
-    final categoryId = routeArgs['id'];
-    final categoryMeals = refeitcoesList.where((meal) {
-      return meal.categories.contains(categoryId);
+    //final categoryId = routeArgs['id'];
+    final categoryMeals = globals.servicoList.where((servico) {
+      return servico['tipo'] == categoryTitle;
     }).toList();
 
     return Scaffold(
@@ -27,12 +34,11 @@ class CategoryMealsScreen extends StatelessWidget {
         itemCount: categoryMeals.length,
         itemBuilder: (ctx, index) {
           return RefeicaoItem(
-            id: categoryMeals[index].id,
-            title: categoryMeals[index].title,
-            imageUrl: categoryMeals[index].imageUrl,
-            duration: categoryMeals[index].duration,
-            affordability: categoryMeals[index].affordability,
-            price: categoryMeals[index].price,
+            id: categoryMeals[index]['_id'],
+            title: categoryMeals[index]['nome'],
+            imageUrl: getImageUrl(categoryMeals[index]['nome']),
+            duration: 30,
+            price: double.parse(categoryMeals[index]['preco'].toString()),
           );
         },
       ),

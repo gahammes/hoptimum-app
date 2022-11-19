@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hoptimum/models/category.dart';
 
 import '../widgets/category_item.dart';
 import '../models/solicitacao.dart';
@@ -27,7 +28,7 @@ class CategoriesScreen extends StatelessWidget {
           crossAxisSpacing: 25,
           mainAxisSpacing: 25,
         ),
-        children: solicitacaoCategories
+        children: refeicoesCategories
             .where((cat) {
               return cat.tipo.contains(cTipo!);
             })

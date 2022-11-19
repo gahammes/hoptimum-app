@@ -62,7 +62,7 @@ void getDepesaLog() {
         title: logMap['servico']['nome'].toString(),
         amount: double.parse(logMap['servico']['preco'].toString()),
         date: DateTime.parse(logMap['createdAt'].toString())
-            .subtract(Duration(hours: 3)),
+            .subtract(const Duration(hours: 3)),
       ),
     );
   }

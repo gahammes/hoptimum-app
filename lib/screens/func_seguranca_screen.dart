@@ -60,7 +60,7 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting();
-    print(globals.loginData['funcionario']['servicos']);
+    print(globals.loginData['funcionario']['carros']);
     //printCoiso();
     //print(globals.loginData['funcionario']['cartoesChave']);
     return Scaffold(

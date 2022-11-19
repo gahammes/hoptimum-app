@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hoptimum/screens/cadastro_carro_screen.dart';
 import 'package:hoptimum/screens/cadastro_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
@@ -75,6 +76,7 @@ Future<void> reLogin() async {
   }
 }
 
+//TODO:CONFERIR SE TEM RESERVA EM ['hospede']['reservas']
 class _HoptimumAppState extends State<HoptimumApp> {
   void _connect() async {
     globals.channel = IOWebSocketChannel.connect(globals.getUrl('ws', ''));
@@ -250,6 +252,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
             FuncLimpezaScreen.routeName: (ctx) => const FuncLimpezaScreen(),
             InfoHospedeScreen.routeName: (ctx) => const InfoHospedeScreen(),
             CadastroScreen.routeName: (ctx) => const CadastroScreen(),
+            CadastroCarroScreen.routeName: (ctx) => const CadastroCarroScreen(),
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => const HomePage());

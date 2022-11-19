@@ -75,6 +75,7 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
     getServList();
 
     initializeDateFormatting();
+    print(globals.loginData['funcionario']['carros']);
     return Scaffold(
       appBar: AppBar(
         title: Text('${globals.loginData['funcionario']['nome']} - Limpeza'

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hoptimum/screens/cadastro_carro_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -121,6 +122,7 @@ class _AuthenticateState extends State<Authenticate> {
     'cpf': '',
     'tipo': '',
     'cargo': '',
+    'placa': '',
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
@@ -172,10 +174,13 @@ class _AuthenticateState extends State<Authenticate> {
             'cpf': _authData['cpf'].toString(),
             'tipo': _authData['tipo'].toString(),
             'cargo': _authData['cargo'].toString(),
+            'carros': globals.carrosArray,
           },
         ),
       );
       print(json.decode('😶‍🌫️ ${response.body}'));
+      globals.carrosArray.clear();
+      globals.carrosArray = [];
     } catch (error) {
       print(error);
     }
@@ -809,14 +814,67 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
+  Widget _buildPlacaTF() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Placa', style: kLabelStyle),
+        const SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.center,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextFormField(
+            //onSubmitted: (_) => _loginDirection(),
+            //keyboardType: TextInputType.name,
+            cursorColor: Colors.white,
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (_) {
+              FocusScope.of(context).requestFocus(_passwordFocusNode);
+            },
+            //decoration: InputDecoration(labelText: 'email'),
+            // validator: (value) {
+            //   if (value!.isEmpty || !value.contains('@')) {
+            //     return 'Email invalido';
+            //   }
+            //   return null;
+            // },
+            onSaved: (value) {
+              _authData['placa'] = value!;
+            },
+
+            //controller: emailController,
+
+            style: const TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.only(top: 14.0),
+              prefixIcon: const Icon(
+                Icons.abc,
+                color: Colors.white,
+              ),
+              hintText: 'Digite a placa do carro',
+              hintStyle: kHintTextStyle,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildSignUpButton() {
     return GestureDetector(
-      onTap: () => print('Botao de cadastro pressionado'),
+      onTap: () {
+        Navigator.of(context).pushNamed(CadastroCarroScreen.routeName);
+      },
       child: RichText(
         text: const TextSpan(
           children: [
             TextSpan(
-              text: 'Não possui uma conta? ',
+              text: 'Precisa cadastrar um carro? ',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16.0,
@@ -824,7 +882,7 @@ class _AuthenticateState extends State<Authenticate> {
               ),
             ),
             TextSpan(
-              text: 'Cadastre-se',
+              text: 'Clique aqui',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16.0,
@@ -893,6 +951,8 @@ class _AuthenticateState extends State<Authenticate> {
       child: Column(
         children: [
           const SizedBox(height: 60.0),
+          _buildSignUpButton(),
+          const SizedBox(height: 30.0),
           _buildNomeTF(),
           const SizedBox(height: 30.0),
           _buildEmailTF(),
