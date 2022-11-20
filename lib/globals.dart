@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
 IOWebSocketChannel? channel;
-String url = 'http://f63c-191-96-5-26.sa.ngrok.io/';
+String url = 'http://dff6-185-54-230-42.sa.ngrok.io/';
 
 String getUrl(String start, String end) {
   url = url.replaceAll('http', '');
@@ -30,3 +30,4 @@ var listKey = GlobalKey<AnimatedListState>();
 var tabIndex = 0;
 var servicoList = [];
 var carrosArray = [];
+var quartosList = [];

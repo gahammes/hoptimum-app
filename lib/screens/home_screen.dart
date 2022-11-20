@@ -7,8 +7,6 @@ import '../widgets/hero_dialog_route.dart';
 import '../widgets/info_card.dart';
 import '../widgets/reserva_info_card.dart';
 
-import 'info_screen.dart';
-import '../screens/reserva_info.dart';
 import '../widgets/cards_list.dart';
 import '../widgets/gradient_text.dart';
 import '../globals.dart' as globals;
@@ -269,13 +267,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {
-                      setState(() {
-                        globals.tabIndex = 1;
-                      });
-                      Navigator.of(context)
-                          .pushReplacementNamed(TabsScreen.routeName);
-                    },
+                    onTap: getDatas('checkIn').isAfter(DateTime.now())
+                        ? null
+                        : () {
+                            setState(() {
+                              globals.tabIndex = 1;
+                            });
+                            Navigator.of(context)
+                                .pushReplacementNamed(TabsScreen.routeName);
+                          },
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 10, top: 0),
                       height: 160,
@@ -310,13 +310,11 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            //TODO:COISO AQUI CONSUMO
                             GradientText(
                               'CONSUMO',
                               gradient: gradient,
                               style: textStyle,
                             ),
-
                             const SizedBox(
                               height: 10,
                             ),
@@ -335,8 +333,10 @@ class _HomePageState extends State<HomePage> {
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                const Text(
-                                  'Mais detalhes na aba de despesas.',
+                                Text(
+                                  getDatas('checkIn').isAfter(DateTime.now())
+                                      ? 'Disponibilizado após o check-in.'
+                                      : 'Mais detalhes na aba de despesas.',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 13,
@@ -403,8 +403,11 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           GradientText(
-                            '${getDatas('checkOut').difference(DateTime.now()).inDays.toString()} dias para o check-out'
-                                .toUpperCase(),
+                            getDatas('checkIn').isAfter(DateTime.now())
+                                ? '${getDatas('checkIn').difference(DateTime.now()).inDays.toString()} dias para o check-in'
+                                    .toUpperCase()
+                                : '${getDatas('checkOut').difference(DateTime.now()).inDays.toString()} dias para o check-out'
+                                    .toUpperCase(),
                             gradient: gradient,
                             style: textStyle,
                           ),

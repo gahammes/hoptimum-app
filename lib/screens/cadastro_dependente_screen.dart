@@ -2,18 +2,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 import '../globals.dart' as globals;
-import '../models/http_exception.dart';
-import '../models/providers/auth.dart';
 
 enum AuthMode { signup, login }
 
-class CadastroCarroScreen extends StatelessWidget {
-  static const routeName = '/cadastro-carro-screen';
+class CadastroDependenteScreen extends StatelessWidget {
+  static const routeName = '/cadastro-dependente-screen';
 
-  const CadastroCarroScreen({Key? key}) : super(key: key);
+  const CadastroDependenteScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +76,7 @@ class CadastroCarroScreen extends StatelessWidget {
                       // ),
                       Padding(
                         padding: EdgeInsets.only(top: 40.0),
-                        child: Authenticate(),
+                        child: AuthDependente(),
                       ),
                     ],
                   ),
@@ -93,14 +90,14 @@ class CadastroCarroScreen extends StatelessWidget {
   }
 }
 
-class Authenticate extends StatefulWidget {
-  const Authenticate({Key? key}) : super(key: key);
+class AuthDependente extends StatefulWidget {
+  const AuthDependente({Key? key}) : super(key: key);
 
   @override
-  State<Authenticate> createState() => _AuthenticateState();
+  State<AuthDependente> createState() => _AuthDependenteState();
 }
 
-class _AuthenticateState extends State<Authenticate> {
+class _AuthDependenteState extends State<AuthDependente> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -275,7 +272,7 @@ class _AuthenticateState extends State<Authenticate> {
                 Icons.abc,
                 color: Colors.white,
               ),
-              hintText: 'Digite a placa do carro',
+              hintText: 'Digite a placa',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -326,7 +323,7 @@ class _AuthenticateState extends State<Authenticate> {
                 Icons.king_bed,
                 color: Colors.white,
               ),
-              hintText: 'Digite o modelo do carro',
+              hintText: 'Digite seuo modelo',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -335,7 +332,7 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-  Widget _buildCadastrarButton(bool isLoading) {
+  Widget _buildLoginButton(bool isLoading) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -347,7 +344,7 @@ class _AuthenticateState extends State<Authenticate> {
                 child: CircularProgressIndicator(),
               )
             : const Text(
-                'Cadastrar Carro',
+                'Cadastrar Dependente',
                 style: TextStyle(
                   color: Color.fromARGB(255, 246, 106, 75),
                   letterSpacing: 1.5,
@@ -378,7 +375,7 @@ class _AuthenticateState extends State<Authenticate> {
         children: [
           const SizedBox(height: 60.0),
           const Text(
-            'CADASTRO DE CARRO',
+            'CADASTRO DE DEPENDENTE',
             style: TextStyle(
               fontSize: 23,
               fontWeight: FontWeight.bold,
@@ -386,13 +383,13 @@ class _AuthenticateState extends State<Authenticate> {
             ),
           ),
           const SizedBox(height: 30.0),
-          _buildPlacaTF(),
-          const SizedBox(height: 30.0),
           _buildModeloTF(),
+          const SizedBox(height: 30.0),
+          _buildPlacaTF(),
           const SizedBox(height: 30.0),
           _buildCorTF(),
           const SizedBox(height: 30.0),
-          _buildCadastrarButton(_isLoading),
+          _buildLoginButton(_isLoading),
         ],
       ),
     );

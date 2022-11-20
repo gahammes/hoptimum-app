@@ -2,18 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 import '../globals.dart' as globals;
-import '../models/http_exception.dart';
-import '../models/providers/auth.dart';
 
-enum AuthMode { signup, login }
+class FazerReservaScreen extends StatelessWidget {
+  static const routeName = '/fazer-reserva-screen';
 
-class CadastroCarroScreen extends StatelessWidget {
-  static const routeName = '/cadastro-carro-screen';
-
-  const CadastroCarroScreen({Key? key}) : super(key: key);
+  const FazerReservaScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,17 +40,6 @@ class CadastroCarroScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // Container(
-              //   margin: const EdgeInsets.only(top: 50),
-              //   padding: const EdgeInsets.symmetric(
-              //     horizontal: 10.0,
-              //     vertical: 10.0,
-              //   ),
-              //   height: 200,
-              //   child: const Image(
-              //     image: AssetImage('assets/images/logo-black.png'),
-              //   ),
-              // ),
               SizedBox(
                 height: double.infinity,
                 child: SingleChildScrollView(
@@ -69,14 +53,6 @@ class CadastroCarroScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      // Text(
-                      //   'Entrar',
-                      //   style: TextStyle(
-                      //     color: Colors.white,
-                      //     fontSize: 30.0,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
                       Padding(
                         padding: EdgeInsets.only(top: 40.0),
                         child: Authenticate(),
@@ -106,13 +82,25 @@ class _AuthenticateState extends State<Authenticate> {
   final passwordController = TextEditingController();
   final _passwordFocusNode = FocusNode();
 
-  final AuthMode _authMode = AuthMode.login;
-  final Map<String, String> _authData = {
-    'placa': '',
-    'cor': '',
-    'modelo': '',
+  final Map<String, String> _dataMap = {
+    'checkIn': '',
+    'checkOut': '',
+    'quarto': '',
+  };
+  final Map<String, String> _depMap = {
+    'cpf': '',
   };
   var _isLoading = false;
+  var _dataDisponivel = false;
+  var _addDep = false;
+  List<Map> listDep = [];
+  Map<String, dynamic> mapReserva = {
+    'checkIn': '',
+    'checkOut': '',
+    'quarto': '',
+    'dependentes': [],
+    'titular': '',
+  };
 
   void _showErrorDiaglog(String message) {
     showDialog(
@@ -135,7 +123,7 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-  void tryCadastro() async {
+  void dataCheck() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -144,7 +132,7 @@ class _AuthenticateState extends State<Authenticate> {
       _isLoading = true;
     });
     try {
-      final url = Uri.parse(globals.getUrl('http', 'api/carro'));
+      final url = Uri.parse(globals.getUrl('http', 'api/reservacheck'));
       final response = await http.post(
         url,
         headers: <String, String>{
@@ -152,15 +140,35 @@ class _AuthenticateState extends State<Authenticate> {
         },
         body: json.encode(
           {
-            'cor': _authData['cor'].toString(),
-            'placa': _authData['placa'].toString(),
-            'modelo': _authData['modelo'].toString(),
+            'checkIn': DateTime.parse(_dataMap['checkIn'].toString())
+                .toIso8601String(),
+            'checkOut': DateTime.parse(_dataMap['checkOut'].toString())
+                .toIso8601String(),
+            'quarto': _dataMap['quarto'].toString(),
           },
         ),
       );
-      var res = json.decode(response.body);
-      print('😶‍🌫️ $res');
-      globals.carrosArray.add(res['_id']);
+      var res = json.decode(response.body) as Map;
+      var infos = {};
+      if (res.containsKey('error')) {
+        print('😶‍🌫️ Data invalida');
+        setState(() {
+          _dataDisponivel = false;
+        });
+      } else {
+        print('🥸 data disponivel');
+        infos = res;
+        mapReserva['checkIn'] =
+            DateTime.parse(_dataMap['checkIn'].toString()).toIso8601String();
+        mapReserva['checkOut'] =
+            DateTime.parse(_dataMap['checkOut'].toString()).toIso8601String();
+        mapReserva['quarto'] = _dataMap['quarto'].toString();
+        setState(() {
+          _dataDisponivel = true;
+        });
+      }
+      //print('😶‍🌫️ $res');
+      //globals.carrosArray.add(res['_id']);
     } catch (error) {
       print(error);
     }
@@ -168,7 +176,98 @@ class _AuthenticateState extends State<Authenticate> {
     setState(() {
       _isLoading = false;
     });
-    Navigator.pop(context);
+    //Navigator.pop(context);
+  }
+
+  void depCheck() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    _formKey.currentState!.save();
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final url = Uri.parse(globals.getUrl('http', 'api/hospedecheck'));
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(
+          {
+            'cpf': _depMap['cpf'],
+          },
+        ),
+      );
+      var res = json.decode(response.body) as Map;
+      var infos = {};
+      var taDentro = false;
+      if (res.containsKey('error')) {
+        print('😶‍🌫️ ${infos['error']}');
+      } else {
+        print('🥸 pessoa encontrada');
+        infos = res;
+        for (var i = 0; i < listDep.length; i++) {
+          if (listDep[i]['_id'] == res['_id']) {
+            taDentro = true;
+          }
+        }
+        if (!taDentro) {
+          listDep.add(infos);
+        }
+        taDentro = false;
+        mapReserva['dependentes'] = listDep;
+        print(listDep);
+      }
+      //print('😶‍🌫️ $res');
+      //globals.carrosArray.add(res['_id']);
+    } catch (error) {
+      print(error);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+    //Navigator.pop(context);
+  }
+
+  void addReserva() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    _formKey.currentState!.save();
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final url = Uri.parse(globals.getUrl('http', 'api/reserva'));
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(
+          {
+            'checkIn': mapReserva['checkIn'],
+            'checkOut': mapReserva['checkOut'],
+            'quarto': mapReserva['quarto'],
+            'dependentes': mapReserva['dependentes'],
+            'titular': globals.loginData['hospede']['_id'],
+          },
+        ),
+      );
+      var res = json.decode(response.body) as Map;
+      print('😶‍🌫️ $res');
+      //globals.carrosArray.add(res['_id']);
+    } catch (error) {
+      print(error);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+    //Navigator.pop(context);
   }
 
   final kLabelStyle = const TextStyle(
@@ -194,11 +293,11 @@ class _AuthenticateState extends State<Authenticate> {
     fontFamily: 'OpenSans',
   );
 
-  Widget _buildCorTF() {
+  Widget _buildCheckInTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Cor', style: kLabelStyle),
+        Text('Check-in', style: kLabelStyle),
         const SizedBox(height: 10.0),
         Container(
           alignment: Alignment.center,
@@ -214,7 +313,7 @@ class _AuthenticateState extends State<Authenticate> {
             },
             //decoration: InputDecoration(labelText: 'email'),
             onSaved: (value) {
-              _authData['cor'] = value!;
+              _dataMap['checkIn'] = value!;
             },
 
             //controller: emailController,
@@ -227,10 +326,10 @@ class _AuthenticateState extends State<Authenticate> {
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(top: 14.0),
               prefixIcon: const Icon(
-                Icons.brush,
+                Icons.calendar_month,
                 color: Colors.white,
               ),
-              hintText: 'Digite a cor do carro',
+              hintText: 'Digite a data de check-in',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -239,11 +338,11 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-  Widget _buildPlacaTF() {
+  Widget _buildCheckOutTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Placa', style: kLabelStyle),
+        Text('Check-out', style: kLabelStyle),
         const SizedBox(height: 10.0),
         Container(
           alignment: Alignment.center,
@@ -259,7 +358,7 @@ class _AuthenticateState extends State<Authenticate> {
             },
             //decoration: InputDecoration(labelText: 'email'),
             onSaved: (value) {
-              _authData['placa'] = value!;
+              _dataMap['checkOut'] = value!;
             },
 
             //controller: emailController,
@@ -272,10 +371,10 @@ class _AuthenticateState extends State<Authenticate> {
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(top: 14.0),
               prefixIcon: const Icon(
-                Icons.abc,
+                Icons.calendar_month,
                 color: Colors.white,
               ),
-              hintText: 'Digite a placa do carro',
+              hintText: 'Digite a data de check-out',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -284,11 +383,11 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-  Widget _buildModeloTF() {
+  Widget _buildDependenteTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Modelo', style: kLabelStyle),
+        Text('Dependente', style: kLabelStyle),
         const SizedBox(height: 10.0),
         Container(
           alignment: Alignment.center,
@@ -310,7 +409,7 @@ class _AuthenticateState extends State<Authenticate> {
             //   return null;
             // },
             onSaved: (value) {
-              _authData['modelo'] = value!;
+              _depMap['cpf'] = value!;
             },
 
             //controller: emailController,
@@ -326,7 +425,7 @@ class _AuthenticateState extends State<Authenticate> {
                 Icons.king_bed,
                 color: Colors.white,
               ),
-              hintText: 'Digite o modelo do carro',
+              hintText: 'Digite o cpf do dependente',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -335,20 +434,20 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-  Widget _buildCadastrarButton(bool isLoading) {
+  Widget _buildCadastrarButton(bool isLoading, String text, VoidCallback func) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
         //TODO:pegar os dados aqui
-        onPressed: tryCadastro,
+        onPressed: func,
         child: isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : const Text(
-                'Cadastrar Carro',
-                style: TextStyle(
+            : Text(
+                text,
+                style: const TextStyle(
                   color: Color.fromARGB(255, 246, 106, 75),
                   letterSpacing: 1.5,
                   fontSize: 18.0,
@@ -370,15 +469,62 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
+  Widget _buildAddDepButton() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: ElevatedButton(
+        //TODO:pegar os dados aqui
+        onPressed: () {
+          setState(() {
+            _addDep = !_addDep;
+          });
+        },
+        child: Text(
+          _addDep ? 'Cancelar' : 'Adicionar dependente',
+          style: const TextStyle(
+            color: Color.fromARGB(255, 246, 106, 75),
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+          ),
+        ),
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
+          elevation: MaterialStateProperty.all(5.0),
+          padding: MaterialStateProperty.all(const EdgeInsets.all(15.0)),
+          backgroundColor: MaterialStateProperty.all(Colors.white),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddDependente() {
+    return Column(
+      children: [
+        _buildDependenteTF(),
+        _buildCadastrarButton(_isLoading, 'Checar dependente', depCheck),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final routeArgs =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    _dataMap['quarto'] = routeArgs['id']!;
     return Form(
       key: _formKey,
       child: Column(
         children: [
           const SizedBox(height: 60.0),
           const Text(
-            'CADASTRO DE CARRO',
+            'DATAS',
             style: TextStyle(
               fontSize: 23,
               fontWeight: FontWeight.bold,
@@ -386,13 +532,17 @@ class _AuthenticateState extends State<Authenticate> {
             ),
           ),
           const SizedBox(height: 30.0),
-          _buildPlacaTF(),
+          _buildCheckInTF(),
           const SizedBox(height: 30.0),
-          _buildModeloTF(),
+          _buildCheckOutTF(),
           const SizedBox(height: 30.0),
-          _buildCorTF(),
-          const SizedBox(height: 30.0),
-          _buildCadastrarButton(_isLoading),
+          _buildCadastrarButton(_isLoading, 'Checar datas', dataCheck),
+          //const SizedBox(height: 30.0),
+          if (_dataDisponivel) _buildAddDepButton(),
+          //const SizedBox(height: 30.0),
+          if (_dataDisponivel && _addDep) _buildAddDependente(),
+          if (_dataDisponivel)
+            _buildCadastrarButton(_isLoading, 'Fazer Reserva', addReserva),
         ],
       ),
     );

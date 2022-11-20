@@ -51,7 +51,8 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
       Navigator.of(context).pushReplacementNamed('/');
     }
 
-    print(globals.loginData['funcionario']['servicos']);
+    //TODO:ROTA DO COISO
+    print(globals.loginData['funcionario']['cargo']);
 
     initializeDateFormatting();
     //print(globals.loginData['funcionario']['cartoesChave']);
@@ -83,7 +84,7 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
         child: TabBarView(
           controller: _tabController,
           children: [
-            //LISTA DE PEDIDOS
+            //TODO:LISTA DE PEDIDOS
             SingleChildScrollView(
               child: Container(
                 height: 647,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
 import '../models/pedido.dart';
 
@@ -13,7 +14,7 @@ class FuncSolicitacaoItem extends StatefulWidget {
 }
 
 class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
-  void _updateStatus(int index, int id) {
+  void _updateStatus(int index) {
     setState(() {
       switch (widget.pedidos[index].status) {
         case Status.espera:
@@ -42,6 +43,7 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
   }
 
   Widget _buildExpansionTile(int index, Color color) {
+    var rng = Random();
     return ExpansionTile(
       //maintainState: true,
       collapsedBackgroundColor: const Color(0xfff5f5f5),
@@ -63,12 +65,15 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
                 fontSize: 16, fontFamily: 'Quicksand', color: Colors.black),
             children: [
               const TextSpan(
-                text: 'Número do quarto: ',
+                text: 'Número do pedido: ',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              TextSpan(text: '${widget.pedidos[index].numQuarto.toString()}.'),
+              //'Pedido ${(widget.pedidos[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}',
+              TextSpan(
+                  text:
+                      '${(widget.pedidos[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}.'),
             ],
           ),
         ),
@@ -119,21 +124,20 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Refeições: ',
+                'Refeição: ',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 5.0,
               ),
-              for (var refeicao in widget.pedidos[index].refeicao)
-                Container(
-                  margin: const EdgeInsets.only(left: 20.0, bottom: 5.0),
-                  child: Text(
-                    refeicao,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 16),
-                  ),
+              Container(
+                margin: const EdgeInsets.only(left: 20.0, bottom: 5.0),
+                child: Text(
+                  widget.pedidos[index].refeicao,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 16),
                 ),
+              ),
             ],
           );
   }
@@ -220,7 +224,7 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
                 ),
               ),
               title: Text(
-                'Pedido ${widget.pedidos[index].id}',
+                'Quarto ${widget.pedidos[index].numQuarto.toString()}',
                 style: TextStyle(
                   color: fontColor,
                   fontWeight: FontWeight.bold,
@@ -235,8 +239,7 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
                   ? IconButton(
                       icon: const Icon(Icons.refresh),
                       color: Colors.white,
-                      onPressed: () =>
-                          _updateStatus(index, widget.pedidos[index].id),
+                      onPressed: () => _updateStatus(index),
                     )
                   : null,
             ),

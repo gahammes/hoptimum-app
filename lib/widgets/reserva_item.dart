@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../models/quarto.dart';
+import 'package:hoptimum/screens/fazer_reserva_screen.dart';
 
 class ReservaItem extends StatelessWidget {
-  final Quarto quarto;
+  final Map quarto;
   const ReservaItem({Key? key, required this.quarto}) : super(key: key);
 
   @override
@@ -22,7 +21,7 @@ class ReservaItem extends StatelessWidget {
               ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(25.0)),
                 child: Image.network(
-                  quarto.url,
+                  quarto['imageUrl'].toString(),
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -44,7 +43,7 @@ class ReservaItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      quarto.nome,
+                      quarto['nome'].toString(),
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 22,
@@ -57,7 +56,7 @@ class ReservaItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          quarto.tipo,
+                          'Ocupantes máximos: ${quarto['maxOcupantes'].toString()}',
                           style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 16,
@@ -66,7 +65,7 @@ class ReservaItem extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'R\$${quarto.preco.toStringAsFixed(0)}',
+                              'R\$${int.parse(quarto['precoBase'].toString()).toStringAsFixed(0)}',
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontSize: 20,
@@ -112,9 +111,9 @@ class ReservaItem extends StatelessWidget {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                             const SizedBox(width: 5),
-                            Text(
-                              quarto.rating,
-                              style: const TextStyle(
+                            const Text(
+                              '4.8',
+                              style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 16,
                               ),
@@ -134,7 +133,18 @@ class ReservaItem extends StatelessWidget {
                         borderRadius: BorderRadius.circular(25.0),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: /*quarto['ocupado']
+                        ? null
+                        : */
+                        () {
+                      Navigator.of(context).pushNamed(
+                        FazerReservaScreen.routeName,
+                        arguments: {
+                          'id': quarto['_id'].toString(),
+                        },
+                      );
+                      print('🤬 RESERVA FEITA');
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,

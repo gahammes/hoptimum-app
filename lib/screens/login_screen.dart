@@ -8,11 +8,6 @@ import 'package:provider/provider.dart';
 import '../globals.dart' as globals;
 import '../models/http_exception.dart';
 import '../models/providers/auth.dart';
-import '../screens/tabs_screen.dart';
-import '../screens/func_solicitacao_screen.dart';
-import '../screens/func_seguranca_screen.dart';
-
-enum AuthMode { signup, login }
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/login-screen';
@@ -106,7 +101,6 @@ class _AuthPartState extends State<AuthPart> {
   final passwordController = TextEditingController();
   final _passwordFocusNode = FocusNode();
 
-  final AuthMode _authMode = AuthMode.login;
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
@@ -144,18 +138,10 @@ class _AuthPartState extends State<AuthPart> {
       _isLoading = true;
     });
     try {
-      if (_authMode == AuthMode.login) {
-        await Provider.of<Auth>(context, listen: false).login(
-          _authData['email']!,
-          _authData['password']!,
-        );
-      } else {
-        //TODO:CADASTRO
-        await Provider.of<Auth>(context, listen: false).login(
-          _authData['email']!,
-          _authData['password']!,
-        );
-      }
+      await Provider.of<Auth>(context, listen: false).login(
+        _authData['email']!,
+        _authData['password']!,
+      );
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed.';
       if (error.toString().contains('EMAIL_EXISTS')) {
@@ -171,7 +157,7 @@ class _AuthPartState extends State<AuthPart> {
       }
       _showErrorDiaglog(errorMessage);
     } catch (error) {
-      const errorMessage = 'Something wrong happened. Try again.';
+      const errorMessage = 'Algo deu errado.';
       print(error);
       _showErrorDiaglog(errorMessage);
     }
@@ -179,18 +165,6 @@ class _AuthPartState extends State<AuthPart> {
     setState(() {
       _isLoading = false;
     });
-  }
-
-  void _switchAuthMode() {
-    if (_authMode == AuthMode.login) {
-      setState(() {
-        _authMode == AuthMode.signup;
-      });
-    } else {
-      setState(() {
-        _authMode == AuthMode.login;
-      });
-    }
   }
 
   final kLabelStyle = const TextStyle(
@@ -308,20 +282,6 @@ class _AuthPartState extends State<AuthPart> {
             ),
           ),
         ),
-        if (_authMode == AuthMode.signup)
-          TextFormField(
-            enabled: _authMode == AuthMode.signup,
-            decoration: const InputDecoration(labelText: 'Confirm Password'),
-            obscureText: true,
-            validator: _authMode == AuthMode.signup
-                ? (value) {
-                    if (value != _passwordController.text) {
-                      return 'A senha n e a mesma';
-                    }
-                    return null;
-                  }
-                : null,
-          ),
       ],
     );
   }
@@ -438,55 +398,6 @@ class _AuthPartState extends State<AuthPart> {
         ),
       ),
     );
-  }
-
-  Future<void> _postLogin(String email, String password) async {
-    var negocio = json.encode({
-      'email': email,
-      'senha': password,
-      'id': globals.chaveBackUp,
-    });
-    var response = await http.post(
-      Uri.parse(globals.getUrl('http', 'api/login')),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: negocio,
-    );
-
-    JsonEncoder encoder = const JsonEncoder.withIndent('  ');
-
-    //print(encoder.convert(json.decode(response.body)));
-    //print(json.decode(response.body)['hospede']['_id']);
-  }
-
-  void _loginDirection() {
-    switch (emailController.text) {
-      case 'hosp':
-        Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
-        break;
-      case '1':
-        Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
-        break;
-      case 'soli':
-        Navigator.of(context)
-            .pushReplacementNamed(FuncSolicitacaoScreen.routeName);
-        break;
-      case '2':
-        Navigator.of(context)
-            .pushReplacementNamed(FuncSolicitacaoScreen.routeName);
-        break;
-      case 'segu':
-        Navigator.of(context)
-            .pushReplacementNamed(FuncSegurancaScreen.routeName);
-        break;
-      case '3':
-        Navigator.of(context)
-            .pushReplacementNamed(FuncSegurancaScreen.routeName);
-        break;
-      default:
-        break;
-    }
   }
 
   @override

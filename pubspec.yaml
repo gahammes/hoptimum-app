@@ -115,6 +115,10 @@ flutter:
         - asset: assets/fonts/Quicksand-Regular.ttf
         - asset: assets/fonts/Quicksand-Bold.ttf
           weight: 700
+    - family: MontserratAlt1
+      fonts:
+        - asset: assets/fonts/MontserratAlt1-SemiBold.ttf
+          weight: 600
 
 
     # - family: Quicksand

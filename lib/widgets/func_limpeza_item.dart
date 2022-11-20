@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
 import '../models/servico.dart';
 
@@ -37,6 +38,7 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
   }
 
   Widget _buildExpansionTile(int index, Color color) {
+    var rng = Random();
     return ExpansionTile(
       //maintainState: true,
       collapsedBackgroundColor: const Color(0xfff5f5f5),
@@ -58,13 +60,15 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
                 fontSize: 16, fontFamily: 'Quicksand', color: Colors.black),
             children: [
               const TextSpan(
-                text: 'Número do quarto: ',
+                text: 'Número do pedido: ',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              //'${(widget.pedidos[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}.'
               TextSpan(
-                  text: '${widget.solicitacoes[index].numQuarto.toString()}.'),
+                  text:
+                      '${(widget.solicitacoes[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}.'),
             ],
           ),
         ),
@@ -184,7 +188,7 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
                 ),
               ),
               title: Text(
-                'Serviço de quarto ${widget.solicitacoes[index].id}',
+                'Quarto ${widget.solicitacoes[index].numQuarto.toString()}',
                 style: TextStyle(
                   color: fontColor,
                   fontWeight: FontWeight.bold,

@@ -2,17 +2,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hoptimum/screens/cadastro_carro_screen.dart';
+import 'package:hoptimum/screens/cadastro_dependente_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../globals.dart' as globals;
 import '../models/http_exception.dart';
 import '../models/providers/auth.dart';
-import '../screens/tabs_screen.dart';
-import '../screens/func_solicitacao_screen.dart';
-import '../screens/func_seguranca_screen.dart';
 
-enum AuthMode { signup, login }
+enum AuthMode { hospede, funcionario }
 
 class CadastroScreen extends StatelessWidget {
   static const routeName = '/cadastro-screen';
@@ -105,13 +103,14 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
-  var _rememberMe = globals.rememberMe ?? false;
   final GlobalKey<FormState> _formKey = GlobalKey();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _passwordFocusNode = FocusNode();
+  String _cargoResult = '';
+  String _cargo = '';
 
-  final AuthMode _authMode = AuthMode.login;
+  AuthMode? _authMode = AuthMode.hospede;
   final Map<String, String> _authData = {
     'email': '',
     'senha': '',
@@ -122,7 +121,6 @@ class _AuthenticateState extends State<Authenticate> {
     'cpf': '',
     'tipo': '',
     'cargo': '',
-    'placa': '',
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
@@ -155,6 +153,7 @@ class _AuthenticateState extends State<Authenticate> {
     _formKey.currentState!.save();
     setState(() {
       _isLoading = true;
+      _cargoResult = _cargo;
     });
     try {
       final url = Uri.parse(globals.getUrl('http', 'api/cadastro'));
@@ -172,7 +171,7 @@ class _AuthenticateState extends State<Authenticate> {
             'genero': _authData['genero'].toString(),
             'telefone': _authData['telefone'].toString(),
             'cpf': _authData['cpf'].toString(),
-            'tipo': _authData['tipo'].toString(),
+            'tipo': _authMode == AuthMode.hospede ? 'hospede' : 'funcionario',
             'cargo': _authData['cargo'].toString(),
             'carros': globals.carrosArray,
           },
@@ -188,6 +187,7 @@ class _AuthenticateState extends State<Authenticate> {
     setState(() {
       _isLoading = false;
     });
+    Navigator.pop(context);
   }
 
   Future<void> _submit() async {
@@ -199,18 +199,11 @@ class _AuthenticateState extends State<Authenticate> {
       _isLoading = true;
     });
     try {
-      if (_authMode == AuthMode.login) {
-        await Provider.of<Auth>(context, listen: false).login(
-          _authData['email']!,
-          _authData['password']!,
-        );
-      } else {
-        //TODO:CADASTRO
-        await Provider.of<Auth>(context, listen: false).login(
-          _authData['email']!,
-          _authData['password']!,
-        );
-      }
+      //TODO:CADASTRO
+      await Provider.of<Auth>(context, listen: false).login(
+        _authData['email']!,
+        _authData['password']!,
+      );
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed.';
       if (error.toString().contains('EMAIL_EXISTS')) {
@@ -236,16 +229,77 @@ class _AuthenticateState extends State<Authenticate> {
     });
   }
 
-  void _switchAuthMode() {
-    if (_authMode == AuthMode.login) {
-      setState(() {
-        _authMode == AuthMode.signup;
-      });
-    } else {
-      setState(() {
-        _authMode == AuthMode.login;
-      });
-    }
+  Widget _switchAuthMode() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 255, 108, 74),
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+              shadowColor: MaterialStateProperty.all(Colors.transparent),
+            ),
+            onPressed: () {
+              setState(() {
+                _authMode = AuthMode.hospede;
+              });
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Text(
+                'Hóspede'.toUpperCase(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 255, 108, 74),
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+              shadowColor: MaterialStateProperty.all(Colors.transparent),
+            ),
+            onPressed: () {
+              setState(() {
+                _authMode = AuthMode.funcionario;
+              });
+            },
+            child: Text(
+              'Funcionário'.toUpperCase(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   final kLabelStyle = const TextStyle(
@@ -526,56 +580,31 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-  Widget _buildTipoTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Tipo', style: kLabelStyle),
-        const SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.center,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
-            keyboardType: TextInputType.name,
-            cursorColor: Colors.white,
-            textInputAction: TextInputAction.next,
-            onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(_passwordFocusNode);
-            },
-            //decoration: InputDecoration(labelText: 'email'),
-            // validator: (value) {
-            //   if (value!.isEmpty || !value.contains('@')) {
-            //     return 'Email invalido';
-            //   }
-            //   return null;
-            // },
-            onSaved: (value) {
-              _authData['tipo'] = value!;
-            },
-
-            //controller: emailController,
-
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.only(top: 14.0),
-              prefixIcon: const Icon(
-                Icons.functions,
-                color: Colors.white,
-              ),
-              hintText: 'Digite seu tipo',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+//   Widget _buildCargoDropDown() {
+//     return
+// DropdownButton<String>(
+//       value: dropdownValue,
+//       icon: const Icon(Icons.arrow_downward),
+//       elevation: 16,
+//       style: const TextStyle(color: Colors.deepPurple),
+//       underline: Container(
+//         height: 2,
+//         color: Colors.deepPurpleAccent,
+//       ),
+//       onChanged: (String? value) {
+//         // This is called when the user selects an item.
+//         setState(() {
+//           dropdownValue = value!;
+//         });
+//       },
+//       items: list.map<DropdownMenuItem<String>>((String value) {
+//         return DropdownMenuItem<String>(
+//           value: value,
+//           child: Text(value),
+//         );
+//       }).toList(),
+//     );
+//   }
 
   Widget _buildCargoTF() {
     return Column(
@@ -720,63 +749,90 @@ class _AuthenticateState extends State<Authenticate> {
             ),
           ),
         ),
-        if (_authMode == AuthMode.signup)
-          TextFormField(
-            enabled: _authMode == AuthMode.signup,
-            decoration: const InputDecoration(labelText: 'Confirm Password'),
-            obscureText: true,
-            validator: _authMode == AuthMode.signup
-                ? (value) {
-                    if (value != _passwordController.text) {
-                      return 'A senha n e a mesma';
-                    }
-                    return null;
-                  }
-                : null,
-          ),
+        // if (_authMode == AuthMode.signup)
+        //   TextFormField(
+        //     enabled: _authMode == AuthMode.signup,
+        //     decoration: const InputDecoration(labelText: 'Confirm Password'),
+        //     obscureText: true,
+        //     validator: _authMode == AuthMode.signup
+        //         ? (value) {
+        //             if (value != _passwordController.text) {
+        //               return 'A senha n e a mesma';
+        //             }
+        //             return null;
+        //           }
+        //         : null,
+        //   ),
       ],
     );
   }
 
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: TextButton(
-        onPressed: () => print('FP Button Pressed'),
-        child: Text(
-          'Esqueci minha senha',
-          style: kLabelStyle,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRememberMeCB() {
-    return SizedBox(
-      height: 60.0,
-      child: Row(
-        children: [
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Colors.green,
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value!;
-                  globals.rememberMe = _rememberMe;
-                });
-              },
+  List<Widget> camposCadastro() {
+    return _authMode == AuthMode.hospede
+        ? [
+            const SizedBox(height: 30.0),
+            const Text(
+              'CADASTRO DE HÓSPEDE',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
-          ),
-          Text(
-            'Manter conectado',
-            style: kLabelStyle,
-          ),
-        ],
-      ),
-    );
+            const SizedBox(height: 30.0),
+            _buildSignUpButton(
+                'Quer cadastrar um carro? ', CadastroCarroScreen.routeName),
+            const SizedBox(height: 10.0),
+            _buildSignUpButton('Quer cadastrar um dependente? ',
+                CadastroDependenteScreen.routeName),
+            const SizedBox(height: 30.0),
+            //_buildCargoDropDown(),
+            const SizedBox(height: 30.0),
+            _buildNomeTF(),
+            const SizedBox(height: 30.0),
+            _buildEmailTF(),
+            const SizedBox(height: 30.0),
+            _buildCPFTF(),
+            const SizedBox(height: 30.0),
+            _builDataTF(),
+            const SizedBox(height: 30.0),
+            _builGeneroTF(),
+            const SizedBox(height: 30.0),
+            _buildTelefoneTF(),
+            const SizedBox(height: 30.0),
+            _buildPasswordTF(),
+            const SizedBox(height: 30.0),
+            _buildLoginButton(_isLoading),
+          ]
+        : [
+            const SizedBox(height: 30.0),
+            const Text(
+              'CADASTRO DE FUNCIONÁRIO',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 30.0),
+            _buildNomeTF(),
+            const SizedBox(height: 30.0),
+            _buildEmailTF(),
+            const SizedBox(height: 30.0),
+            _buildCargoTF(),
+            const SizedBox(height: 30.0),
+            _buildCPFTF(),
+            const SizedBox(height: 30.0),
+            _builDataTF(),
+            const SizedBox(height: 30.0),
+            _builGeneroTF(),
+            const SizedBox(height: 30.0),
+            _buildTelefoneTF(),
+            const SizedBox(height: 30.0),
+            _buildPasswordTF(),
+            const SizedBox(height: 30.0),
+            _buildLoginButton(_isLoading),
+          ];
   }
 
   Widget _buildLoginButton(bool isLoading) {
@@ -814,74 +870,23 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-  Widget _buildPlacaTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Placa', style: kLabelStyle),
-        const SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.center,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
-            //keyboardType: TextInputType.name,
-            cursorColor: Colors.white,
-            textInputAction: TextInputAction.next,
-            onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(_passwordFocusNode);
-            },
-            //decoration: InputDecoration(labelText: 'email'),
-            // validator: (value) {
-            //   if (value!.isEmpty || !value.contains('@')) {
-            //     return 'Email invalido';
-            //   }
-            //   return null;
-            // },
-            onSaved: (value) {
-              _authData['placa'] = value!;
-            },
-
-            //controller: emailController,
-
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.only(top: 14.0),
-              prefixIcon: const Icon(
-                Icons.abc,
-                color: Colors.white,
-              ),
-              hintText: 'Digite a placa do carro',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSignUpButton() {
+  Widget _buildSignUpButton(String text, String route) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(CadastroCarroScreen.routeName);
+        Navigator.of(context).pushNamed(route);
       },
       child: RichText(
-        text: const TextSpan(
+        text: TextSpan(
           children: [
             TextSpan(
-              text: 'Precisa cadastrar um carro? ',
-              style: TextStyle(
+              text: text,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16.0,
                 fontWeight: FontWeight.w400,
               ),
             ),
-            TextSpan(
+            const TextSpan(
               text: 'Clique aqui',
               style: TextStyle(
                 color: Colors.white,
@@ -895,53 +900,31 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-  Future<void> _postLogin(String email, String password) async {
-    var negocio = json.encode({
-      'email': email,
-      'senha': password,
-      'id': globals.chaveBackUp,
-    });
-    var response = await http.post(
-      Uri.parse(globals.getUrl('http', 'api/login')),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: negocio,
+  Widget _radioChoice() {
+    return Column(
+      children: [
+        RadioListTile<AuthMode>(
+          title: const Text('Hóspede'),
+          value: AuthMode.hospede,
+          groupValue: _authMode,
+          onChanged: (AuthMode? choice) {
+            setState(() {
+              _authMode = choice;
+            });
+          },
+        ),
+        RadioListTile<AuthMode>(
+          title: const Text('Funcionário'),
+          value: AuthMode.funcionario,
+          groupValue: _authMode,
+          onChanged: (AuthMode? choice) {
+            setState(() {
+              _authMode = choice;
+            });
+          },
+        ),
+      ],
     );
-
-    JsonEncoder encoder = const JsonEncoder.withIndent('  ');
-
-    //print(encoder.convert(json.decode(response.body)));
-    //print(json.decode(response.body)['hospede']['_id']);
-  }
-
-  void _loginDirection() {
-    switch (emailController.text) {
-      case 'hosp':
-        Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
-        break;
-      case '1':
-        Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
-        break;
-      case 'soli':
-        Navigator.of(context)
-            .pushReplacementNamed(FuncSolicitacaoScreen.routeName);
-        break;
-      case '2':
-        Navigator.of(context)
-            .pushReplacementNamed(FuncSolicitacaoScreen.routeName);
-        break;
-      case 'segu':
-        Navigator.of(context)
-            .pushReplacementNamed(FuncSegurancaScreen.routeName);
-        break;
-      case '3':
-        Navigator.of(context)
-            .pushReplacementNamed(FuncSegurancaScreen.routeName);
-        break;
-      default:
-        break;
-    }
   }
 
   @override
@@ -951,32 +934,10 @@ class _AuthenticateState extends State<Authenticate> {
       child: Column(
         children: [
           const SizedBox(height: 60.0),
-          _buildSignUpButton(),
-          const SizedBox(height: 30.0),
-          _buildNomeTF(),
-          const SizedBox(height: 30.0),
-          _buildEmailTF(),
-          const SizedBox(height: 30.0),
-          _buildCPFTF(),
-          const SizedBox(height: 30.0),
-          _builDataTF(),
-          const SizedBox(height: 30.0),
-          _builGeneroTF(),
-          const SizedBox(height: 30.0),
-          _buildTelefoneTF(),
-          const SizedBox(height: 30.0),
-          _buildTipoTF(),
-          const SizedBox(height: 30.0),
-          _buildCargoTF(),
-          const SizedBox(height: 30.0),
-          _buildPasswordTF(),
-          const SizedBox(height: 30.0),
-          _buildLoginButton(_isLoading),
-
-          // _buildForgotPasswordBtn(),
-          //_buildRememberMeCB(),
-          //_buildLoginButton(_isLoading),
-          //_buildSignUpButton(),
+          _switchAuthMode(),
+          Column(
+            children: camposCadastro(),
+          )
         ],
       ),
     );

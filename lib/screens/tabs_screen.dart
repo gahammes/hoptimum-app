@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/providers/auth.dart';
-import '../screens/configuracoes_screen.dart';
 import '../screens/despesas_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/notificacao_screen.dart';
 import '../screens/seguranca_screen.dart';
-import '../screens/tela_reserva.dart';
 import '../models/despesa.dart';
 import '../screens/solicitacao_screen.dart';
 import '../globals.dart' as globals;
@@ -22,10 +20,6 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  var _selectedPageIndex = 0;
-
-  var _userTransactions = despesasLog;
-
   void _selectPage(int index) {
     setState(() {
       globals.tabIndex = index;
@@ -44,10 +38,6 @@ class _TabsScreenState extends State<TabsScreen> {
     //Navigator.of(context).pop();
     Navigator.of(context).pushReplacementNamed('/');
     //Provider.of<Auth>(context, listen: false).logout();
-  }
-
-  void _settings() {
-    Navigator.of(context).pushNamed(ConfiguracoesScreen.routeName);
   }
 
   void _refresh() {
@@ -103,21 +93,23 @@ class _TabsScreenState extends State<TabsScreen> {
     //inputController.clear();
   }
 
-  void _reservaRoute() {
-    Navigator.of(context).pushNamed(TelaReserva.routeName);
+  DateTime getDatas(String qual) {
+    var reservas = globals.loginData as Map;
+    return qual == 'checkIn'
+        ? DateTime.parse(
+            reservas['hospede']['reservas'][getIndex()]['reserva']['checkIn'])
+        : DateTime.parse(
+            reservas['hospede']['reservas'][getIndex()]['reserva']['checkOut']);
   }
 
   @override
   Widget build(BuildContext context) {
+    var dataCheck = getDatas('checkIn').isAfter(DateTime.now());
     final List<Map<String, dynamic>> _pages = [
       {
         'page': const HomePage(),
         'title': 'Home',
         'actions': [
-          IconButton(
-            onPressed: _reservaRoute,
-            icon: const Icon(Icons.hotel),
-          ),
           IconButton(
             onPressed: _logout,
             icon: const Icon(Icons.logout),
@@ -179,7 +171,6 @@ class _TabsScreenState extends State<TabsScreen> {
       //   onPressed: () => {},
       //   icon: Icon(Icons.density_medium),
       // ),
-      //TODO: fazer drawer
       title: Text(
         _pages[globals.tabIndex]['title'],
         textAlign: TextAlign.center,
@@ -189,7 +180,7 @@ class _TabsScreenState extends State<TabsScreen> {
     );
 
     final navBar = BottomNavigationBar(
-      onTap: _selectPage,
+      onTap: dataCheck ? null : _selectPage,
       backgroundColor: Theme.of(context).colorScheme.secondary,
       unselectedItemColor: Colors.white,
       selectedItemColor: Theme.of(context).colorScheme.primary,
@@ -198,27 +189,41 @@ class _TabsScreenState extends State<TabsScreen> {
       items: [
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          icon: const Icon(Icons.home),
+          icon: const Icon(
+            Icons.home,
+          ),
           label: 'Home',
         ),
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          icon: const Icon(Icons.attach_money),
+          icon: Icon(
+            Icons.attach_money,
+            color: (dataCheck ? Colors.grey : Colors.white),
+          ),
           label: 'Despesas',
         ),
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          icon: const Icon(Icons.add_circle),
+          icon: Icon(
+            Icons.add_circle,
+            color: (dataCheck ? Colors.grey : Colors.white),
+          ),
           label: 'Solicitações',
         ),
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          icon: const Icon(Icons.notifications),
+          icon: Icon(
+            Icons.notifications,
+            color: (dataCheck ? Colors.grey : Colors.white),
+          ),
           label: 'Notificações',
         ),
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          icon: const Icon(Icons.shield),
+          icon: Icon(
+            Icons.shield,
+            color: (dataCheck ? Colors.grey : Colors.white),
+          ),
           label: 'Segurança',
         ),
       ],
@@ -226,60 +231,6 @@ class _TabsScreenState extends State<TabsScreen> {
 
     return Scaffold(
       appBar: appBar,
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 35,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    'Nome do Titular',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Text(
-                    'hospede@email.com',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Divider(
-            //   color: Theme.of(context).colorScheme.secondary,
-            // ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Configurações'),
-              onTap: _settings,
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.logout,
-                color: Colors.red,
-              ),
-              title: const Text(
-                'Sair',
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-              ),
-              onTap: _logout,
-            ),
-          ],
-        ),
-      ),
       body: _pages[globals.tabIndex]['page'],
       bottomNavigationBar: navBar,
     );

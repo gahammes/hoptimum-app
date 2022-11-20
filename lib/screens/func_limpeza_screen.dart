@@ -120,10 +120,7 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
                   SizedBox(
                     height: 640, //TODO: aqui da overflow MENTIRA
                     //margin: EdgeInsets.only(top: 0),
-                    child: segurancaLog.isEmpty
-                        ? null
-                        : SegurancaList(
-                            segurancaLog), //TODO:tratar na main.dart
+                    child: SegurancaList(segurancaLog),
                   ),
                 ],
               ),

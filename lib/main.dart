@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hoptimum/models/pedido.dart';
+import 'package:hoptimum/models/servico.dart';
 import 'package:hoptimum/screens/cadastro_carro_screen.dart';
+import 'package:hoptimum/screens/cadastro_dependente_screen.dart';
 import 'package:hoptimum/screens/cadastro_screen.dart';
+import 'package:hoptimum/screens/fazer_reserva_screen.dart';
+import 'package:hoptimum/screens/sem_reserva_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +18,6 @@ import 'package:http/http.dart' as http;
 import '../models/seguranca.dart';
 import '../models/despesa.dart';
 import '../screens/category_meals_screen.dart';
-import '../screens/configuracoes_screen.dart';
 import '../screens/func_solicitacao_screen.dart';
 import '../screens/func_seguranca_screen.dart';
 import '../screens/home_screen.dart';
@@ -73,6 +77,15 @@ Future<void> reLogin() async {
   }
   if (data.containsKey('funcionario')) {
     getLogFunc();
+    if (data['funcionario']['cargo']['nome'] == 'cozinha') {
+      getPedidos();
+    }
+    if (data['funcionario']['cargo']['nome'] == 'limpeza') {
+      getServicos();
+    }
+    if (data['funcionario']['cargo']['nome'] == 'seguranca') {
+      //TODO:provavelmnte o get da lista de hospedes vai aqui
+    }
   }
 }
 
@@ -91,12 +104,20 @@ class _HoptimumAppState extends State<HoptimumApp> {
       print(error);
     }
 
+    try {
+      final url = Uri.parse(globals.getUrl('http', 'api/quartos'));
+      final response = await http.get(url);
+      globals.quartosList = json.decode(response.body);
+    } catch (error) {
+      print(error);
+    }
+
     globals.channel?.stream.listen(
       (data) async {
         var res = json.decode(data) as Map;
         globals.listenData = data;
 
-        print(encoder.convert(json.decode(data)));
+        print('🤪 conectou');
 
         //print(data);
 
@@ -217,13 +238,15 @@ class _HoptimumAppState extends State<HoptimumApp> {
           home: auth.isAuth
               ? globals.perfil == 'hospede'
                   ? const TabsScreen()
-                  : globals.perfil == 'limpeza'
-                      ? const FuncLimpezaScreen()
-                      : globals.perfil == 'cozinha'
-                          ? const FuncSolicitacaoScreen()
-                          : globals.perfil == 'seguranca'
-                              ? const FuncSegurancaScreen()
-                              : null
+                  : globals.perfil == 'hospede-sem-reserva'
+                      ? const SemReservaScreen()
+                      : globals.perfil == 'limpeza'
+                          ? const FuncLimpezaScreen()
+                          : globals.perfil == 'cozinha'
+                              ? const FuncSolicitacaoScreen()
+                              : globals.perfil == 'seguranca'
+                                  ? const FuncSegurancaScreen()
+                                  : null
               : FutureBuilder(
                   future: auth.tryAutoLogin(),
                   builder: (ctx, snapshot) =>
@@ -243,7 +266,6 @@ class _HoptimumAppState extends State<HoptimumApp> {
             InfoScreen.routeName: (ctx) => const InfoScreen(),
             TabsScreen.routeName: (ctx) => const TabsScreen(),
             LoginScreen.routeName: (ctx) => const LoginScreen(),
-            ConfiguracoesScreen.routeName: (ctx) => const ConfiguracoesScreen(),
             FuncSolicitacaoScreen.routeName: (ctx) =>
                 const FuncSolicitacaoScreen(),
             FuncSegurancaScreen.routeName: (ctx) => const FuncSegurancaScreen(),
@@ -252,7 +274,11 @@ class _HoptimumAppState extends State<HoptimumApp> {
             FuncLimpezaScreen.routeName: (ctx) => const FuncLimpezaScreen(),
             InfoHospedeScreen.routeName: (ctx) => const InfoHospedeScreen(),
             CadastroScreen.routeName: (ctx) => const CadastroScreen(),
+            SemReservaScreen.routeName: (ctx) => const SemReservaScreen(),
             CadastroCarroScreen.routeName: (ctx) => const CadastroCarroScreen(),
+            CadastroDependenteScreen.routeName: (ctx) =>
+                const CadastroDependenteScreen(),
+            FazerReservaScreen.routeName: (ctx) => const FazerReservaScreen(),
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => const HomePage());

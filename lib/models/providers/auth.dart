@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:hoptimum/models/pedido.dart';
+import 'package:hoptimum/models/servico.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,8 +50,13 @@ class Auth with ChangeNotifier {
       globals.email = email;
       globals.password = password;
       var decodedRes = json.decode(response.body) as Map;
+      List reservaList = json.decode(response.body)['hospede']['reservas'];
       if (decodedRes.containsKey('hospede')) {
-        globals.perfil = 'hospede';
+        if (reservaList == null || reservaList.isEmpty) {
+          globals.perfil = 'hospede-sem-reserva';
+        } else {
+          globals.perfil = 'hospede';
+        }
       }
       if (decodedRes.containsKey('funcionario')) {
         switch (decodedRes['funcionario']['cargo']['nome']
@@ -78,13 +85,25 @@ class Auth with ChangeNotifier {
       }
       _token = globals.chave;
       if (responseData.containsKey('hospede')) {
+        if (reservaList == null || reservaList.isEmpty) {
+        } else {
+          getLog();
+          getDepesaLog();
+        }
         _userId = responseData['hospede']['_id'];
-        getLog();
-        getDepesaLog();
       }
       if (responseData.containsKey('funcionario')) {
         _userId = responseData['funcionario']['_id'];
         getLogFunc();
+        if (responseData['funcionario']['cargo']['nome'] == 'cozinha') {
+          getPedidos();
+        }
+        if (responseData['funcionario']['cargo']['nome'] == 'limpeza') {
+          getServicos();
+        }
+        if (responseData['funcionario']['cargo']['nome'] == 'seguranca') {
+          //TODO:provavelmnte o get da lista de hospedes vai aqui
+        }
       }
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
@@ -121,6 +140,8 @@ class Auth with ChangeNotifier {
     globals.naoTenta = false;
     segurancaLog.clear();
     despesasLog.clear();
+    pedidosList.clear();
+    globals.servicoList.clear();
     globals.channel?.sink.close();
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
