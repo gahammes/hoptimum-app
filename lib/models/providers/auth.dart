@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:hoptimum/models/notificacao.dart';
 import 'package:hoptimum/models/pedido.dart';
 import 'package:hoptimum/models/servico.dart';
 import 'package:http/http.dart' as http;
@@ -50,8 +51,9 @@ class Auth with ChangeNotifier {
       globals.email = email;
       globals.password = password;
       var decodedRes = json.decode(response.body) as Map;
-      List reservaList = json.decode(response.body)['hospede']['reservas'];
+
       if (decodedRes.containsKey('hospede')) {
+        List reservaList = json.decode(response.body)['hospede']['reservas'];
         if (reservaList == null || reservaList.isEmpty) {
           globals.perfil = 'hospede-sem-reserva';
         } else {
@@ -85,10 +87,12 @@ class Auth with ChangeNotifier {
       }
       _token = globals.chave;
       if (responseData.containsKey('hospede')) {
+        List reservaList = json.decode(response.body)['hospede']['reservas'];
         if (reservaList == null || reservaList.isEmpty) {
         } else {
           getLog();
           getDepesaLog();
+          getPedidosHosp();
         }
         _userId = responseData['hospede']['_id'];
       }

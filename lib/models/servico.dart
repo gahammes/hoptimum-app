@@ -23,30 +23,7 @@ class Servico {
   });
 }
 
-List<Servico> servicosList = [
-  //SERVICOS
-  // Servico(
-  //   id: '',
-  //   title: 'Serviço de quarto',
-  //   numQuarto: '25a',
-  //   data: DateTime(2022, 11, 9, 8, 05),
-  //   status: Status.espera,
-  // ),
-  // Servico(
-  //   id: '',
-  //   title: 'Serviço de quarto',
-  //   numQuarto: '25b',
-  //   data: DateTime(2022, 11, 8, 10, 10),
-  //   status: Status.espera,
-  // ),
-  // Servico(
-  //   id: '',
-  //   title: 'Serviço de quarto',
-  //   numQuarto: '1a',
-  //   data: DateTime(2022, 11, 8, 11, 55),
-  //   status: Status.espera,
-  // ),
-];
+List<Servico> servicosList = [];
 
 void getServicos() {
   var servicos = [];

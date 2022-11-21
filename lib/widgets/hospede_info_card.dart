@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hoptimum/widgets/constrained_view.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import '../models/quarto.dart';
 import '../globals.dart' as globals;
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HospedeInfoCard extends StatelessWidget {
   final String tag;

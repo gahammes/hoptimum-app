@@ -7,12 +7,15 @@ class Despesa {
   final String title;
   final double amount;
   final DateTime date;
+  final String status;
 
-  const Despesa(
-      {required this.id,
-      required this.title,
-      required this.amount,
-      required this.date});
+  const Despesa({
+    required this.id,
+    required this.title,
+    required this.amount,
+    required this.date,
+    this.status = 'espera',
+  });
 }
 
 int getIndex() {
@@ -47,6 +50,8 @@ double getDiaria() {
           ['quarto']['precoBase']
       .toString());
 }
+
+void updateLog() {}
 
 void getDepesaLog() {
   var logs = [];

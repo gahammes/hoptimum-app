@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -71,82 +72,6 @@ class _SegurancaListState extends State<SegurancaList> {
   //   Navigator.of(context).pop(inputController);
   //   inputController.clear();
   // }
-
-  Card buildCard(BuildContext context, String title, String info, String date,
-      String tag) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      color: tag == 'car'
-          ? const Color(0xfff5f5f5)
-          : Theme.of(context).colorScheme.secondary, //aqui muda
-      elevation: 5,
-      margin: const EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 20,
-      ),
-      child: ListTile(
-        leading: SizedBox(
-          //width: 85,
-          height: 55,
-          child: Card(
-            color: Theme.of(context).colorScheme.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: FittedBox(
-              child: Container(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 8,
-                ),
-                child: tag == 'car'
-                    ? const Icon(
-                        Icons.directions_car, //aqui muda
-                        color: Colors.black, //aqui muda
-                        size: 50,
-                      )
-                    : const Icon(
-                        Icons.key,
-                        color: Colors.white,
-                        size: 50,
-                      ),
-              ),
-            ),
-          ),
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-            color: tag == 'car' ? Colors.black : Colors.white, //aqui muda
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              info,
-              style: TextStyle(
-                  color:
-                      tag == 'car' ? Colors.black : Colors.white), //aqui muda
-            ),
-            Text(
-              // widget.informationLogs[index].date,
-              DateFormat.MMMMEEEEd('pt_BR').add_Hms().format(
-                  DateTime.parse(date).subtract(const Duration(hours: 3))),
-              style: TextStyle(
-                  color:
-                      tag == 'car' ? Colors.black : Colors.white), //aqui muda
-            ),
-          ],
-        ),
-        trailing: null,
-      ),
-    );
-  }
 
   SizeTransition buildCardAni(BuildContext context, String title, String info,
       String date, String tag, Animation<double> animation) {
@@ -227,13 +152,13 @@ class _SegurancaListState extends State<SegurancaList> {
                     color:
                         tag == 'car' ? Colors.black : Colors.white), //aqui muda
               ),
-              Text(
+              AutoSizeText(
                 // widget.informationLogs[index].date,
                 DateFormat.MMMMEEEEd('pt_BR').add_Hms().format(
                     DateTime.parse(date).subtract(const Duration(hours: 3))),
                 style: TextStyle(
-                    color:
-                        tag == 'car' ? Colors.black : Colors.white), //aqui muda
+                    color: tag == 'car' ? Colors.black : Colors.white),
+                maxLines: 1,
               ),
             ],
           ),

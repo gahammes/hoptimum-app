@@ -14,25 +14,7 @@ class DespesasScreen extends StatefulWidget {
 
 class _DespesasScreen extends State<DespesasScreen> {
   final List<Despesa> _userTransactions = despesasLog;
-  DateTime latestDate = DateTime(2022);
-
-  // void printServicos() {
-  //   var reservas = globals.loginData as Map;
-  //   print(reservas['hospede']['reservas'][getIndex()]['reserva']['servicos']);
-  // }
-
-  // void _addNewTransaction(String title, double amount, DateTime chosenDate) {
-  //   final newTx = Transaction(
-  //     id: DateTime.now().toString(),
-  //     title: title,
-  //     amount: amount,
-  //     date: chosenDate,
-  //   );
-
-  //   setState(() {
-  //     _userTransactions.add(newTx);
-  //   });
-  // }
+  DateTime latestDate = DateTime(DateTime.now().year);
 
   DateTime getLatestDate() {
     for (var elem in despesasLog) {
@@ -51,20 +33,6 @@ class _DespesasScreen extends State<DespesasScreen> {
         ),
       );
     }).toList();
-  }
-
-  // void _startAddNewTransaction(BuildContext ctx) {
-  //   showModalBottomSheet(
-  //       context: ctx,
-  //       builder: (_) {
-  //         return NewTransaction(_addNewTransaction);
-  //       });
-  // }
-
-  void _deleteTransaction(String id) {
-    setState(() {
-      _userTransactions.removeWhere((element) => element.id == id);
-    });
   }
 
   @override
@@ -88,7 +56,7 @@ class _DespesasScreen extends State<DespesasScreen> {
                   0.23,
             ),
             SizedBox(
-              child: DespesaList(_userTransactions, _deleteTransaction),
+              child: DespesaList(despesasLog),
               height: (MediaQuery.of(context).size.height -
                       MediaQuery.of(context).padding.top) *
                   0.59,

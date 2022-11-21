@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import '../models/despesa.dart';
 
 class DespesaList extends StatelessWidget {
   final List<Despesa> despesas;
-  final Function deleteTx;
 
-  const DespesaList(this.despesas, this.deleteTx, {Key? key}) : super(key: key);
+  const DespesaList(this.despesas, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +75,15 @@ class DespesaList extends StatelessWidget {
                       ),
                     ),
                   ),
-                  title: Text(
-                    despesas[index].title,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                  title: Container(
+                    child: AutoSizeText(
+                      despesas[index].title,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                      maxLines: 1,
                     ),
                   ),
                   subtitle: Column(
@@ -95,14 +98,6 @@ class DespesaList extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // trailing: IconButton(
-                  //   icon: Icon(Icons.info),
-                  //   padding: EdgeInsets.all(5),
-                  //   constraints: BoxConstraints(),
-                  //   color: Theme.of(context).disabledColor,
-                  //   hoverColor: Theme.of(context).errorColor,
-                  //   onPressed: () => deleteTx(transactions[index].id),
-                  // ),
                 ),
               )
             : Card(
@@ -161,6 +156,7 @@ class DespesaList extends StatelessWidget {
                     despesas[index].title,
                     style: const TextStyle(
                       color: Colors.white,
+                      overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),

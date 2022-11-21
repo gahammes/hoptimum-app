@@ -1,161 +1,151 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import '../models/notificacao.dart';
+import '../globals.dart' as globals;
 
-class NotificacaoList extends StatelessWidget {
+class NotificacaoList extends StatefulWidget {
   final List<Notificacao> notificacaoLogs;
 
   const NotificacaoList(this.notificacaoLogs, {Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return notificacaoLogs.isEmpty
-        ? Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: Column(
-              children: [
-                // Text(
-                //   'Sem despesas ainda....',
-                //   style: Theme.of(context).textTheme.headline6,
-                // ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    'Toque em + para fazer solicitações e pedidos.',
-                    style: Theme.of(context).textTheme.headline6,
-                    textAlign: TextAlign.center,
+  State<NotificacaoList> createState() => _NotificacaoListState();
+}
+
+class _NotificacaoListState extends State<NotificacaoList> {
+  final listKey = GlobalKey<AnimatedListState>();
+
+  SizeTransition buildCardAni(BuildContext context, String title, String info,
+      String date, String tag, Animation<double> animation) {
+    return SizeTransition(
+      sizeFactor: animation,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        color: tag == 'serv'
+            ? const Color(0xfff5f5f5)
+            : Theme.of(context).colorScheme.secondary, //aqui muda
+        elevation: 5,
+        margin: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 20,
+        ),
+        child: ListTile(
+          leading: SizedBox(
+            //width: 85,
+            height: 55,
+            child: Card(
+              //color: Theme.of(context).colorScheme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color.fromARGB(255, 255, 135, 108),
+                      Color.fromARGB(255, 248, 128, 101),
+                      Color.fromARGB(255, 246, 106, 75),
+                      Color(0xffF75E3B),
+                    ],
+                    stops: [0.1, 0.4, 0.7, 0.9],
                   ),
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                const SizedBox(
-                  height: 50,
-                ),
-                SizedBox(
-                  height: 200,
-                  child: Image.asset(
-                    'assets/images/tw.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
-          )
-        : ListView.builder(
-            itemBuilder: (ctx, index) {
-              return notificacaoLogs[index].tag != 'serv'
-                  ? Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      color: const Color(0xfff5f5f5),
-                      elevation: 5,
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 20,
-                      ),
-                      child: ListTile(
-                        leading: SizedBox(
-                          //width: 85,
-                          height: 55,
-                          child: Card(
-                            color: Theme.of(context).colorScheme.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: FittedBox(
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                  horizontal: 8,
-                                ),
-                                child: const Icon(
-                                  Icons.restaurant,
-                                  color: Colors.black,
-                                  size: 50,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        title: Text(
-                          notificacaoLogs[index].title,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              notificacaoLogs[index].cod,
-                            ),
-                            Text(
-                              notificacaoLogs[index].date,
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  : Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      color: Theme.of(context).colorScheme.secondary,
-                      elevation: 5,
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 20,
-                      ),
-                      child: ListTile(
-                        leading: SizedBox(
-                          //width: 85,
-                          height: 55,
-                          child: Card(
-                            color: Theme.of(context).colorScheme.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: FittedBox(
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                  horizontal: 8,
-                                ),
-                                child: const Icon(
-                                  Icons.king_bed,
-                                  color: Colors.white,
-                                  size: 50,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        title: Text(
-                          notificacaoLogs[index].title,
-                          style: const TextStyle(
+                child: FittedBox(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 8,
+                    ),
+                    child: tag == 'serv'
+                        ? const Icon(
+                            Icons.king_bed, //aqui muda
+                            color: Colors.black, //aqui muda
+                            size: 50,
+                          )
+                        : const Icon(
+                            Icons.restaurant,
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            size: 50,
                           ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              notificacaoLogs[index].cod,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              notificacaoLogs[index].date,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-            },
-            itemCount: notificacaoLogs.length,
-          );
+                  ),
+                ),
+              ),
+            ),
+          ),
+          title: AutoSizeText(
+            title,
+            style: TextStyle(
+              color: tag == 'serv' ? Colors.black : Colors.white, //aqui muda
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+            maxLines: 1,
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                info,
+                style: TextStyle(
+                    color: tag == 'serv'
+                        ? Colors.black
+                        : Colors.white), //aqui muda
+              ),
+              AutoSizeText(
+                // widget.informationLogs[index].date,
+                DateFormat.MMMMEEEEd('pt_BR').add_Hms().format(
+                    DateTime.parse(date).subtract(const Duration(hours: 3))),
+                style: TextStyle(
+                    color: tag == 'serv' ? Colors.black : Colors.white),
+                maxLines: 1, //aqui muda
+              ),
+            ],
+          ),
+          trailing: null,
+        ),
+      ),
+    );
+  }
+
+  AnimatedList animatedList() {
+    var listItems = widget.notificacaoLogs;
+    return AnimatedList(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      //physics: AlwaysScrollableScrollPhysics(),
+      key: globals.listKeyNotif,
+      initialItemCount: widget.notificacaoLogs.length,
+      itemBuilder: (context, index, animation) {
+        return buildCardAni(
+          context,
+          listItems[index].title,
+          listItems[index].status,
+          listItems[index].date.toIso8601String(),
+          listItems[index].tag,
+          animation,
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    initializeDateFormatting();
+    return RefreshIndicator(
+      onRefresh: () {
+        return Future.delayed(const Duration(seconds: 1), () {
+          setState(() {});
+        });
+      },
+      child: animatedList(),
+    );
   }
 }

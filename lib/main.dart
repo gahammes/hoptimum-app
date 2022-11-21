@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hoptimum/models/notificacao.dart';
 import 'package:hoptimum/models/pedido.dart';
 import 'package:hoptimum/models/servico.dart';
 import 'package:hoptimum/screens/cadastro_carro_screen.dart';
@@ -73,6 +74,7 @@ Future<void> reLogin() async {
   if (data.containsKey('hospede')) {
     getLog();
     getDepesaLog();
+    getPedidosHosp();
   }
   if (data.containsKey('funcionario')) {
     getLogFunc();
@@ -152,24 +154,30 @@ class _HoptimumAppState extends State<HoptimumApp> {
           //globals.chaveBackUp = res['loginId'];
           //print(res['loginId']);
           //res['loginId'] = '';
+
         }
-        if (res.containsKey('reserva')) {
+
+        if (res.containsKey('funcionario') && res.containsKey('status')) {
+          globals.newStatus = res;
+          setState(() {
+            updateStatus();
+          });
+          print('😱 update de log 😱');
+          print('🥸🥸🥸 $res');
+        } else if (res.containsKey('reserva')) {
           setState(() {
             addLog(res);
           });
           print('🧄 log de hospede 🧄');
           //print(encoder.convert(json.decode(data)));
-        }
-        if (res.containsKey('funcionario')) {
+        } else if (res.containsKey('funcionario')) {
           setState(() {
             addLog(res);
           });
           //print(encoder.convert(json.decode(data)));
           print('🤢 log de funcionario 🤢');
           //print(res['quarto']);
-        }
-
-        if (res.containsKey('status')) {
+        } else if (res.containsKey('status')) {
           setState(() {
             addLog(res);
           });

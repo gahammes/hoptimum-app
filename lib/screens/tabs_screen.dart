@@ -198,7 +198,7 @@ class _TabsScreenState extends State<TabsScreen> {
           backgroundColor: Theme.of(context).colorScheme.secondary,
           icon: Icon(
             Icons.attach_money,
-            color: (dataCheck ? Colors.grey : Colors.white),
+            color: (dataCheck ? Colors.grey : null),
           ),
           label: 'Despesas',
         ),
@@ -206,7 +206,7 @@ class _TabsScreenState extends State<TabsScreen> {
           backgroundColor: Theme.of(context).colorScheme.secondary,
           icon: Icon(
             Icons.add_circle,
-            color: (dataCheck ? Colors.grey : Colors.white),
+            color: (dataCheck ? Colors.grey : null),
           ),
           label: 'Solicitações',
         ),
@@ -214,7 +214,7 @@ class _TabsScreenState extends State<TabsScreen> {
           backgroundColor: Theme.of(context).colorScheme.secondary,
           icon: Icon(
             Icons.notifications,
-            color: (dataCheck ? Colors.grey : Colors.white),
+            color: (dataCheck ? Colors.grey : null),
           ),
           label: 'Notificações',
         ),
@@ -222,7 +222,7 @@ class _TabsScreenState extends State<TabsScreen> {
           backgroundColor: Theme.of(context).colorScheme.secondary,
           icon: Icon(
             Icons.shield,
-            color: (dataCheck ? Colors.grey : Colors.white),
+            color: (dataCheck ? Colors.grey : null),
           ),
           label: 'Segurança',
         ),

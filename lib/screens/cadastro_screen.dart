@@ -580,31 +580,76 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-//   Widget _buildCargoDropDown() {
-//     return
-// DropdownButton<String>(
-//       value: dropdownValue,
-//       icon: const Icon(Icons.arrow_downward),
-//       elevation: 16,
-//       style: const TextStyle(color: Colors.deepPurple),
-//       underline: Container(
-//         height: 2,
-//         color: Colors.deepPurpleAccent,
-//       ),
-//       onChanged: (String? value) {
-//         // This is called when the user selects an item.
-//         setState(() {
-//           dropdownValue = value!;
-//         });
-//       },
-//       items: list.map<DropdownMenuItem<String>>((String value) {
-//         return DropdownMenuItem<String>(
-//           value: value,
-//           child: Text(value),
-//         );
-//       }).toList(),
-//     );
-//   }
+  Widget _buildCargoDropDown() {
+    const List<String> list = <String>['Segurança', 'Cozinha', 'Limpeza'];
+    String? _selectedValue;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Cargo', style: kLabelStyle),
+        const SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.center,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: DropdownButtonFormField(
+            dropdownColor: const Color.fromARGB(255, 254, 73, 32),
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.cases_outlined,
+                color: Colors.white,
+              ),
+              hintStyle: TextStyle(color: Colors.blue),
+            ),
+            value: _selectedValue,
+            hint: Text(
+              'Selecione seu cargo',
+              style: kHintTextStyle,
+            ),
+            isExpanded: true,
+            onChanged: (String? value) {
+              setState(() {
+                _selectedValue = value!;
+              });
+            },
+            onSaved: (String? value) {
+              setState(() {
+                _selectedValue = value!;
+                if (value == 'Segurança') {
+                  _authData['cargo'] = 'segurança';
+                } else if (value == 'Cozinha') {
+                  _authData['cargo'] = 'cozinha';
+                } else {
+                  _authData['cargo'] = 'limpeza';
+                }
+              });
+            },
+            validator: (String? value) {
+              if (value!.isEmpty) {
+                return 'Selecione uma opção';
+              } else {
+                return null;
+              }
+            },
+            items: list.map((String val) {
+              return DropdownMenuItem(
+                value: val,
+                child: Text(
+                  val,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildCargoTF() {
     return Column(
@@ -767,6 +812,81 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
+  Widget _buildGeneroDropDown() {
+    const List<String> list = <String>[
+      'Homem',
+      'Mulher',
+      'Prefiro não informar'
+    ];
+    String? _selectedValue;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Gênero', style: kLabelStyle),
+        const SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.center,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: DropdownButtonFormField(
+            dropdownColor: const Color.fromARGB(255, 254, 73, 32),
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.cases_outlined,
+                color: Colors.white,
+              ),
+              hintStyle: TextStyle(color: Colors.blue),
+            ),
+            value: _selectedValue,
+            hint: Text(
+              'Selecione seu gênero',
+              style: kHintTextStyle,
+            ),
+            isExpanded: true,
+            onChanged: (String? value) {
+              setState(() {
+                _selectedValue = value!;
+              });
+            },
+            onSaved: (String? value) {
+              setState(() {
+                _selectedValue = value!;
+                if (value == 'Homem') {
+                  _authData['genero'] = 'H';
+                } else if (value == 'Mulher') {
+                  _authData['genero'] = 'M';
+                } else {
+                  _authData['genero'] = 'X';
+                }
+              });
+            },
+            validator: (String? value) {
+              if (value!.isEmpty) {
+                return 'Selecione uma opção';
+              } else {
+                return null;
+              }
+            },
+            items: list.map((String val) {
+              return DropdownMenuItem(
+                value: val,
+                child: Text(
+                  val,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'OpenSans',
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
   List<Widget> camposCadastro() {
     return _authMode == AuthMode.hospede
         ? [
@@ -782,11 +902,9 @@ class _AuthenticateState extends State<Authenticate> {
             const SizedBox(height: 30.0),
             _buildSignUpButton(
                 'Quer cadastrar um carro? ', CadastroCarroScreen.routeName),
-            const SizedBox(height: 10.0),
-            _buildSignUpButton('Quer cadastrar um dependente? ',
-                CadastroDependenteScreen.routeName),
-            const SizedBox(height: 30.0),
-            //_buildCargoDropDown(),
+            // const SizedBox(height: 10.0),
+            // _buildSignUpButton('Quer cadastrar um dependente? ',
+            //     CadastroDependenteScreen.routeName),
             const SizedBox(height: 30.0),
             _buildNomeTF(),
             const SizedBox(height: 30.0),
@@ -796,7 +914,7 @@ class _AuthenticateState extends State<Authenticate> {
             const SizedBox(height: 30.0),
             _builDataTF(),
             const SizedBox(height: 30.0),
-            _builGeneroTF(),
+            _buildGeneroDropDown(),
             const SizedBox(height: 30.0),
             _buildTelefoneTF(),
             const SizedBox(height: 30.0),
@@ -819,13 +937,13 @@ class _AuthenticateState extends State<Authenticate> {
             const SizedBox(height: 30.0),
             _buildEmailTF(),
             const SizedBox(height: 30.0),
-            _buildCargoTF(),
+            _buildCargoDropDown(),
             const SizedBox(height: 30.0),
             _buildCPFTF(),
             const SizedBox(height: 30.0),
             _builDataTF(),
             const SizedBox(height: 30.0),
-            _builGeneroTF(),
+            _buildGeneroDropDown(),
             const SizedBox(height: 30.0),
             _buildTelefoneTF(),
             const SizedBox(height: 30.0),

@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
+import 'package:http/http.dart' as http;
 
 import '../models/servico.dart';
+import '../globals.dart' as globals;
 
 class FuncLimpezaItem extends StatefulWidget {
   final List<Servico> solicitacoes;
@@ -14,18 +18,22 @@ class FuncLimpezaItem extends StatefulWidget {
 }
 
 class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
-  void _updateStatus(int index) {
+  //post com _id de servicos[i] status(string) /api/statusservico
+  void _updateStatus(int index) async {
+    var status = '';
     setState(() {
       switch (widget.solicitacoes[index].status) {
         case Status.espera:
           widget.solicitacoes[index].status = Status.recebido;
+          status = 'recebido';
           break;
         case Status.recebido:
           widget.solicitacoes[index].status = Status.preparando;
+          status = 'preparando';
           break;
         case Status.preparando:
           widget.solicitacoes[index].status = Status.finalizado;
-          widget.solicitacoes[index].status = Status.finalizado;
+          status = 'finalizado';
           widget.soliFinalizados.insert(0, widget.solicitacoes[index]);
           widget.solicitacoes.removeAt(index);
           break;
@@ -35,6 +43,24 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
           break;
       }
     });
+    try {
+      final url = Uri.parse(globals.getUrl('http', 'api/statusservico'));
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(
+          {
+            'id': globals.loginData['funcionario']['servicos'][index]['_id'],
+            'status': status,
+          },
+        ),
+      );
+      print(json.decode(response.body));
+    } catch (error) {
+      print(error);
+    }
   }
 
   Widget _buildExpansionTile(int index, Color color) {
