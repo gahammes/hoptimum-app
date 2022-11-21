@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hoptimum/models/despesa.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/refeicao.dart';
-import '../screens/meal_detail_screen.dart';
 import '../globals.dart' as globals;
 
 class RefeicaoItem extends StatelessWidget {

@@ -26,7 +26,6 @@ import '../screens/login_screen.dart';
 import '../screens/reserva_info.dart';
 import '../screens/tabs_screen.dart';
 import '../screens/tela_reserva.dart';
-import '../screens/meal_detail_screen.dart';
 import '../screens/categories_screen.dart';
 import '../models/providers/auth.dart';
 import '../screens/func_limpeza_screen.dart';
@@ -262,7 +261,6 @@ class _HoptimumAppState extends State<HoptimumApp> {
             //'/': (context) => LoginScreen(),
             CategoriesScreen.routeName: (ctx) => const CategoriesScreen(),
             CategoryMealsScreen.routeName: (ctx) => const CategoryMealsScreen(),
-            MealDetailScreen1.routeName: (ctx) => const MealDetailScreen1(),
             InfoScreen.routeName: (ctx) => const InfoScreen(),
             TabsScreen.routeName: (ctx) => const TabsScreen(),
             LoginScreen.routeName: (ctx) => const LoginScreen(),

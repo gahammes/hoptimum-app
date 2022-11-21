@@ -5,10 +5,13 @@ class HeroDialogRoute<T> extends PageRoute<T> {
     required WidgetBuilder builder,
     RouteSettings? settings,
     bool fullScreenDialog = false,
+    int duration = 500,
   })  : _builder = builder,
+        _duration = duration,
         super(settings: settings, fullscreenDialog: fullScreenDialog);
 
   final WidgetBuilder _builder;
+  final int _duration;
 
   @override
   bool get opaque => false;
@@ -17,7 +20,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   bool get barrierDismissible => true;
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 500);
+  Duration get transitionDuration => Duration(milliseconds: _duration);
 
   @override
   bool get maintainState => true;

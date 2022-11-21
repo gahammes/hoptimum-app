@@ -4,8 +4,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import '../models/hotel.dart';
 import '../globals.dart' as globals;
 
-const String _heroInfoCard = 'info-card-hero';
-
 class InfoCard extends StatelessWidget {
   const InfoCard({Key? key}) : super(key: key);
 

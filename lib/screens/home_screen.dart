@@ -164,10 +164,14 @@ class _HomePageState extends State<HomePage> {
           items: [
             for (var i = 0; i < getHospCount(); i++)
               CardsList(
-                  getNome(i),
-                  getTitular(i) == true ? 'Titular' : 'Dependente',
-                  'Quarto ${getQuarto(i)}',
-                  'Clique para informações'),
+                getNome(i),
+                getTitular(i) == true ? 'Titular' : 'Dependente',
+                'Quarto ${getQuarto(i)}',
+                'Clique para informações',
+                'hosp-info-hero$i',
+                getHospedes()[i]['hospede'],
+                getTitular(i),
+              ),
           ],
         ),
         Column(
