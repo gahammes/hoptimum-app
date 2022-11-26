@@ -56,17 +56,6 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
     super.dispose();
   }
 
-  void getListaHosp() async {
-    try {
-      final url = Uri.parse(globals.getUrl('http', 'api/hospedes'));
-      final response = await http.get(url);
-      print('🫥 ${json.decode(response.body)}');
-      globals.hospedesList = json.decode(response.body);
-    } catch (error) {
-      print(error);
-    }
-  }
-
   void printCoiso() {
     print(globals.loginData['funcionario']['registros']);
   }
@@ -74,13 +63,7 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting();
-    //print(globals.loginData['funcionario']['carros']);
-    //printCoiso();
-    //print(globals.loginData['funcionario']['cartoesChave']);
-    getListaHosp();
-    //TODO:LISTA DE HOSPEDES
-    // print('🤬 ${globals.hospedesList[0]['hospedes'][0]['hospede']}');
-    //print('🤬 ${globals.hospedesList}');
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${globals.loginData['funcionario']['nome']} - Segurança'
@@ -145,8 +128,7 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
                     height: 640, //TODO: aqui da overflow
                     //margin: EdgeInsets.only(top: 0),
 
-                    child:
-                        SegurancaList(segurancaLog), //TODO:tratar na main.dart
+                    child: SegurancaList(segurancaLog),
                   ),
                 ],
               ),

@@ -21,8 +21,11 @@ class _NotificacaoScreenState extends State<NotificacaoScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              height: 640, //TODO: aqui da overflow
+            SizedBox(
+              height: (MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top -
+                      185.0) *
+                  1.08,
               //margin: const EdgeInsets.only(top: 10),
               child: NotificacaoList(notificacoes),
             ),

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hoptimum/models/report.dart';
+import 'package:sizer/sizer.dart';
+import 'package:hoptimum/models/hospede.dart';
 import 'package:hoptimum/models/notificacao.dart';
 import 'package:hoptimum/models/pedido.dart';
 import 'package:hoptimum/models/servico.dart';
@@ -90,25 +93,37 @@ Future<void> reLogin() async {
   }
 }
 
-//TODO:CONFERIR SE TEM RESERVA EM ['hospede']['reservas']
 class _HoptimumAppState extends State<HoptimumApp> {
   void _connect() async {
     globals.channel = IOWebSocketChannel.connect(globals.getUrl('ws', ''));
     print('💩💩💩💩💩💩💩💩💩💩💩💩💩');
     JsonEncoder encoder = const JsonEncoder.withIndent('  ');
 
-    try {
-      final url = Uri.parse(globals.getUrl('http', 'api/servicos'));
-      final response = await http.get(url);
-      globals.servicoList = json.decode(response.body);
-    } catch (error) {
-      print(error);
+    while (globals.servicoList.isEmpty) {
+      //TODO: MUDEI AQUI TEM Q VER SE NAO DA RUIM (as vezes nao pega a lista)
+      try {
+        final url = Uri.parse(globals.getUrl('http', 'api/servicos'));
+        final response = await http.get(url);
+        globals.servicoList = json.decode(response.body);
+      } catch (error) {
+        print(error);
+      }
     }
 
     try {
       final url = Uri.parse(globals.getUrl('http', 'api/quartos'));
       final response = await http.get(url);
       globals.quartosList = json.decode(response.body);
+    } catch (error) {
+      print(error);
+    }
+
+    try {
+      final url = Uri.parse(globals.getUrl('http', 'api/hospedes'));
+      final response = await http.get(url);
+      //print('🫥 ${json.decode(response.body)}');
+      globals.hospedesList = json.decode(response.body);
+      getHospList();
     } catch (error) {
       print(error);
     }
@@ -169,19 +184,21 @@ class _HoptimumAppState extends State<HoptimumApp> {
             addLog(res);
           });
           print('🧄 log de hospede 🧄');
-          //print(encoder.convert(json.decode(data)));
         } else if (res.containsKey('funcionario')) {
           setState(() {
             addLog(res);
           });
-          //print(encoder.convert(json.decode(data)));
           print('🤢 log de funcionario 🤢');
-          //print(res['quarto']);
         } else if (res.containsKey('status')) {
           setState(() {
             addLog(res);
           });
           print('👌 log de carro 👌');
+        } else if (res.containsKey('texto')) {
+          setState(() {
+            addReporte(res);
+          });
+          print('👅 reporte feito 👅');
         }
         //print(encoder.convert(json.decode(data)));
 

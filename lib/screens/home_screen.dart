@@ -28,7 +28,6 @@ class _HomePageState extends State<HomePage> {
     hospedes = globals.loginData['hospede']['reservas'][getIndex()]['reserva']
         ['hospedes'];
     //print('numero hospedes ${hospedes.length}');
-
     return hospedes.length;
   }
 
@@ -168,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                 getTitular(i) == true ? 'Titular' : 'Dependente',
                 'Quarto ${getQuarto(i)}',
                 'Clique para informações',
-                'hosp-info-hero$i',
+                'hosp-info-hero-$i',
                 getHospedes()[i]['hospede'],
                 getTitular(i),
               ),
@@ -281,6 +280,7 @@ class _HomePageState extends State<HomePage> {
                                 .pushReplacementNamed(TabsScreen.routeName);
                           },
                     child: Container(
+                      color: Colors.transparent,
                       margin: const EdgeInsets.only(bottom: 10, top: 0),
                       height: 160,
                       width: 200,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import '../models/despesa.dart';
 import '../widgets/grafico.dart';
@@ -53,13 +54,14 @@ class _DespesasScreen extends State<DespesasScreen> {
               child: Grafico(_recentTransactions),
               height: (MediaQuery.of(context).size.height -
                       MediaQuery.of(context).padding.top) *
-                  0.23,
+                  0.25,
             ),
             SizedBox(
               child: DespesaList(despesasLog),
               height: (MediaQuery.of(context).size.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.59,
+                      MediaQuery.of(context).padding.top -
+                      185.0) *
+                  0.75,
             ),
           ],
         ),

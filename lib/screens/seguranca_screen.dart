@@ -21,8 +21,10 @@ class _SegurancaScreen extends State<SegurancaScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(
-              height: 640, //TODO: aqui da overflow
-              //margin: EdgeInsets.only(top: 0),
+              height: (MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top -
+                      185.0) *
+                  1.08,
               child: SegurancaList(segurancaLog),
             ),
           ],

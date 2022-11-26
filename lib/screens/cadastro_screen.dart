@@ -177,7 +177,7 @@ class _AuthenticateState extends State<Authenticate> {
           },
         ),
       );
-      print(json.decode('😶‍🌫️ ${response.body}'));
+      print('😶‍🌫️ ${json.decode(response.body)}');
       globals.carrosArray.clear();
       globals.carrosArray = [];
     } catch (error) {
@@ -766,7 +766,7 @@ class _AuthenticateState extends State<Authenticate> {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty || value.length < 1) {
-                return 'A senha é muito curta.';
+                return null;
               }
               return null;
             },
@@ -854,19 +854,23 @@ class _AuthenticateState extends State<Authenticate> {
               setState(() {
                 _selectedValue = value!;
                 if (value == 'Homem') {
-                  _authData['genero'] = 'H';
-                } else if (value == 'Mulher') {
                   _authData['genero'] = 'M';
+                } else if (value == 'Mulher') {
+                  _authData['genero'] = 'F';
                 } else {
                   _authData['genero'] = 'X';
                 }
               });
             },
             validator: (String? value) {
-              if (value!.isEmpty) {
-                return 'Selecione uma opção';
-              } else {
-                return null;
+              try {
+                if (value!.isEmpty) {
+                  return 'Selecione uma opção';
+                } else {
+                  return null;
+                }
+              } catch (error) {
+                print('digite por favor');
               }
             },
             items: list.map((String val) {

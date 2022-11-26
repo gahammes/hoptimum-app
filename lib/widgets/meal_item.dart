@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hoptimum/models/despesa.dart';
+import 'package:hoptimum/models/notificacao.dart';
 import 'package:http/http.dart' as http;
 
 import '../globals.dart' as globals;
 
-class RefeicaoItem extends StatelessWidget {
+class RefeicaoItem extends StatefulWidget {
   final String id;
   final String title;
   final String imageUrl;
@@ -22,6 +23,12 @@ class RefeicaoItem extends StatelessWidget {
     required this.price,
   }) : super(key: key);
 
+  @override
+  State<RefeicaoItem> createState() => _RefeicaoItemState();
+}
+
+class _RefeicaoItemState extends State<RefeicaoItem> {
+  var _isLoading = false;
   int getIndex() {
     var dados = globals.loginData as Map;
     var reservas = [];
@@ -49,8 +56,110 @@ class RefeicaoItem extends StatelessWidget {
     return getReservas()[getIndex()]['reserva']['_id'].toString();
   }
 
+  Widget fecharButton(BuildContext ctx) {
+    return TextButton(
+      child: const Text("Fechar"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  AlertDialog pedidoFeitoDialog(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      title: const Text(
+        "Confirmado",
+        style: TextStyle(color: Colors.black),
+      ),
+      content: const Text("Pedido recebido!"),
+      actions: [
+        fecharButton(context),
+      ],
+    );
+  }
+
+  void fazerPedido() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    var url = Uri.parse(globals.getUrl('http', 'api/servico'));
+    try {
+      var res = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode({
+          'idServico': widget.id,
+          'idReserva': getReservaId(),
+        }),
+      );
+      var data = json.decode(res.body);
+      Despesa newDespesa = Despesa(
+        id: widget.id,
+        title: widget.title,
+        amount: widget.price,
+        date: DateTime.parse(data['createdAt'].toString())
+            .subtract(const Duration(hours: 3)),
+      );
+      setState(() {
+        despesasLog.insert(0, newDespesa);
+        notificacoes.insert(
+          0,
+          Notificacao(
+            id: widget.id,
+            title: widget.title,
+            status: 'Em espera',
+            date: DateTime.now(),
+            tag: widget.title.toLowerCase() == 'serviço de quarto'
+                ? 'serv'
+                : 'ref',
+          ),
+        );
+      });
+
+      print('🤦‍♂️ $data');
+      setState(() {
+        _isLoading = false;
+      });
+      showDialog(context: context, builder: pedidoFeitoDialog);
+    } catch (error) {
+      print(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget cancelButton = TextButton(
+      child: const Text("Cancelar"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    Widget continueButton = TextButton(
+      child: const Text("Confirmar"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        fazerPedido();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog confirmacaoDialog = AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      title: const Text(
+        "Confirmação",
+        style: TextStyle(color: Colors.black),
+      ),
+      content: const Text("Quer fazer esse pedido?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
     final iconColor = Theme.of(context).colorScheme.primary;
     const fontColor = Colors.white;
     return Card(
@@ -70,7 +179,7 @@ class RefeicaoItem extends StatelessWidget {
                   topRight: Radius.circular(15),
                 ),
                 child: Image.network(
-                  imageUrl,
+                  widget.imageUrl,
                   height: 250,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -85,7 +194,7 @@ class RefeicaoItem extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                   child: Text(
-                    title,
+                    widget.title,
                     style: const TextStyle(
                       fontSize: 26,
                       color: Colors.white,
@@ -119,7 +228,7 @@ class RefeicaoItem extends StatelessWidget {
                           width: 6,
                         ),
                         Text(
-                          '$duration min',
+                          '${widget.duration} min',
                           style: const TextStyle(
                             color: fontColor,
                             fontSize: 16,
@@ -142,7 +251,7 @@ class RefeicaoItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          price.toStringAsFixed(2),
+                          widget.price.toStringAsFixed(2),
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -155,53 +264,37 @@ class RefeicaoItem extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(top: 10),
                   child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      onPressed: () async {
-                        var url =
-                            Uri.parse(globals.getUrl('http', 'api/servico'));
-                        try {
-                          var res = await http.post(
-                            url,
-                            headers: <String, String>{
-                              'Content-Type': 'application/json; charset=UTF-8',
-                            },
-                            body: json.encode({
-                              'idServico': id,
-                              'idReserva': getReservaId(),
-                            }),
-                          );
-                          var data = json.decode(res.body);
-                          Despesa newDespesa = Despesa(
-                            id: id,
-                            title: title,
-                            amount: price,
-                            date: DateTime.parse(data['createdAt'].toString())
-                                .subtract(const Duration(hours: 3)),
-                          );
-                          despesasLog.insert(0, newDespesa);
-                          print('🤦‍♂️ $data');
-                        } catch (error) {
-                          print(error);
-                        }
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 10,
-                        ),
-                        child: const Text(
-                          'PEDIR',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      )),
+                    ),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (ctx) {
+                            return confirmacaoDialog;
+                          });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 10,
+                      ),
+                      child: _isLoading
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : const Text(
+                              'PEDIR',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                    ),
+                  ),
                 ),
               ],
             ),

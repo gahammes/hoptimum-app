@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:hoptimum/models/hospede.dart';
 import 'package:hoptimum/models/notificacao.dart';
 import 'package:hoptimum/models/pedido.dart';
+import 'package:hoptimum/models/report.dart';
 import 'package:hoptimum/models/servico.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -105,8 +107,8 @@ class Auth with ChangeNotifier {
         if (responseData['funcionario']['cargo']['nome'] == 'limpeza') {
           getServicos();
         }
-        if (responseData['funcionario']['cargo']['nome'] == 'seguranca') {
-          //TODO:provavelmnte o get da lista de hospedes vai aqui
+        if (responseData['funcionario']['cargo']['nome'] == 'segurança') {
+          getReportes();
         }
       }
       notifyListeners();
@@ -143,9 +145,16 @@ class Auth with ChangeNotifier {
     globals.perfil = null;
     globals.naoTenta = false;
     segurancaLog.clear();
+    hospedeList.clear();
     despesasLog.clear();
     pedidosList.clear();
+    hospedeList.clear();
+    reportesList.clear();
     globals.servicoList.clear();
+    globals.carrosArray.clear();
+    globals.quartosList.clear();
+    globals.hospedesList.clear();
+    globals.newStatus.clear();
     globals.channel?.sink.close();
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();

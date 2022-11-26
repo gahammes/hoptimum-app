@@ -39,7 +39,8 @@ class _ReportCardState extends State<ReportCard> {
                 ),
                 child: FittedBox(
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         begin: Alignment.topCenter,
@@ -58,17 +59,11 @@ class _ReportCardState extends State<ReportCard> {
                     //   vertical: 10,
                     //   horizontal: 8,
                     // ),
-                    child: widget.report.tag == 'cartao'
-                        ? const Icon(
-                            Icons.warning_rounded,
-                            color: Colors.black,
-                            size: 50,
-                          )
-                        : const Icon(
-                            Icons.warning_rounded,
-                            color: Colors.black,
-                            size: 50,
-                          ),
+                    child: const Icon(
+                      Icons.warning_rounded,
+                      color: Colors.black,
+                      size: 50,
+                    ),
                   ),
                 ),
               ),

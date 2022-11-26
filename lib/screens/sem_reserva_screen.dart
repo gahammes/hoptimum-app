@@ -35,20 +35,79 @@ class SemReservaScreen extends StatelessWidget {
             ),
           ),
           Container(
+            margin: const EdgeInsets.only(top: 50),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+              vertical: 10.0,
+            ),
+            height: 200,
+            child: const Image(
+              image: AssetImage('assets/images/logo-black.png'),
+            ),
+          ),
+          Container(
             margin: const EdgeInsets.symmetric(horizontal: 100.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(TelaReserva.routeName);
-                  },
-                  child: Text('Fazer reserva'),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 25.0),
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(TelaReserva.routeName);
+                    },
+                    child: const Text(
+                      'FAZER RESERVA',
+                      style: TextStyle(
+                        color: Colors.red,
+                        letterSpacing: 1.5,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'OpenSans',
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                      elevation: MaterialStateProperty.all(5.0),
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.all(15.0)),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                    ),
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: () => logout(context),
-                  child: const Text('Sair'),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => logout(context),
+                    child: const Text(
+                      'SAIR',
+                      style: TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 1.5,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'OpenSans',
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                      ),
+                      elevation: MaterialStateProperty.all(5.0),
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.all(10.0)),
+                      backgroundColor: MaterialStateProperty.all(Colors.red),
+                    ),
+                  ),
                 ),
               ],
             ),

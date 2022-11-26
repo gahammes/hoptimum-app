@@ -1,49 +1,64 @@
+import '../globals.dart' as globals;
+
 class Report {
   final String nome;
-  final String tag;
   final String numQuart;
   final String detalhes;
   final DateTime hora;
 
   Report({
     required this.nome,
-    required this.tag,
     required this.numQuart,
     required this.detalhes,
     required this.hora,
   });
 }
 
-var reportesList = [
-  //REPORTES
-  Report(
-    nome: 'Pessoa #1',
-    tag: 'cartao',
-    numQuart: '25a',
-    detalhes:
-        'Perdi meu cartao chave e ele foi usado para entrar no meu quarto',
-    hora: DateTime(2022, 6, 15, 21, 08),
-  ),
-  Report(
-    nome: 'Pessoa #2',
-    tag: 'cartao',
-    numQuart: '25b',
-    detalhes:
-        'Minha carteira foi roubada e alguém usou o cartão para entrar no meu quarto',
-    hora: DateTime(2022, 6, 15, 17, 45),
-  ),
-  // Report(
-  //   nome: 'Eveline Álvares',
-  //   tag: 'carro',
-  //   numQuart: 226,
-  //   detalhes: 'O histórico mostra meu carro saindo do hotel mas nao foi eu',
-  //   hora: DateTime(2022, 6, 15, 13, 22),
-  // ),
-  // Report(
-  //   nome: 'Kenny Barreiros Monjardim',
-  //   tag: 'cartao',
-  //   numQuart: 101,
-  //   detalhes: 'Perdi meu cartão, poderia bloqueá-lo?',
-  //   hora: DateTime(2022, 6, 15, 10, 31),
-  // ),
-];
+int getIndex(List reservas) {
+  int index = reservas.indexWhere((reserva) {
+    Map mapa = reserva as Map;
+    if (mapa['reserva']['status'].toString().toLowerCase() == 'ativa') {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  //print('INDEX DA RESERVA ATIVA $index');
+  return index;
+}
+
+void getReportes() {
+  List reportes = globals.loginData['funcionario']['relatos'];
+  for (var i = 0; i < reportes.length; i++) {
+    var reporte = reportes[i] as Map;
+    int index = getIndex(reporte['hospede']['reservas']);
+    reportesList.add(
+      Report(
+        nome: reporte['hospede']['nome'],
+        numQuart: reporte['hospede']['reservas'][index]['reserva']['quarto']
+            ['numero'],
+        detalhes: reporte['texto'],
+        hora: DateTime.parse(reporte['createdAt']),
+      ),
+    );
+  }
+  reportesList.sort((a, b) {
+    return -a.hora.compareTo(b.hora);
+  });
+}
+
+void addReporte(Map<dynamic, dynamic> res) {
+  int index = getIndex(res['hospede']['reservas']);
+  reportesList.insert(
+    0,
+    Report(
+      nome: res['hospede']['nome'],
+      numQuart: res['hospede']['reservas'][index]['reserva']['quarto']
+          ['numero'],
+      detalhes: res['texto'],
+      hora: DateTime.parse(res['createdAt']),
+    ),
+  );
+}
+
+List<Report> reportesList = [];

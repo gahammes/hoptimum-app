@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/providers/auth.dart';
 import '../screens/despesas_screen.dart';
@@ -18,6 +21,8 @@ class TabsScreen extends StatefulWidget {
   @override
   State<TabsScreen> createState() => _TabsScreenState();
 }
+
+TextEditingController inputController = TextEditingController();
 
 class _TabsScreenState extends State<TabsScreen> {
   void _selectPage(int index) {
@@ -40,16 +45,7 @@ class _TabsScreenState extends State<TabsScreen> {
     //Provider.of<Auth>(context, listen: false).logout();
   }
 
-  void _refresh() {
-    setState(() {
-      //TODO: fazer a lógica
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => widget,
-          ));
-    });
-  }
+  void _refresh() {}
 
   Future<String?> openDialog() => showDialog<String>(
         context: context,
@@ -63,7 +59,7 @@ class _TabsScreenState extends State<TabsScreen> {
             maxLines: null,
             autofocus: true,
             onSubmitted: (_) => submitInput(),
-            //controller: inputController,
+            controller: inputController,
             maxLength: 100,
             decoration: const InputDecoration(
               border: InputBorder.none,
@@ -88,9 +84,28 @@ class _TabsScreenState extends State<TabsScreen> {
         ),
       );
 
-  void submitInput() {
+  void submitInput() async {
+    try {
+      final url = Uri.parse(globals.getUrl('http', 'api/report'));
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(
+          {
+            'text': inputController.text,
+            'id': globals.loginData['hospede']['_id'],
+          },
+        ),
+      );
+      print('🦐 ${json.decode(response.body)}');
+    } catch (error) {
+      print(error);
+    }
+
     Navigator.of(context).pop();
-    //inputController.clear();
+    inputController.clear();
   }
 
   DateTime getDatas(String qual) {

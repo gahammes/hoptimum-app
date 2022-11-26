@@ -7,13 +7,6 @@ import 'package:hoptimum/widgets/reserva_info_card.dart';
 import '../screens/info_hospede_screen.dart';
 import '../globals.dart' as globals;
 
-// List<Info> lista = [
-//   Info('Nome', 'Titular', '3 dependentes', '1 carro e 4 tags'),
-//   Info('Nome', 'Dependente', 'Adulto', ''),
-//   Info('Nome', 'Dependente', 'Adulto', ''),
-//   Info('Nome', 'Dependente', 'Criança', ''),
-// ];
-
 class CardsList extends StatelessWidget {
   final String nome;
   final String tipo;
