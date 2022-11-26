@@ -395,7 +395,7 @@ class _AuthenticateState extends State<Authenticate> {
           height: 60.0,
           child: TextFormField(
             //onSubmitted: (_) => _loginDirection(),
-            //keyboardType: TextInputType.,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (_) {

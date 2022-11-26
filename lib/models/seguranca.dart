@@ -1,3 +1,6 @@
+import 'package:hoptimum/services/local_notification_service.dart';
+import 'dart:math';
+
 import '../globals.dart' as globals;
 
 class Seguranca {
@@ -146,6 +149,7 @@ void getLogFunc() {
 }
 
 void addLog(Map<dynamic, dynamic> res) {
+  var rng = Random();
   var loginData = globals.loginData as Map;
   Seguranca newData = Seguranca(
     id: '',
@@ -156,6 +160,11 @@ void addLog(Map<dynamic, dynamic> res) {
   );
   if (loginData.containsKey('hospede')) {
     if (res.containsKey('reserva')) {
+      LocalNotificationService().showNotification(
+        rng.nextInt(999),
+        'Acesso ao quarto'.toUpperCase(),
+        'Hóspede',
+      );
       newData = Seguranca(
         id: res['_id'].toString(),
         title: 'Acesso ao quarto',
@@ -165,6 +174,11 @@ void addLog(Map<dynamic, dynamic> res) {
       );
     }
     if (res.containsKey('funcionario')) {
+      LocalNotificationService().showNotification(
+        rng.nextInt(999),
+        'Acesso ao quarto'.toUpperCase(),
+        'Funcionário',
+      );
       newData = Seguranca(
         id: res['_id'].toString(),
         title: 'Acesso ao quarto',
@@ -175,6 +189,13 @@ void addLog(Map<dynamic, dynamic> res) {
       //SEGURANCA_DATA.insert(0, newData);
     }
     if (res.containsKey('status')) {
+      LocalNotificationService().showNotification(
+        rng.nextInt(999),
+        res['status'].toString().toLowerCase().contains('entrou')
+            ? 'Entrada de veículo'.toUpperCase()
+            : 'Saída de veículo'.toUpperCase(),
+        res['carro']['placa'].toString(),
+      );
       newData = Seguranca(
         id: res['_id'].toString(),
         title: res['status'].toString().toLowerCase().contains('entrou')
@@ -190,6 +211,13 @@ void addLog(Map<dynamic, dynamic> res) {
 
   if (loginData.containsKey('funcionario')) {
     if (res.containsKey('status')) {
+      LocalNotificationService().showNotification(
+        rng.nextInt(999),
+        res['status'].toString().toLowerCase().contains('entrou')
+            ? 'Entrada de veículo'.toUpperCase()
+            : 'Saída de veículo'.toUpperCase(),
+        res['carro']['placa'].toString(),
+      );
       newData = Seguranca(
         id: res['_id'].toString(),
         title: res['status'].toString().toLowerCase().contains('entrou')
@@ -201,6 +229,11 @@ void addLog(Map<dynamic, dynamic> res) {
       );
       //SEGURANCA_DATA.insert(0, newData);
     } else {
+      LocalNotificationService().showNotification(
+        rng.nextInt(999),
+        'Acesso ao quarto'.toUpperCase(),
+        'Quarto ${res['quarto']['numero']}',
+      );
       newData = Seguranca(
         id: res['_id'].toString(),
         title: 'Acesso ao quarto',

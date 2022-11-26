@@ -11,6 +11,7 @@ import '../screens/notificacao_screen.dart';
 import '../screens/seguranca_screen.dart';
 import '../models/despesa.dart';
 import '../screens/solicitacao_screen.dart';
+import '../services/local_notification_service.dart';
 import '../globals.dart' as globals;
 
 class TabsScreen extends StatefulWidget {
@@ -128,6 +129,13 @@ class _TabsScreenState extends State<TabsScreen> {
           IconButton(
             onPressed: _logout,
             icon: const Icon(Icons.logout),
+          ),
+          IconButton(
+            onPressed: () {
+              LocalNotificationService()
+                  .showNotification(1, 'DUDU!!!!!!!!', 'Deu certooooo 🤢');
+            },
+            icon: const Icon(Icons.notification_add),
           ),
         ],
       },

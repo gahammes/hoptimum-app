@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hoptimum/models/report.dart';
+import 'package:hoptimum/services/local_notification_service.dart';
 import 'package:sizer/sizer.dart';
 import 'package:hoptimum/models/hospede.dart';
 import 'package:hoptimum/models/notificacao.dart';
@@ -18,6 +20,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../models/seguranca.dart';
 import '../models/despesa.dart';
@@ -39,6 +42,7 @@ import '../globals.dart' as globals;
 void main() {
   Intl.defaultLocale = 'pt_BR';
   WidgetsFlutterBinding.ensureInitialized();
+  LocalNotificationService().initialize();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -92,6 +96,9 @@ Future<void> reLogin() async {
     }
   }
 }
+
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 class _HoptimumAppState extends State<HoptimumApp> {
   void _connect() async {
