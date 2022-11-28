@@ -142,22 +142,8 @@ class _AuthPartState extends State<AuthPart> {
         _authData['email']!,
         _authData['password']!,
       );
-    } on HttpException catch (error) {
-      var errorMessage = 'Authentication failed.';
-      if (error.toString().contains('EMAIL_EXISTS')) {
-        errorMessage = 'This email adress is already in use.';
-      } else if (error.toString().contains('INVALID_EMAIL')) {
-        errorMessage = 'This is not a valid email adress.';
-      } else if (error.toString().contains('WEAK_PASSWORD')) {
-        errorMessage = 'This password is too weak.';
-      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMessage = 'Could not find a user with that email.';
-      } else if (error.toString().contains('INVALID_PASSWORD')) {
-        errorMessage = 'Invalid password.';
-      }
-      _showErrorDiaglog(errorMessage);
     } catch (error) {
-      const errorMessage = 'Algo deu errado.';
+      const errorMessage = 'Algo deu errado. Tente novamente!';
       print(error);
       _showErrorDiaglog(errorMessage);
     }
@@ -208,19 +194,9 @@ class _AuthPartState extends State<AuthPart> {
             onFieldSubmitted: (_) {
               FocusScope.of(context).requestFocus(_passwordFocusNode);
             },
-            //decoration: InputDecoration(labelText: 'email'),
-            validator: (value) {
-              if (value!.isEmpty || !value.contains('@')) {
-                return 'Email invalido';
-              }
-              return null;
-            },
             onSaved: (value) {
               _authData['email'] = value!;
             },
-
-            //controller: emailController,
-
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -252,12 +228,6 @@ class _AuthPartState extends State<AuthPart> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            validator: (value) {
-              if (value!.isEmpty || value.length < 1) {
-                return 'A senha é muito curta.';
-              }
-              return null;
-            },
             onFieldSubmitted: (_) => _submit(),
             focusNode: _passwordFocusNode,
             onSaved: (value) {
@@ -283,19 +253,6 @@ class _AuthPartState extends State<AuthPart> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: TextButton(
-        onPressed: () => print('FP Button Pressed'),
-        child: Text(
-          'Esqueci minha senha',
-          style: kLabelStyle,
-        ),
-      ),
     );
   }
 

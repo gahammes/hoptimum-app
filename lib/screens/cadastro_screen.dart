@@ -108,9 +108,15 @@ class _AuthenticateState extends State<Authenticate> {
   final passwordController = TextEditingController();
   TextEditingController dateInput = TextEditingController();
   final _passwordFocusNode = FocusNode();
+  final _emailFocusNode = FocusNode();
+  final _cpfFocusNode = FocusNode();
+  final _dataFocusNode = FocusNode();
+  final _generoFocusNode = FocusNode();
+  final _telefoneFocusNode = FocusNode();
   String _cargoResult = '';
   String _cargo = '';
-  DateTime? pickedDate = DateTime.now();
+  DateTime? pickedDate;
+  List<String> validacoes = [];
 
   AuthMode? _authMode = AuthMode.hospede;
   final Map<String, String> _authData = {
@@ -124,6 +130,14 @@ class _AuthenticateState extends State<Authenticate> {
     'tipo': '',
     'cargo': '',
   };
+  Map<String, String> validationHospData = {
+    'email': '',
+    'senha': '',
+    'nome': '',
+    'telefone': '',
+    'cpf': '',
+  };
+
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
@@ -133,24 +147,35 @@ class _AuthenticateState extends State<Authenticate> {
     super.initState();
   }
 
-  void _showErrorDiaglog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred!'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              setState(() {
-                _isLoading = false;
-              });
-            },
-            child: const Text('Okay'),
-          ),
-        ],
+  Widget fecharButton(BuildContext ctx) {
+    return TextButton(
+      child: const Text("Fechar"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  AlertDialog validacoesDialog(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      title: const Text(
+        "ERRO!",
+        style: TextStyle(color: Colors.black),
       ),
+      //contentTextStyle: TextStyle(),
+      content: Container(
+        height: (MediaQuery.of(context).size.height -
+                MediaQuery.of(context).padding.top) *
+            0.22,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [for (var validacao in validacoes) Text(validacao)],
+        ),
+      ),
+      actions: [
+        fecharButton(context),
+      ],
     );
   }
 
@@ -163,6 +188,180 @@ class _AuthenticateState extends State<Authenticate> {
       _isLoading = true;
       _cargoResult = _cargo;
     });
+
+    if (_authData['nome'] != null) {
+      //VALIDACAO DO NOME
+      if (_authData['nome']!.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          validationHospData['nome'] = 'vazio';
+          validacoes.add('Preencha o campo Nome.');
+          //count++;
+        });
+        // print('preencha todos os campos');
+        // return;
+      } else if (!RegExp("^[a-z ,.'-]+").hasMatch(_authData['nome']!)) {
+        setState(() {
+          _isLoading = false;
+          validationHospData['nome'] = 'regex';
+          validacoes.add('Insira um nome válido (apenas letras).');
+          //count++;
+        });
+        // print('coloca um nome decente');
+        // return;
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+        validationHospData['nome'] = 'vazio';
+        validacoes.add('Preencha o campo Nome.');
+        // count++;
+      });
+      // print('preencha todos os campos');
+      // return;
+    }
+
+    if (_authData['email'] != null) {
+      //VALIDACAO DO EMAIL
+      if (_authData['email']!.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          validationHospData['email'] = 'vazio';
+          validacoes.add('Preencha o campo Email.');
+          // count++;
+        });
+        // print('preencha todos os campos');
+        // return;
+      } else if (!RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+          .hasMatch(_authData['email']!)) {
+        setState(() {
+          _isLoading = false;
+          validationHospData['email'] = 'regex';
+          validacoes.add('Insira um email válido.');
+          // count++;
+        });
+        // print('coloca um email decente');
+        // return;
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+        validationHospData['email'] = 'vazio';
+        validacoes.add('Preencha o campo Email.');
+        // count++;
+      });
+      // print('preencha todos os campos');
+      // return;
+    }
+
+    if (_authData['cpf'] != null) {
+      //VALIDACAO DO CPF
+      if (_authData['cpf']!.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          validationHospData['cpf'] = 'vazio';
+          validacoes.add('Preencha o campo CPF.');
+          // count++;
+        });
+        // print('preencha todos os campos');
+        // return;
+      } else if (!RegExp("^(?:[+0]9)?[0-9]{11}\$")
+          .hasMatch(_authData['cpf']!)) {
+        setState(() {
+          _isLoading = false;
+          validationHospData['cpf'] = 'regex';
+          validacoes.add('Insira um CPF válido (apenas números).');
+          // count++;
+        });
+        // print('coloca um cpf decente');
+        // return;
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+        validationHospData['cpf'] = 'vazio';
+        validacoes.add('Preencha o campo CPF.');
+        // count++;
+      });
+      // print('preencha todos os campos');
+      // return;
+    }
+
+    if (_authData['telefone'] != null) {
+      //VALIDACAO DO TELEFONE
+      if (_authData['telefone']!.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          validationHospData['telefone'] = 'vazio';
+          validacoes.add('Preencha o campo Telefone.');
+          // count++;
+        });
+        // print('preencha todos os campos');
+        // return;
+      } else if (!RegExp(r"^(?:[+0]9)?[0-9]{11}$")
+          .hasMatch(_authData['telefone']!)) {
+        setState(() {
+          _isLoading = false;
+          validationHospData['telefone'] = 'regex';
+          validacoes.add(
+              'Insira um telefone válido (apenas números, incluindo o DDD).');
+          // count++;
+        });
+        // print('coloca um telefone decente');
+        // return;
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+        validationHospData['telefone'] = 'vazio';
+        validacoes.add('Preencha o campo Telefone.');
+        // count++;
+      });
+      // print('preencha todos os campos');
+      // return;
+    }
+
+    if (_authData['senha'] != null) {
+      //VALIDACAO DA SENHA
+      if (_authData['senha']!.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          validationHospData['senha'] = 'vazio';
+          validacoes.add('Preencha o campo Senha.');
+          // count++;
+        });
+        // print('preencha todos os campos');
+        // return;
+      } else if (_authData['senha']!.length < 5) {
+        setState(() {
+          _isLoading = false;
+          validationHospData['senha'] = 'regex';
+          validacoes.add('A senha deve ter no mínimo 5 caractéres.');
+          // count++;
+        });
+        // print('coloca uma senha decente');
+        // return;
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+        validationHospData['senha'] = 'vazio';
+        validacoes.add('Preencha o campo Senha.');
+        // count++;
+      });
+      // print('preencha todos os campos');
+      // return;
+    }
+
+    if (validacoes.isNotEmpty) {
+      await showDialog(context: context, builder: validacoesDialog);
+
+      validacoes = [];
+      validacoes.clear();
+      return;
+    }
+
     try {
       final url = Uri.parse(globals.getUrl('http', 'api/cadastro'));
       final response = await http.post(
@@ -196,45 +395,6 @@ class _AuthenticateState extends State<Authenticate> {
       _isLoading = false;
     });
     Navigator.pop(context);
-  }
-
-  Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-    _formKey.currentState!.save();
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      //TODO:CADASTRO
-      await Provider.of<Auth>(context, listen: false).login(
-        _authData['email']!,
-        _authData['password']!,
-      );
-    } on HttpException catch (error) {
-      var errorMessage = 'Authentication failed.';
-      if (error.toString().contains('EMAIL_EXISTS')) {
-        errorMessage = 'This email adress is already in use.';
-      } else if (error.toString().contains('INVALID_EMAIL')) {
-        errorMessage = 'This is not a valid email adress.';
-      } else if (error.toString().contains('WEAK_PASSWORD')) {
-        errorMessage = 'This password is too weak.';
-      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMessage = 'Could not find a user with that email.';
-      } else if (error.toString().contains('INVALID_PASSWORD')) {
-        errorMessage = 'Invalid password.';
-      }
-      _showErrorDiaglog(errorMessage);
-    } catch (error) {
-      const errorMessage = 'Something wrong happened. Try again.';
-      print(error);
-      _showErrorDiaglog(errorMessage);
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   Widget _switchAuthMode() {
@@ -344,26 +504,16 @@ class _AuthenticateState extends State<Authenticate> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
             keyboardType: TextInputType.emailAddress,
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
+            focusNode: _emailFocusNode,
             onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(_passwordFocusNode);
-            },
-            //decoration: InputDecoration(labelText: 'email'),
-            validator: (value) {
-              if (value!.isEmpty || !value.contains('@')) {
-                return 'Email invalido';
-              }
-              return null;
+              FocusScope.of(context).requestFocus(_cpfFocusNode);
             },
             onSaved: (value) {
               _authData['email'] = value!;
             },
-
-            //controller: emailController,
-
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -395,26 +545,15 @@ class _AuthenticateState extends State<Authenticate> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
             keyboardType: TextInputType.name,
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(_passwordFocusNode);
+              FocusScope.of(context).requestFocus(_emailFocusNode);
             },
-            //decoration: InputDecoration(labelText: 'email'),
-            // validator: (value) {
-            //   if (value!.isEmpty || !value.contains('@')) {
-            //     return 'Email invalido';
-            //   }
-            //   return null;
-            // },
             onSaved: (value) {
               _authData['nome'] = value!;
             },
-
-            //controller: emailController,
-
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -446,20 +585,21 @@ class _AuthenticateState extends State<Authenticate> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            focusNode: _dataFocusNode,
             controller: dateInput,
             onTap: () async {
               pickedDate = await showDatePicker(
-                locale: Locale('pt', 'BR'),
+                locale: const Locale('pt', 'BR'),
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime(DateTime.now().year - 100),
                 lastDate: DateTime.now(),
               );
               if (pickedDate != null) {
-                print(pickedDate);
+                //print(pickedDate);
                 String formattedDate =
                     DateFormat('dd/MM/yyyy').format(pickedDate!);
-                print(formattedDate);
+                //print(formattedDate);
                 setState(() {
                   dateInput.text = formattedDate;
                 });
@@ -470,34 +610,28 @@ class _AuthenticateState extends State<Authenticate> {
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(_passwordFocusNode);
+              FocusScope.of(context).requestFocus(_generoFocusNode);
             },
-            //decoration: InputDecoration(labelText: 'email'),
-            // validator: (value) {
-            //   if (value!.isEmpty || !value.contains('@')) {
-            //     return 'Email invalido';
-            //   }
-            //   return null;
-            // },
             onSaved: (value) {
-              _authData['nascimento'] = pickedDate!.toIso8601String();
+              try {
+                _authData['nascimento'] = pickedDate!.toIso8601String();
+              } catch (_) {
+                setState(() {
+                  validacoes.add('Selecione uma data de nascimento.');
+                });
+              }
             },
-
-            //controller: emailController,
-
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
-              //labelText: 'Enter date',
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(top: 14.0),
               prefixIcon: const Icon(
                 Icons.calendar_month,
                 color: Colors.white,
               ),
-
               hintText: 'Selecione a data de nascimento',
               hintStyle: kHintTextStyle,
             ),
@@ -518,26 +652,16 @@ class _AuthenticateState extends State<Authenticate> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
+            focusNode: _telefoneFocusNode,
             keyboardType: TextInputType.phone,
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (_) {
               FocusScope.of(context).requestFocus(_passwordFocusNode);
             },
-            //decoration: InputDecoration(labelText: 'email'),
-            // validator: (value) {
-            //   if (value!.isEmpty || !value.contains('@')) {
-            //     return 'Email invalido';
-            //   }
-            //   return null;
-            // },
             onSaved: (value) {
               _authData['telefone'] = value!;
             },
-
-            //controller: emailController,
-
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -593,22 +717,21 @@ class _AuthenticateState extends State<Authenticate> {
               });
             },
             onSaved: (String? value) {
-              setState(() {
-                _selectedValue = value!;
-                if (value == 'Segurança') {
-                  _authData['cargo'] = 'segurança';
-                } else if (value == 'Cozinha') {
-                  _authData['cargo'] = 'cozinha';
-                } else {
-                  _authData['cargo'] = 'limpeza';
-                }
-              });
-            },
-            validator: (String? value) {
-              if (value!.isEmpty) {
-                return 'Selecione uma opção';
-              } else {
-                return null;
+              try {
+                setState(() {
+                  _selectedValue = value!;
+                  if (value == 'Segurança') {
+                    _authData['cargo'] = 'segurança';
+                  } else if (value == 'Cozinha') {
+                    _authData['cargo'] = 'cozinha';
+                  } else {
+                    _authData['cargo'] = 'limpeza';
+                  }
+                });
+              } catch (_) {
+                setState(() {
+                  validacoes.add('Selecione um cargo.');
+                });
               }
             },
             items: list.map((String val) {
@@ -640,26 +763,16 @@ class _AuthenticateState extends State<Authenticate> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
+            focusNode: _cpfFocusNode,
             keyboardType: TextInputType.number,
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(_passwordFocusNode);
+              FocusScope.of(context).requestFocus(_dataFocusNode);
             },
-            //decoration: InputDecoration(labelText: 'email'),
-            // validator: (value) {
-            //   if (value!.isEmpty || !value.contains('@')) {
-            //     return 'Email invalido';
-            //   }
-            //   return null;
-            // },
             onSaved: (value) {
               _authData['cpf'] = value!;
             },
-
-            //controller: emailController,
-
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -691,18 +804,11 @@ class _AuthenticateState extends State<Authenticate> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            validator: (value) {
-              if (value!.isEmpty || value.length < 1) {
-                return null;
-              }
-              return null;
-            },
-            onFieldSubmitted: (_) => tryCadastro(),
+            onFieldSubmitted: (_) => tryCadastro,
             focusNode: _passwordFocusNode,
             onSaved: (value) {
               _authData['senha'] = value!;
             },
-            controller: _passwordController,
             cursorColor: Colors.white,
             obscureText: true,
             style: const TextStyle(
@@ -742,6 +848,7 @@ class _AuthenticateState extends State<Authenticate> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: DropdownButtonFormField(
+            focusNode: _generoFocusNode,
             dropdownColor: const Color.fromARGB(255, 254, 73, 32),
             decoration: const InputDecoration(
               border: InputBorder.none,
@@ -764,26 +871,21 @@ class _AuthenticateState extends State<Authenticate> {
               });
             },
             onSaved: (String? value) {
-              setState(() {
-                _selectedValue = value!;
-                if (value == 'Homem') {
-                  _authData['genero'] = 'M';
-                } else if (value == 'Mulher') {
-                  _authData['genero'] = 'F';
-                } else {
-                  _authData['genero'] = 'X';
-                }
-              });
-            },
-            validator: (String? value) {
               try {
-                if (value!.isEmpty) {
-                  return 'Selecione uma opção';
-                } else {
-                  return null;
-                }
+                setState(() {
+                  _selectedValue = value!;
+                  if (value == 'Homem') {
+                    _authData['genero'] = 'M';
+                  } else if (value == 'Mulher') {
+                    _authData['genero'] = 'F';
+                  } else {
+                    _authData['genero'] = 'X';
+                  }
+                });
               } catch (error) {
-                print('digite por favor');
+                setState(() {
+                  validacoes.add('Selecione um gênero.');
+                });
               }
             },
             items: list.map((String val) {
