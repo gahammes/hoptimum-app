@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hoptimum/screens/cadastro_carro_screen.dart';
-import 'package:hoptimum/screens/cadastro_dependente_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../globals.dart' as globals;
@@ -106,9 +106,11 @@ class _AuthenticateState extends State<Authenticate> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  TextEditingController dateInput = TextEditingController();
   final _passwordFocusNode = FocusNode();
   String _cargoResult = '';
   String _cargo = '';
+  DateTime? pickedDate = DateTime.now();
 
   AuthMode? _authMode = AuthMode.hospede;
   final Map<String, String> _authData = {
@@ -124,6 +126,12 @@ class _AuthenticateState extends State<Authenticate> {
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    dateInput.text = '';
+    super.initState();
+  }
 
   void _showErrorDiaglog(String message) {
     showDialog(
@@ -427,7 +435,7 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-  Widget _builDataTF() {
+  Widget _builDataPicker() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -438,7 +446,26 @@ class _AuthenticateState extends State<Authenticate> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
+            controller: dateInput,
+            onTap: () async {
+              pickedDate = await showDatePicker(
+                locale: Locale('pt', 'BR'),
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(DateTime.now().year - 100),
+                lastDate: DateTime.now(),
+              );
+              if (pickedDate != null) {
+                print(pickedDate);
+                String formattedDate =
+                    DateFormat('dd/MM/yyyy').format(pickedDate!);
+                print(formattedDate);
+                setState(() {
+                  dateInput.text = formattedDate;
+                });
+              }
+            },
+            readOnly: true,
             keyboardType: TextInputType.datetime,
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
@@ -453,7 +480,7 @@ class _AuthenticateState extends State<Authenticate> {
             //   return null;
             // },
             onSaved: (value) {
-              _authData['nascimento'] = value!;
+              _authData['nascimento'] = pickedDate!.toIso8601String();
             },
 
             //controller: emailController,
@@ -463,64 +490,15 @@ class _AuthenticateState extends State<Authenticate> {
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
+              //labelText: 'Enter date',
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(top: 14.0),
               prefixIcon: const Icon(
                 Icons.calendar_month,
                 color: Colors.white,
               ),
-              hintText: 'Digite sua data de nascimento',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
-  Widget _builGeneroTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Gênero', style: kLabelStyle),
-        const SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.center,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
-            keyboardType: TextInputType.name,
-            cursorColor: Colors.white,
-            textInputAction: TextInputAction.next,
-            onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(_passwordFocusNode);
-            },
-            //decoration: InputDecoration(labelText: 'email'),
-            // validator: (value) {
-            //   if (value!.isEmpty || !value.contains('@')) {
-            //     return 'Email invalido';
-            //   }
-            //   return null;
-            // },
-            onSaved: (value) {
-              _authData['genero'] = value!;
-            },
-
-            //controller: emailController,
-
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.only(top: 14.0),
-              prefixIcon: const Icon(
-                Icons.face,
-                color: Colors.white,
-              ),
-              hintText: 'Digite seu gênero',
+              hintText: 'Selecione a data de nascimento',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -651,57 +629,6 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-  Widget _buildCargoTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Cargo', style: kLabelStyle),
-        const SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.center,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
-            keyboardType: TextInputType.name,
-            cursorColor: Colors.white,
-            textInputAction: TextInputAction.next,
-            onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(_passwordFocusNode);
-            },
-            //decoration: InputDecoration(labelText: 'email'),
-            // validator: (value) {
-            //   if (value!.isEmpty || !value.contains('@')) {
-            //     return 'Email invalido';
-            //   }
-            //   return null;
-            // },
-            onSaved: (value) {
-              _authData['cargo'] = value!;
-            },
-
-            //controller: emailController,
-
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.only(top: 14.0),
-              prefixIcon: const Icon(
-                Icons.cases_outlined,
-                color: Colors.white,
-              ),
-              hintText: 'Digite seu cargo',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildCPFTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -770,7 +697,7 @@ class _AuthenticateState extends State<Authenticate> {
               }
               return null;
             },
-            onFieldSubmitted: (_) => _submit(),
+            onFieldSubmitted: (_) => tryCadastro(),
             focusNode: _passwordFocusNode,
             onSaved: (value) {
               _authData['senha'] = value!;
@@ -794,20 +721,6 @@ class _AuthenticateState extends State<Authenticate> {
             ),
           ),
         ),
-        // if (_authMode == AuthMode.signup)
-        //   TextFormField(
-        //     enabled: _authMode == AuthMode.signup,
-        //     decoration: const InputDecoration(labelText: 'Confirm Password'),
-        //     obscureText: true,
-        //     validator: _authMode == AuthMode.signup
-        //         ? (value) {
-        //             if (value != _passwordController.text) {
-        //               return 'A senha n e a mesma';
-        //             }
-        //             return null;
-        //           }
-        //         : null,
-        //   ),
       ],
     );
   }
@@ -916,7 +829,7 @@ class _AuthenticateState extends State<Authenticate> {
             const SizedBox(height: 30.0),
             _buildCPFTF(),
             const SizedBox(height: 30.0),
-            _builDataTF(),
+            _builDataPicker(),
             const SizedBox(height: 30.0),
             _buildGeneroDropDown(),
             const SizedBox(height: 30.0),
@@ -937,6 +850,9 @@ class _AuthenticateState extends State<Authenticate> {
               ),
             ),
             const SizedBox(height: 30.0),
+            _buildSignUpButton(
+                'Quer cadastrar um carro? ', CadastroCarroScreen.routeName),
+            const SizedBox(height: 30.0),
             _buildNomeTF(),
             const SizedBox(height: 30.0),
             _buildEmailTF(),
@@ -945,7 +861,7 @@ class _AuthenticateState extends State<Authenticate> {
             const SizedBox(height: 30.0),
             _buildCPFTF(),
             const SizedBox(height: 30.0),
-            _builDataTF(),
+            _builDataPicker(),
             const SizedBox(height: 30.0),
             _buildGeneroDropDown(),
             const SizedBox(height: 30.0),
@@ -1019,33 +935,6 @@ class _AuthenticateState extends State<Authenticate> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _radioChoice() {
-    return Column(
-      children: [
-        RadioListTile<AuthMode>(
-          title: const Text('Hóspede'),
-          value: AuthMode.hospede,
-          groupValue: _authMode,
-          onChanged: (AuthMode? choice) {
-            setState(() {
-              _authMode = choice;
-            });
-          },
-        ),
-        RadioListTile<AuthMode>(
-          title: const Text('Funcionário'),
-          value: AuthMode.funcionario,
-          groupValue: _authMode,
-          onChanged: (AuthMode? choice) {
-            setState(() {
-              _authMode = choice;
-            });
-          },
-        ),
-      ],
     );
   }
 

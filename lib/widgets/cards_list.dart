@@ -3,8 +3,6 @@ import 'package:hoptimum/widgets/custom_rect_tween.dart';
 import 'package:hoptimum/widgets/hero_dialog_route.dart';
 import 'package:hoptimum/widgets/hospede_info_card.dart';
 import 'package:hoptimum/widgets/reserva_info_card.dart';
-
-import '../screens/info_hospede_screen.dart';
 import '../globals.dart' as globals;
 
 class CardsList extends StatelessWidget {
@@ -32,15 +30,14 @@ class CardsList extends StatelessWidget {
           Container(
             height: 4,
           ),
-          FittedBox(
-            child: Text(
-              nome,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
-                fontFamily: 'Quicksand',
-                fontWeight: FontWeight.w700,
-                fontSize: 20,
-              ),
+          Text(
+            nome,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+              fontFamily: 'Quicksand',
+              fontWeight: FontWeight.w700,
+              fontSize: 20,
             ),
           ),
           Container(

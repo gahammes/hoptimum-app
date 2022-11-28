@@ -1,38 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import '../models/pedido.dart';
+import '../globals.dart' as globals;
 
 class FuncSolicitacaoItem extends StatefulWidget {
-  final List<Pedido> pedidos;
-  final List<Pedido> pedidosFinalizados;
-  const FuncSolicitacaoItem(this.pedidos, this.pedidosFinalizados, {Key? key})
+  final String id;
+  final String title;
+  final String quarto;
+  final DateTime data;
+  Status status;
+  FuncSolicitacaoItem(this.id, this.title, this.quarto, this.data, this.status,
+      {Key? key})
       : super(key: key);
   @override
   State<FuncSolicitacaoItem> createState() => _FuncSolicitacaoItemState();
 }
 
-class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
-  void _updateStatus(int index) {
+class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem>
+    with AutomaticKeepAliveClientMixin<FuncSolicitacaoItem> {
+  @override
+  bool get wantKeepAlive => true;
+
+  void _updateStatus() async {
+    var status = '';
     setState(() {
-      switch (widget.pedidos[index].status) {
+      switch (widget.status) {
         case Status.espera:
-          widget.pedidos[index].status = Status.recebido;
+          widget.status = Status.recebido;
+          status = 'recebido';
           break;
         case Status.recebido:
-          widget.pedidos[index].status = Status.preparando;
+          widget.status = Status.preparando;
+          status = 'preparando';
           break;
         case Status.preparando:
-          widget.pedidos[index].status = Status.caminho;
+          widget.status = Status.caminho;
+          status = 'caminho';
           break;
         case Status.caminho:
-          widget.pedidos[index].status = Status.entregue;
+          widget.status = Status.entregue;
+          status = 'entregue';
           break;
         case Status.entregue:
-          widget.pedidos[index].status = Status.finalizado;
-          widget.pedidosFinalizados.insert(0, widget.pedidos[index]);
-          widget.pedidos.removeAt(index);
+          widget.status = Status.finalizado;
+          status = 'finalizado';
+          pedidosList.removeWhere((pedido) => pedido.id == widget.id);
           break;
         case Status.finalizado:
           break;
@@ -40,10 +56,27 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
           break;
       }
     });
+    try {
+      final url = Uri.parse(globals.getUrl('http', 'api/statusservico'));
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(
+          {
+            'id': widget.id,
+            'status': status,
+          },
+        ),
+      );
+      print(json.decode(response.body));
+    } catch (error) {
+      print(error);
+    }
   }
 
-  Widget _buildExpansionTile(int index, Color color) {
-    var rng = Random();
+  Widget _buildExpansionTile(Color color) {
     return ExpansionTile(
       //maintainState: true,
       collapsedBackgroundColor: const Color(0xfff5f5f5),
@@ -71,9 +104,41 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
                 ),
               ),
               //'Pedido ${(widget.pedidos[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}',
+              TextSpan(text: '${(widget.id.toString())}.'),
+            ],
+          ),
+        ),
+        const SizedBox(height: 7.0),
+        RichText(
+          text: TextSpan(
+            style: const TextStyle(
+                fontSize: 16, fontFamily: 'Quicksand', color: Colors.black),
+            children: [
+              const TextSpan(
+                text: 'Refeição: ',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              //'Pedido ${(widget.pedidos[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}',
+              TextSpan(text: '${(widget.title)}.'),
+            ],
+          ),
+        ),
+        const SizedBox(height: 7.0),
+        RichText(
+          text: TextSpan(
+            style: const TextStyle(
+                fontSize: 16, fontFamily: 'Quicksand', color: Colors.black),
+            children: [
+              const TextSpan(
+                text: 'Data: ',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               TextSpan(
-                  text:
-                      '${(widget.pedidos[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}.'),
+                  text: '${DateFormat.MMMMd('pt_BR').format(widget.data)}.'),
             ],
           ),
         ),
@@ -89,61 +154,59 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              TextSpan(
-                  text:
-                      '${DateFormat.Hm('pt_BR').format(widget.pedidos[index].data)}.'),
+              TextSpan(text: '${DateFormat.Hm('pt_BR').format(widget.data)}.'),
             ],
           ),
         ),
-        const SizedBox(height: 7.0),
-        _buildListRefeicao(index),
+        // const SizedBox(height: 7.0),
+        // _buildListRefeicao(index),
       ],
     );
   }
 
-  Widget _buildListRefeicao(int index) {
-    return widget.pedidos[index].refeicao.length == 1
-        ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Refeição: ',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 20.0, bottom: 5.0),
-                child: Text(
-                  widget.pedidos[index].refeicao[0],
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-            ],
-          )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Refeição: ',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 5.0,
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 20.0, bottom: 5.0),
-                child: Text(
-                  widget.pedidos[index].refeicao,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-            ],
-          );
-  }
+  // Widget _buildListRefeicao(int index) {
+  //   return widget.title.length == 1
+  //       ? Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             const Text(
+  //               'Refeição: ',
+  //               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  //             ),
+  //             Container(
+  //               margin: const EdgeInsets.only(left: 20.0, bottom: 5.0),
+  //               child: Text(
+  //                 widget.pedidos[index].refeicao[0],
+  //                 overflow: TextOverflow.ellipsis,
+  //                 style: const TextStyle(fontSize: 16),
+  //               ),
+  //             ),
+  //           ],
+  //         )
+  //       : Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             const Text(
+  //               'Refeição: ',
+  //               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  //             ),
+  //             const SizedBox(
+  //               height: 5.0,
+  //             ),
+  //             Container(
+  //               margin: const EdgeInsets.only(left: 20.0, bottom: 5.0),
+  //               child: Text(
+  //                 widget.pedidos[index].refeicao,
+  //                 overflow: TextOverflow.ellipsis,
+  //                 style: const TextStyle(fontSize: 16),
+  //               ),
+  //             ),
+  //           ],
+  //         );
+  // }
 
-  Widget _getText(int index, Color color) {
-    switch (widget.pedidos[index].status) {
+  Widget _getText(Color color) {
+    switch (widget.status) {
       case Status.espera:
         return const Text('Pedido em espera...',
             style: TextStyle(color: Colors.red));
@@ -166,7 +229,7 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
     }
   }
 
-  Widget _buildCard(int index) {
+  Widget _buildCard() {
     var bgColor = Theme.of(context).colorScheme.secondary;
     var fontColor = Colors.white;
 
@@ -224,7 +287,7 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
                 ),
               ),
               title: Text(
-                'Quarto ${widget.pedidos[index].numQuarto.toString()}',
+                'Quarto ${widget.quarto.toString()}',
                 style: TextStyle(
                   color: fontColor,
                   fontWeight: FontWeight.bold,
@@ -232,19 +295,17 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
                 ),
               ),
               subtitle: _getText(
-                index,
                 fontColor,
               ),
-              trailing: widget.pedidos[index].status != Status.finalizado
+              trailing: widget.status != Status.finalizado
                   ? IconButton(
                       icon: const Icon(Icons.refresh),
                       color: Colors.white,
-                      onPressed: () => _updateStatus(index),
+                      onPressed: _updateStatus,
                     )
                   : null,
             ),
             _buildExpansionTile(
-              index,
               fontColor,
             ),
           ],
@@ -255,17 +316,6 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () {
-        return Future.delayed(const Duration(seconds: 1), () {
-          setState(() {});
-        });
-      },
-      child: ListView.builder(
-          itemCount: widget.pedidos.length,
-          itemBuilder: (context, index) {
-            return _buildCard(index);
-          }),
-    );
+    return _buildCard();
   }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hoptimum/models/seguranca.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,18 +29,14 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
       icon: Icon(Icons.airline_seat_individual_suite_rounded),
     ),
     Tab(
-      icon: Icon(Icons.key),
+      icon: Icon(Icons.history),
     ),
     Tab(
-      icon: Icon(Icons.history),
+      icon: Icon(Icons.shield),
     ),
   ];
 
   late TabController _tabController;
-
-  void printFunc() {
-    print(globals.loginData);
-  }
 
   @override
   void initState() {
@@ -53,17 +50,6 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
     super.dispose();
   }
 
-  void printCoisas() {
-    print(globals.loginData);
-  }
-
-  void getServList() async {
-    // final url = Uri.parse(globals.getUrl('http', 'api/servicos'));
-    // final response = await http.get(url);
-    // globals.servList = json.decode(response.body);
-    print(globals.servicoList);
-  }
-
   @override
   Widget build(BuildContext context) {
     void _logout() {
@@ -71,11 +57,7 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
       Navigator.of(context).pushReplacementNamed('/');
     }
 
-    //print(globals.loginData['funcionario']['servicos']);
-    //getServList();
-
     initializeDateFormatting();
-    print(globals.loginData['funcionario']['servicos'][0]['_id']);
     return Scaffold(
       appBar: AppBar(
         title: Text('${globals.loginData['funcionario']['nome']} - Limpeza'
@@ -108,10 +90,44 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
               child: Container(
                 height: 647,
                 padding: const EdgeInsets.all(0.0),
-                child: FuncLimpezaItem(servicosList, servicosFinalizadosList),
+                child: servicosList.isNotEmpty
+                    ? ListView.builder(
+                        key: UniqueKey(),
+                        itemCount: servicosList.length,
+                        itemBuilder: (context, index) {
+                          return FuncLimpezaItem(
+                            servicosList[index].id,
+                            servicosList[index].title,
+                            servicosList[index].numQuarto,
+                            servicosList[index].data,
+                            servicosList[index].status,
+                          );
+                        },
+                      )
+                    : null,
+                //child: FuncLimpezaItem(servicosList, servicosFinalizadosList),
               ),
             ),
-            //TODO: historico do cartao aqui!!!
+            SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(0.0),
+                height: 640,
+                child: servicosFinalizadosList.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: servicosFinalizadosList.length,
+                        itemBuilder: (context, index) {
+                          return FuncLimpezaItem(
+                            servicosFinalizadosList[index].id,
+                            servicosFinalizadosList[index].title,
+                            servicosFinalizadosList[index].numQuarto,
+                            servicosFinalizadosList[index].data,
+                            servicosFinalizadosList[index].status,
+                          );
+                        },
+                      )
+                    : null,
+              ),
+            ),
             SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -123,14 +139,6 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
                     child: SegurancaList(segurancaLog),
                   ),
                 ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Container(
-                height: 647,
-                padding: const EdgeInsets.all(0.0),
-                child: FuncLimpezaItem(
-                    servicosFinalizadosList, servicosFinalizadosList),
               ),
             ),
           ],

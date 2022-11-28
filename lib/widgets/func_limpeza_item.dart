@@ -2,40 +2,63 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 
 import '../models/servico.dart';
 import '../globals.dart' as globals;
 
 class FuncLimpezaItem extends StatefulWidget {
-  final List<Servico> solicitacoes;
-  final List<Servico> soliFinalizados;
-  const FuncLimpezaItem(this.solicitacoes, this.soliFinalizados, {Key? key})
+  final String id;
+  final String title;
+  final String quarto;
+  final DateTime data;
+  Status status;
+
+  FuncLimpezaItem(this.id, this.title, this.quarto, this.data, this.status,
+      {Key? key})
       : super(key: key);
   @override
   State<FuncLimpezaItem> createState() => _FuncLimpezaItemState();
 }
 
-class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
+class _FuncLimpezaItemState extends State<FuncLimpezaItem>
+    with AutomaticKeepAliveClientMixin<FuncLimpezaItem> {
   //post com _id de servicos[i] status(string) /api/statusservico
-  void _updateStatus(int index) async {
+  //int finalizadoCount = 0;
+  @override
+  bool get wantKeepAlive => true;
+  void _updateStatus() async {
     var status = '';
     setState(() {
-      switch (widget.solicitacoes[index].status) {
+      switch (widget.status) {
         case Status.espera:
-          widget.solicitacoes[index].status = Status.recebido;
+          widget.status = Status.recebido;
           status = 'recebido';
           break;
         case Status.recebido:
-          widget.solicitacoes[index].status = Status.preparando;
+          widget.status = Status.preparando;
           status = 'preparando';
           break;
         case Status.preparando:
-          widget.solicitacoes[index].status = Status.finalizado;
+          widget.status = Status.finalizado;
           status = 'finalizado';
-          widget.soliFinalizados.insert(0, widget.solicitacoes[index]);
-          widget.solicitacoes.removeAt(index);
+          // servicosFinalizadosList.insert(
+          //   0,
+          //   Servico(
+          //     id: widget.id,
+          //     title: widget.title,
+          //     numQuarto: widget.quarto,
+          //     data: widget.data,
+          //     status: widget.status,
+          //   ),
+          // );
+
+          servicosList.removeWhere((servico) => servico.id == widget.id);
+
+          //widget.solicitacoes.removeAt(index);
+          //globals.listaDeServicos.removeAt(index);
+          //finalizadoCount++;
+
           break;
         case Status.finalizado:
           break;
@@ -52,7 +75,7 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
         },
         body: json.encode(
           {
-            'id': globals.loginData['funcionario']['servicos'][index]['_id'],
+            'id': widget.id,
             'status': status,
           },
         ),
@@ -63,8 +86,7 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
     }
   }
 
-  Widget _buildExpansionTile(int index, Color color) {
-    var rng = Random();
+  Widget _buildExpansionTile(Color color) {
     return ExpansionTile(
       //maintainState: true,
       collapsedBackgroundColor: const Color(0xfff5f5f5),
@@ -92,9 +114,7 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
                 ),
               ),
               //'${(widget.pedidos[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}.'
-              TextSpan(
-                  text:
-                      '${(widget.solicitacoes[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}.'),
+              TextSpan(text: '${(widget.id.toString())}.'),
             ],
           ),
         ),
@@ -111,8 +131,7 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
                 ),
               ),
               TextSpan(
-                  text:
-                      '${DateFormat.MMMMd('pt_BR').format(widget.solicitacoes[index].data)}.'),
+                  text: '${DateFormat.MMMMd('pt_BR').format(widget.data)}.'),
             ],
           ),
         ),
@@ -128,9 +147,7 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              TextSpan(
-                  text:
-                      '${DateFormat.Hm('pt_BR').format(widget.solicitacoes[index].data)}.'),
+              TextSpan(text: '${DateFormat.Hm('pt_BR').format(widget.data)}.'),
             ],
           ),
         ),
@@ -138,8 +155,8 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
     );
   }
 
-  Widget _getText(int index, Color color) {
-    switch (widget.solicitacoes[index].status) {
+  Widget _getText(Color color) {
+    switch (widget.status) {
       case Status.espera:
         return const Text('Solicitação em espera...',
             style: TextStyle(color: Colors.red));
@@ -156,11 +173,12 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
     }
   }
 
-  Widget _buildCard(int index) {
+  Widget _buildCard() {
     var bgColor = Theme.of(context).colorScheme.secondary;
     var fontColor = Colors.white;
 
     return Container(
+      key: UniqueKey(),
       margin: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -214,7 +232,7 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
                 ),
               ),
               title: Text(
-                'Quarto ${widget.solicitacoes[index].numQuarto.toString()}',
+                'Quarto ${widget.quarto.toString()}',
                 style: TextStyle(
                   color: fontColor,
                   fontWeight: FontWeight.bold,
@@ -222,19 +240,17 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
                 ),
               ),
               subtitle: _getText(
-                index,
                 fontColor,
               ),
-              trailing: widget.solicitacoes[index].status != Status.finalizado
+              trailing: widget.status != Status.finalizado
                   ? IconButton(
                       icon: const Icon(Icons.refresh),
                       color: Colors.white,
-                      onPressed: () => _updateStatus(index),
+                      onPressed: _updateStatus,
                     )
                   : null,
             ),
             _buildExpansionTile(
-              index,
               fontColor,
             ),
           ],
@@ -245,17 +261,6 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () {
-        return Future.delayed(const Duration(seconds: 1), () {
-          setState(() {});
-        });
-      },
-      child: ListView.builder(
-          itemCount: widget.solicitacoes.length,
-          itemBuilder: (context, index) {
-            return _buildCard(index);
-          }),
-    );
+    return _buildCard();
   }
 }

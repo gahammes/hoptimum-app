@@ -179,8 +179,9 @@ class HospedeInfoCard extends StatelessWidget {
                         color: fontColor,
                       )),
                 ),
-                if (titular) Expanded(child: separator),
-                if (titular)
+                if (titular && getCarros().isNotEmpty)
+                  Expanded(child: separator),
+                if (titular && getCarros().isNotEmpty)
                   Expanded(
                     child: AutoSizeText(
                       'Carros',
@@ -190,7 +191,7 @@ class HospedeInfoCard extends StatelessWidget {
                           fontSize: fontSize),
                     ),
                   ),
-                if (titular)
+                if (titular && getCarros().isNotEmpty)
                   for (var i = 0; i < getCarros().length; i++)
                     Expanded(
                       child: AutoSizeText(

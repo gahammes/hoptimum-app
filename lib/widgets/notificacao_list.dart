@@ -115,6 +115,43 @@ class _NotificacaoListState extends State<NotificacaoList> {
     );
   }
 
+  String _getStatusText(String status, String tag) {
+    switch (status) {
+      case 'espera':
+        return tag == 'serv'
+            ? 'Solicitação em espera...'
+            : 'Pedido em espera...';
+      //style: TextStyle(color: Colors.red),
+
+      case 'recebido':
+        return tag == 'serv' ? 'Solicitação recebida...' : 'Pedido recebido'
+            //style: TextStyle(color: Colors.yellow),
+            ;
+      case 'preparando':
+        return tag == 'serv'
+                ? 'Realizando serviço de quarto...'
+                : "Pedido em preparo"
+            //style: TextStyle(color: Colors.yellow),
+            ;
+      case 'caminho':
+        return 'Pedido à caminho'
+            //style: TextStyle(color: Colors.yellow),
+            ;
+      case 'entregue':
+        return 'Pedido entregue'
+            //style: TextStyle(color: Colors.green),
+            ;
+      case 'finalizado':
+        return tag == 'serv' ? 'Solicitação finalizada...' : 'Pedido finalizado'
+            //style: TextStyle(color: color),
+            ;
+      default:
+        return 'Pedido em espera...'
+            //style: TextStyle(color: color),
+            ;
+    }
+  }
+
   AnimatedList animatedList() {
     var listItems = widget.notificacaoLogs;
     return AnimatedList(
@@ -127,7 +164,7 @@ class _NotificacaoListState extends State<NotificacaoList> {
         return buildCardAni(
           context,
           listItems[index].title,
-          listItems[index].status,
+          _getStatusText(listItems[index].status, listItems[index].tag),
           listItems[index].date.toIso8601String(),
           listItems[index].tag,
           animation,

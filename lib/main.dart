@@ -8,7 +8,6 @@ import 'package:hoptimum/models/notificacao.dart';
 import 'package:hoptimum/models/pedido.dart';
 import 'package:hoptimum/models/servico.dart';
 import 'package:hoptimum/screens/cadastro_carro_screen.dart';
-import 'package:hoptimum/screens/cadastro_dependente_screen.dart';
 import 'package:hoptimum/screens/cadastro_screen.dart';
 import 'package:hoptimum/screens/fazer_reserva_screen.dart';
 import 'package:hoptimum/screens/sem_reserva_screen.dart';
@@ -21,6 +20,8 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../models/seguranca.dart';
 import '../models/despesa.dart';
@@ -36,11 +37,11 @@ import '../screens/tela_reserva.dart';
 import '../screens/categories_screen.dart';
 import '../models/providers/auth.dart';
 import '../screens/func_limpeza_screen.dart';
-import '../screens/info_hospede_screen.dart';
 import '../globals.dart' as globals;
 
 void main() {
   Intl.defaultLocale = 'pt_BR';
+  //initializeDateFormatting();
   WidgetsFlutterBinding.ensureInitialized();
   LocalNotificationService().initialize();
   SystemChrome.setPreferredOrientations([
@@ -184,8 +185,8 @@ class _HoptimumAppState extends State<HoptimumApp> {
           setState(() {
             updateStatus();
           });
-          print('😱 update de log 😱');
-          print('🥸🥸🥸 $res');
+          print('😱 update de status 😱');
+          //print('🥸🥸🥸 $res');
         } else if (res.containsKey('reserva')) {
           setState(() {
             addLog(res);
@@ -239,6 +240,11 @@ class _HoptimumAppState extends State<HoptimumApp> {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
+          localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+          supportedLocales: const [
+            Locale('pt'),
+            Locale('en'),
+          ],
           debugShowCheckedModeBanner: false,
           title: 'H\'Optimum',
           theme: ThemeData(
@@ -302,12 +308,9 @@ class _HoptimumAppState extends State<HoptimumApp> {
             TelaReserva.routeName: (ctx) => const TelaReserva(),
             ReservaInfo.routeName: (ctx) => const ReservaInfo(),
             FuncLimpezaScreen.routeName: (ctx) => const FuncLimpezaScreen(),
-            InfoHospedeScreen.routeName: (ctx) => const InfoHospedeScreen(),
             CadastroScreen.routeName: (ctx) => const CadastroScreen(),
             SemReservaScreen.routeName: (ctx) => const SemReservaScreen(),
             CadastroCarroScreen.routeName: (ctx) => const CadastroCarroScreen(),
-            CadastroDependenteScreen.routeName: (ctx) =>
-                const CadastroDependenteScreen(),
             FazerReservaScreen.routeName: (ctx) => const FazerReservaScreen(),
           },
           onGenerateRoute: (settings) {

@@ -7,6 +7,21 @@ enum Status {
   finalizado,
 }
 
+Status getStatus(String status) {
+  switch (status) {
+    case 'espera':
+      return Status.espera;
+    case 'recebido':
+      return Status.recebido;
+    case 'preparando':
+      return Status.preparando;
+    case 'finalizado':
+      return Status.finalizado;
+    default:
+      return Status.finalizado;
+  }
+}
+
 class Servico {
   final String id;
   final String title;
@@ -30,26 +45,30 @@ void getServicos() {
   servicos = globals.loginData['funcionario']['servicos'];
   for (var i = 0; i < servicos.length; i++) {
     var servicoMap = servicos[i] as Map;
-    servicosList.add(
-      Servico(
-        id: servicoMap['_id'].toString(),
-        title: servicoMap['servico']['nome'].toString(),
-        numQuarto: servicoMap['reserva']['quarto']['numero'].toString(),
-        data: DateTime.parse(servicoMap['createdAt'].toString())
-            .subtract(const Duration(hours: 3)),
-        status: Status.espera,
-      ),
-    );
+    if (servicoMap['status'] != 'finalizado') {
+      servicosList.add(
+        Servico(
+          id: servicoMap['_id'].toString(),
+          title: servicoMap['servico']['nome'].toString(),
+          numQuarto: servicoMap['reserva']['quarto']['numero'].toString(),
+          data: DateTime.parse(servicoMap['createdAt'].toString())
+              .subtract(const Duration(hours: 3)),
+          status: getStatus(servicoMap['status']),
+        ),
+      );
+    } else {
+      servicosFinalizadosList.add(
+        Servico(
+          id: servicoMap['_id'].toString(),
+          title: servicoMap['servico']['nome'].toString(),
+          numQuarto: servicoMap['reserva']['quarto']['numero'].toString(),
+          data: DateTime.parse(servicoMap['createdAt'].toString())
+              .subtract(const Duration(hours: 3)),
+          status: Status.finalizado,
+        ),
+      );
+    }
   }
 }
 
-var servicosFinalizadosList = [
-  //SERVICOS_FINALIZADOS
-  Servico(
-    id: '321',
-    title: 'Serviço de quarto',
-    numQuarto: '25a',
-    data: DateTime(2022, 6, 13, 15, 10),
-    status: Status.finalizado,
-  )
-];
+List<Servico> servicosFinalizadosList = [];

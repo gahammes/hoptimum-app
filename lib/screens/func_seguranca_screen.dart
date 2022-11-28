@@ -30,7 +30,7 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
       icon: Icon(Icons.notification_important),
     ),
     Tab(
-      icon: Icon(Icons.key),
+      icon: Icon(Icons.shield),
     ),
     Tab(
       icon: Icon(Icons.list),

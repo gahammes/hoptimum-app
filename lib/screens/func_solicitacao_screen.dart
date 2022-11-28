@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hoptimum/models/seguranca.dart';
+import 'package:hoptimum/widgets/seguranca_list.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
@@ -25,9 +27,9 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
     Tab(
       icon: Icon(Icons.history),
     ),
-    // Tab(
-    //   icon: Icon(Icons.tag),
-    // ),
+    Tab(
+      icon: Icon(Icons.shield),
+    ),
   ];
 
   late TabController _tabController;
@@ -51,11 +53,7 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
       Navigator.of(context).pushReplacementNamed('/');
     }
 
-    //TODO:ROTA DO COISO
-    print(globals.loginData['funcionario']['cargo']);
-
     initializeDateFormatting();
-    //print(globals.loginData['funcionario']['cartoesChave']);
     return Scaffold(
       appBar: AppBar(
         title: Text('${globals.loginData['funcionario']['nome']} - Cozinha'
@@ -89,27 +87,58 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
               child: Container(
                 height: 647,
                 padding: const EdgeInsets.all(0.0),
-                child: FuncSolicitacaoItem(pedidosList, pedidosFinalizadosList),
+                child: pedidosList.isNotEmpty
+                    ? ListView.builder(
+                        key: UniqueKey(),
+                        itemCount: pedidosList.length,
+                        itemBuilder: (context, index) {
+                          return FuncSolicitacaoItem(
+                            pedidosList[index].id,
+                            pedidosList[index].refeicao,
+                            pedidosList[index].numQuarto,
+                            pedidosList[index].data,
+                            pedidosList[index].status,
+                          );
+                        },
+                      )
+                    : null,
+                //child: FuncLimpezaItem(servicosList, servicosFinalizadosList),
               ),
             ),
             //HISTORICO DE PEDIDOS
             SingleChildScrollView(
               child: Container(
-                height: 647,
                 padding: const EdgeInsets.all(0.0),
-                child: FuncSolicitacaoItem(
-                    pedidosFinalizadosList, pedidosFinalizadosList),
+                height: 640,
+                child: pedidosFinalizadosList.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: pedidosFinalizadosList.length,
+                        itemBuilder: (context, index) {
+                          return FuncSolicitacaoItem(
+                            pedidosFinalizadosList[index].id,
+                            pedidosFinalizadosList[index].refeicao,
+                            pedidosFinalizadosList[index].numQuarto,
+                            pedidosFinalizadosList[index].data,
+                            pedidosFinalizadosList[index].status,
+                          );
+                        },
+                      )
+                    : null,
               ),
             ),
-            //TODO: historico do cartao aqui!!!
-            // SingleChildScrollView(
-            //   child: Container(
-            //     height: 647,
-            //     padding: EdgeInsets.all(0.0),
-            //     child: FuncSolicitacaoItem(
-            //         PEDIDOS_FINALIZADOS, PEDIDOS_FINALIZADOS),
-            //   ),
-            // ),
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: 640, //TODO: aqui da overflow MENTIRA
+                    //margin: EdgeInsets.only(top: 0),
+                    child: SegurancaList(segurancaLog),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

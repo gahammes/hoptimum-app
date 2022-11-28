@@ -1,3 +1,6 @@
+import 'package:hoptimum/services/local_notification_service.dart';
+import 'dart:math';
+
 import '../globals.dart' as globals;
 
 class Notificacao {
@@ -35,6 +38,7 @@ int getIndex() {
 
 void getPedidosHosp() {
   var tag = '';
+
   List servicos = globals.loginData['hospede']['reservas'][getIndex()]
       ['reserva']['servicos'];
   for (var i = 0; i < servicos.length; i++) {
@@ -61,9 +65,45 @@ void getPedidosHosp() {
   });
 }
 
+String getStatusText(String status, String tag) {
+  switch (status) {
+    case 'espera':
+      return tag == 'serv' ? 'Solicitação em espera...' : 'Pedido em espera...';
+    //style: TextStyle(color: Colors.red),
+
+    case 'recebido':
+      return tag == 'serv' ? 'Solicitação recebida.' : 'Pedido recebido.'
+          //style: TextStyle(color: Colors.yellow),
+          ;
+    case 'preparando':
+      return tag == 'serv'
+              ? 'Realizando serviço de quarto.'
+              : "Pedido em preparo."
+          //style: TextStyle(color: Colors.yellow),
+          ;
+    case 'caminho':
+      return 'Pedido à caminho.'
+          //style: TextStyle(color: Colors.yellow),
+          ;
+    case 'entregue':
+      return 'Pedido entregue.'
+          //style: TextStyle(color: Colors.green),
+          ;
+    case 'finalizado':
+      return tag == 'serv' ? 'Solicitação finalizada.' : 'Pedido finalizado.'
+          //style: TextStyle(color: color),
+          ;
+    default:
+      return 'Pedido em espera.'
+          //style: TextStyle(color: color),
+          ;
+  }
+}
+
 void updateStatus() {
   var nome = '';
   var tag = '';
+  var rng = Random();
   List servicos = globals.loginData['hospede']['reservas'][getIndex()]
       ['reserva']['servicos'];
   for (var i = 0; i < servicos.length; i++) {
@@ -77,6 +117,11 @@ void updateStatus() {
       }
     }
   }
+  LocalNotificationService().showNotification(
+    rng.nextInt(999),
+    nome,
+    getStatusText(globals.newStatus['status'], tag),
+  );
   notificacoes.insert(
     0,
     Notificacao(
@@ -94,16 +139,6 @@ void updateStatus() {
       duration: const Duration(milliseconds: 350),
     );
   }
-
-  //print(servicos);
 }
 
-List<Notificacao> notificacoes = [
-  // Notificacao(
-  //   id: 's3',
-  //   title: 'Pedido entregue',
-  //   cod: '98256',
-  //   date: DateTime.now(),
-  //   tag: 'ref',
-  // ),
-];
+List<Notificacao> notificacoes = [];

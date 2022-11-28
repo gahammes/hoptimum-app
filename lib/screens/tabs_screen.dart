@@ -130,24 +130,12 @@ class _TabsScreenState extends State<TabsScreen> {
             onPressed: _logout,
             icon: const Icon(Icons.logout),
           ),
-          IconButton(
-            onPressed: () {
-              LocalNotificationService()
-                  .showNotification(1, 'DUDU!!!!!!!!', 'Deu certooooo 🤢');
-            },
-            icon: const Icon(Icons.notification_add),
-          ),
         ],
       },
       {
         'page': const DespesasScreen(),
         'title': 'Despesas',
-        'actions': [
-          IconButton(
-            onPressed: _refresh,
-            icon: const Icon(Icons.refresh),
-          ),
-        ],
+        'actions': null,
       },
       {
         'page': const SolicitacaoScreen(),
@@ -157,12 +145,7 @@ class _TabsScreenState extends State<TabsScreen> {
       {
         'page': const NotificacaoScreen(),
         'title': 'Notificações',
-        'actions': [
-          IconButton(
-            onPressed: _refresh,
-            icon: const Icon(Icons.refresh),
-          ),
-        ],
+        'actions': null,
       },
       {
         'page': const SegurancaScreen(),
@@ -172,16 +155,12 @@ class _TabsScreenState extends State<TabsScreen> {
             //padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
             onPressed: () async {
-              final userInput = await openDialog();
+              await openDialog();
             },
             icon: const Icon(
               Icons.report,
               color: Colors.red,
             ),
-          ),
-          IconButton(
-            onPressed: _refresh,
-            icon: const Icon(Icons.refresh),
           ),
         ],
       },

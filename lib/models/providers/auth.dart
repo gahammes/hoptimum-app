@@ -148,8 +148,11 @@ class Auth with ChangeNotifier {
     hospedeList.clear();
     despesasLog.clear();
     pedidosList.clear();
+    pedidosFinalizadosList.clear();
     hospedeList.clear();
     reportesList.clear();
+    servicosList.clear();
+    servicosFinalizadosList.clear();
     globals.servicoList.clear();
     globals.carrosArray.clear();
     globals.quartosList.clear();
@@ -184,6 +187,23 @@ class Auth with ChangeNotifier {
         ? null
         : extractedUserData['loginData'] as Map;
     globals.naoTenta = extractedUserData['naoTenta'];
+    if (globals.perfil == 'hospede') {
+      getPedidosHosp();
+      getDepesaLog();
+      getLog();
+    }
+    if (globals.perfil == 'seguranca') {
+      getLogFunc();
+      getReportes();
+    }
+    if (globals.perfil == 'limpeza') {
+      getLogFunc();
+      getServicos();
+    }
+    if (globals.perfil == 'cozinha') {
+      getLogFunc();
+      getPedidos();
+    }
 
     notifyListeners();
 

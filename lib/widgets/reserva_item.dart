@@ -141,6 +141,7 @@ class ReservaItem extends StatelessWidget {
                         FazerReservaScreen.routeName,
                         arguments: {
                           'id': quarto['_id'].toString(),
+                          'maxOcupantes': quarto['maxOcupantes'].toString(),
                         },
                       );
                       print('🤬 RESERVA FEITA');
