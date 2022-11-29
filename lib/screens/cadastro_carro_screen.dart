@@ -102,17 +102,48 @@ class Authenticate extends StatefulWidget {
 
 class _AuthenticateState extends State<Authenticate> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final _passwordFocusNode = FocusNode();
+  final _corFocusNode = FocusNode();
+  final _modeloFocusNode = FocusNode();
+  List<String> validacoes = [];
 
-  final AuthMode _authMode = AuthMode.login;
   final Map<String, String> _authData = {
     'placa': '',
     'cor': '',
     'modelo': '',
   };
   var _isLoading = false;
+
+  Widget fecharButton(BuildContext ctx) {
+    return TextButton(
+      child: const Text("Fechar"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  AlertDialog validacoesDialog(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      title: const Text(
+        "ERRO!",
+        style: TextStyle(color: Colors.black),
+      ),
+      //contentTextStyle: TextStyle(),
+      content: Container(
+        height: (MediaQuery.of(context).size.height -
+                MediaQuery.of(context).padding.top) *
+            0.13,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [for (var validacao in validacoes) Text(validacao)],
+        ),
+      ),
+      actions: [
+        fecharButton(context),
+      ],
+    );
+  }
 
   void _showErrorDiaglog(String message) {
     showDialog(
@@ -143,6 +174,71 @@ class _AuthenticateState extends State<Authenticate> {
     setState(() {
       _isLoading = true;
     });
+
+    if (_authData['placa'] != null) {
+      //VALIDACAO DO NOME
+      if (_authData['placa']!.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          validacoes.add('Preencha o campo Placa.');
+        });
+      } else if (!RegExp("^[A-Z0-9]{7}\$").hasMatch(_authData['placa']!)) {
+        setState(() {
+          _isLoading = false;
+          validacoes.add(
+              'Insira uma placa válida (apenas letras maiúsculas e números).');
+        });
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+        validacoes.add('Preencha o campo Placa.');
+      });
+    }
+
+    if (_authData['modelo'] != null) {
+      //VALIDACAO DO NOME
+      if (_authData['modelo']!.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          validacoes.add('Preencha o campo Modelo.');
+        });
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+        validacoes.add('Preencha o campo Modelo.');
+      });
+    }
+
+    if (_authData['cor'] != null) {
+      //VALIDACAO DO NOME
+      if (_authData['cor']!.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          validacoes.add('Preencha o campo Cor.');
+        });
+      } else if (!RegExp("^[A-Za-z]+\$").hasMatch(_authData['cor']!)) {
+        setState(() {
+          _isLoading = false;
+          validacoes.add('Insira uma cor válida.');
+        });
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+        validacoes.add('Preencha o campo Cor.');
+      });
+    }
+
+    if (validacoes.isNotEmpty) {
+      await showDialog(context: context, builder: validacoesDialog);
+
+      validacoes = [];
+      validacoes.clear();
+      return;
+    }
+
     try {
       final url = Uri.parse(globals.getUrl('http', 'api/carro'));
       final response = await http.post(
@@ -205,20 +301,13 @@ class _AuthenticateState extends State<Authenticate> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
             keyboardType: TextInputType.name,
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
-            onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(_passwordFocusNode);
-            },
-            //decoration: InputDecoration(labelText: 'email'),
+            onFieldSubmitted: (_) => tryCadastro(),
             onSaved: (value) {
               _authData['cor'] = value!;
             },
-
-            //controller: emailController,
-
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -250,20 +339,14 @@ class _AuthenticateState extends State<Authenticate> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
-            //keyboardType: TextInputType.emailAddress,
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(_passwordFocusNode);
+              FocusScope.of(context).requestFocus(_modeloFocusNode);
             },
-            //decoration: InputDecoration(labelText: 'email'),
             onSaved: (value) {
               _authData['placa'] = value!;
             },
-
-            //controller: emailController,
-
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -295,26 +378,14 @@ class _AuthenticateState extends State<Authenticate> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
-            //keyboardType: TextInputType.,
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (_) {
-              FocusScope.of(context).requestFocus(_passwordFocusNode);
+              FocusScope.of(context).requestFocus(_corFocusNode);
             },
-            //decoration: InputDecoration(labelText: 'email'),
-            // validator: (value) {
-            //   if (value!.isEmpty || !value.contains('@')) {
-            //     return 'Email invalido';
-            //   }
-            //   return null;
-            // },
             onSaved: (value) {
               _authData['modelo'] = value!;
             },
-
-            //controller: emailController,
-
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',

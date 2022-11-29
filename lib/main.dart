@@ -19,8 +19,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../models/seguranca.dart';
@@ -37,6 +35,7 @@ import '../screens/tela_reserva.dart';
 import '../screens/categories_screen.dart';
 import '../models/providers/auth.dart';
 import '../screens/func_limpeza_screen.dart';
+import '../screens/cancelar_reserva_screen.dart';
 import '../globals.dart' as globals;
 
 void main() {
@@ -312,6 +311,8 @@ class _HoptimumAppState extends State<HoptimumApp> {
             SemReservaScreen.routeName: (ctx) => const SemReservaScreen(),
             CadastroCarroScreen.routeName: (ctx) => const CadastroCarroScreen(),
             FazerReservaScreen.routeName: (ctx) => const FazerReservaScreen(),
+            CancelarReservaScreen.routeName: (ctx) =>
+                const CancelarReservaScreen(),
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => const HomePage());

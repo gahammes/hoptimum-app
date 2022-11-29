@@ -139,7 +139,6 @@ class _AuthenticateState extends State<Authenticate> {
   };
 
   var _isLoading = false;
-  final _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -152,6 +151,16 @@ class _AuthenticateState extends State<Authenticate> {
       child: const Text("Fechar"),
       onPressed: () {
         Navigator.of(context).pop();
+      },
+    );
+  }
+
+  Widget confirmarButton(BuildContext ctx) {
+    return TextButton(
+      child: const Text("Confirmar"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        tryCadastro();
       },
     );
   }
@@ -179,6 +188,33 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
+  AlertDialog confirmarDialog(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      title: const Text(
+        "Confirme o cadastro!",
+        style: TextStyle(color: Colors.black),
+      ),
+      //contentTextStyle: TextStyle(),
+      content: Container(
+        height: (MediaQuery.of(context).size.height -
+                MediaQuery.of(context).padding.top) *
+            0.13,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text('Lembre-se de adcionar um carro caso seja necessário.'),
+            Text('Clique em confirmar para prosseguir com o cadastro.'),
+          ],
+        ),
+      ),
+      actions: [
+        fecharButton(context),
+        confirmarButton(context),
+      ],
+    );
+  }
+
   void tryCadastro() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -200,7 +236,7 @@ class _AuthenticateState extends State<Authenticate> {
         });
         // print('preencha todos os campos');
         // return;
-      } else if (!RegExp("^[a-z ,.'-]+").hasMatch(_authData['nome']!)) {
+      } else if (!RegExp("^[A-Za-z ,.'-]+\$").hasMatch(_authData['nome']!)) {
         setState(() {
           _isLoading = false;
           validationHospData['nome'] = 'regex';
@@ -939,7 +975,7 @@ class _AuthenticateState extends State<Authenticate> {
             const SizedBox(height: 30.0),
             _buildPasswordTF(),
             const SizedBox(height: 30.0),
-            _buildLoginButton(_isLoading),
+            _buildCadastroButton(_isLoading),
           ]
         : [
             const SizedBox(height: 30.0),
@@ -971,17 +1007,18 @@ class _AuthenticateState extends State<Authenticate> {
             const SizedBox(height: 30.0),
             _buildPasswordTF(),
             const SizedBox(height: 30.0),
-            _buildLoginButton(_isLoading),
+            _buildCadastroButton(_isLoading),
           ];
   }
 
-  Widget _buildLoginButton(bool isLoading) {
+  Widget _buildCadastroButton(bool isLoading) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
-        //TODO:pegar os dados aqui
-        onPressed: tryCadastro,
+        onPressed: () async {
+          await showDialog(context: context, builder: confirmarDialog);
+        },
         child: isLoading
             ? const Center(
                 child: CircularProgressIndicator(),

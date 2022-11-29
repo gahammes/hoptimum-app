@@ -56,12 +56,19 @@ class Auth with ChangeNotifier {
 
       if (decodedRes.containsKey('hospede')) {
         List reservaList = json.decode(response.body)['hospede']['reservas'];
-        if (reservaList == null || reservaList.isEmpty) {
+        if (reservaList.isEmpty) {
           globals.perfil = 'hospede-sem-reserva';
         } else {
-          globals.perfil = 'hospede';
+          globals.perfil = 'hospede-sem-reserva';
+          for (var reserva in json.decode(response.body)['hospede']
+              ['reservas']) {
+            if (reserva['reserva']['status'] == 'ATIVA') {
+              globals.perfil = 'hospede';
+            }
+          }
         }
       }
+      print('🦕 ${globals.perfil}');
       if (decodedRes.containsKey('funcionario')) {
         switch (decodedRes['funcionario']['cargo']['nome']
             .toString()
@@ -88,7 +95,7 @@ class Auth with ChangeNotifier {
         throw HttpException(responseData['error']['message']);
       }
       _token = globals.chave;
-      if (responseData.containsKey('hospede')) {
+      if (responseData.containsKey('hospede') && globals.perfil == 'hospede') {
         List reservaList = json.decode(response.body)['hospede']['reservas'];
         if (reservaList == null || reservaList.isEmpty) {
         } else {

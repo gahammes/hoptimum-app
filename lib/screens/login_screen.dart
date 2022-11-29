@@ -1,12 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hoptimum/screens/cadastro_screen.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../globals.dart' as globals;
-import '../models/http_exception.dart';
 import '../models/providers/auth.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -63,14 +60,6 @@ class LoginScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      // Text(
-                      //   'Entrar',
-                      //   style: TextStyle(
-                      //     color: Colors.white,
-                      //     fontSize: 30.0,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
                       Padding(
                         padding: EdgeInsets.only(top: 40.0),
                         child: AuthPart(),

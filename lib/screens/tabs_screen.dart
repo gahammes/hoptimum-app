@@ -11,7 +11,7 @@ import '../screens/notificacao_screen.dart';
 import '../screens/seguranca_screen.dart';
 import '../models/despesa.dart';
 import '../screens/solicitacao_screen.dart';
-import '../services/local_notification_service.dart';
+import '../screens/cancelar_reserva_screen.dart';
 import '../globals.dart' as globals;
 
 class TabsScreen extends StatefulWidget {
@@ -34,19 +34,8 @@ class _TabsScreenState extends State<TabsScreen> {
 
   void _logout() {
     Provider.of<Auth>(context, listen: false).logout();
-    // Future.delayed(Duration.zero, () {
-    //   Navigator.of(context).pop();
-    // });
-    // SchedulerBinding.instance!.addPostFrameCallback((_) {
-    //   Navigator.of(context).pop();
-
-    // });
-    //Navigator.of(context).pop();
     Navigator.of(context).pushReplacementNamed('/');
-    //Provider.of<Auth>(context, listen: false).logout();
   }
-
-  void _refresh() {}
 
   Future<String?> openDialog() => showDialog<String>(
         context: context,
@@ -126,6 +115,12 @@ class _TabsScreenState extends State<TabsScreen> {
         'page': const HomePage(),
         'title': 'Home',
         'actions': [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(CancelarReservaScreen.routeName);
+            },
+            icon: const Icon(Icons.hotel),
+          ),
           IconButton(
             onPressed: _logout,
             icon: const Icon(Icons.logout),

@@ -162,15 +162,27 @@ class _HomePageState extends State<HomePage> {
           ),
           items: [
             for (var i = 0; i < getHospCount(); i++)
-              CardsList(
-                getNome(i),
-                getTitular(i) == true ? 'Titular' : 'Dependente',
-                'Quarto ${getQuarto(i)}',
-                'Clique para informações',
-                'hosp-info-hero-$i',
-                getHospedes()[i]['hospede'],
-                getTitular(i),
-              ),
+              if (getTitular(i) == true)
+                CardsList(
+                  getNome(i),
+                  getTitular(i) == true ? 'Titular' : 'Dependente',
+                  'Quarto ${getQuarto(i)}',
+                  'Clique para informações',
+                  'hosp-info-hero-$i',
+                  getHospedes()[i]['hospede'],
+                  getTitular(i),
+                ),
+            for (var i = 0; i < getHospCount(); i++)
+              if (getTitular(i) == false)
+                CardsList(
+                  getNome(i),
+                  getTitular(i) == true ? 'Titular' : 'Dependente',
+                  'Quarto ${getQuarto(i)}',
+                  'Clique para informações',
+                  'hosp-info-hero-$i',
+                  getHospedes()[i]['hospede'],
+                  getTitular(i),
+                ),
           ],
         ),
         Column(
@@ -410,8 +422,14 @@ class _HomePageState extends State<HomePage> {
                             getDatas('checkIn').isAfter(DateTime.now())
                                 ? '${getDatas('checkIn').difference(DateTime.now()).inDays.toString()} dias para o check-in'
                                     .toUpperCase()
-                                : '${getDatas('checkOut').difference(DateTime.now()).inDays.toString()} dias para o check-out'
-                                    .toUpperCase(),
+                                : (getDatas('checkIn')
+                                            .difference(DateTime.now())
+                                            .inDays) ==
+                                        0
+                                    ? '${(getDatas('checkOut').difference(DateTime.now()).inDays + 1).toString()} dias para o check-out'
+                                        .toUpperCase()
+                                    : '${getDatas('checkOut').difference(DateTime.now()).inDays.toString()} dias para o check-out'
+                                        .toUpperCase(),
                             gradient: gradient,
                             style: textStyle,
                           ),
