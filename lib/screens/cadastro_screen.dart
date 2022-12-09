@@ -1,14 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hoptimum/screens/cadastro_carro_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 import '../globals.dart' as globals;
-import '../models/http_exception.dart';
-import '../models/providers/auth.dart';
+import '../../screens/cadastro_carro_screen.dart';
 
 enum AuthMode { hospede, funcionario }
 
@@ -47,17 +44,6 @@ class CadastroScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // Container(
-              //   margin: const EdgeInsets.only(top: 50),
-              //   padding: const EdgeInsets.symmetric(
-              //     horizontal: 10.0,
-              //     vertical: 10.0,
-              //   ),
-              //   height: 200,
-              //   child: const Image(
-              //     image: AssetImage('assets/images/logo-black.png'),
-              //   ),
-              // ),
               SizedBox(
                 height: double.infinity,
                 child: SingleChildScrollView(
@@ -71,14 +57,6 @@ class CadastroScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      // Text(
-                      //   'Entrar',
-                      //   style: TextStyle(
-                      //     color: Colors.white,
-                      //     fontSize: 30.0,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
                       Padding(
                         padding: EdgeInsets.only(top: 40.0),
                         child: Authenticate(),
@@ -113,8 +91,6 @@ class _AuthenticateState extends State<Authenticate> {
   final _dataFocusNode = FocusNode();
   final _generoFocusNode = FocusNode();
   final _telefoneFocusNode = FocusNode();
-  String _cargoResult = '';
-  String _cargo = '';
   DateTime? pickedDate;
   List<String> validacoes = [];
 
@@ -172,8 +148,7 @@ class _AuthenticateState extends State<Authenticate> {
         "ERRO!",
         style: TextStyle(color: Colors.black),
       ),
-      //contentTextStyle: TextStyle(),
-      content: Container(
+      content: SizedBox(
         height: (MediaQuery.of(context).size.height -
                 MediaQuery.of(context).padding.top) *
             0.22,
@@ -195,8 +170,7 @@ class _AuthenticateState extends State<Authenticate> {
         "Confirme o cadastro!",
         style: TextStyle(color: Colors.black),
       ),
-      //contentTextStyle: TextStyle(),
-      content: Container(
+      content: SizedBox(
         height: (MediaQuery.of(context).size.height -
                 MediaQuery.of(context).padding.top) *
             0.13,
@@ -222,43 +196,31 @@ class _AuthenticateState extends State<Authenticate> {
     _formKey.currentState!.save();
     setState(() {
       _isLoading = true;
-      _cargoResult = _cargo;
     });
 
     if (_authData['nome'] != null) {
-      //VALIDACAO DO NOME
       if (_authData['nome']!.isEmpty) {
         setState(() {
           _isLoading = false;
           validationHospData['nome'] = 'vazio';
           validacoes.add('Preencha o campo Nome.');
-          //count++;
         });
-        // print('preencha todos os campos');
-        // return;
       } else if (!RegExp("^[A-Za-z ,.'-]+\$").hasMatch(_authData['nome']!)) {
         setState(() {
           _isLoading = false;
           validationHospData['nome'] = 'regex';
           validacoes.add('Insira um nome válido (apenas letras).');
-          //count++;
         });
-        // print('coloca um nome decente');
-        // return;
       }
     } else {
       setState(() {
         _isLoading = false;
         validationHospData['nome'] = 'vazio';
         validacoes.add('Preencha o campo Nome.');
-        // count++;
       });
-      // print('preencha todos os campos');
-      // return;
     }
 
     if (_authData['email'] != null) {
-      //VALIDACAO DO EMAIL
       if (_authData['email']!.isEmpty) {
         setState(() {
           _isLoading = false;
@@ -266,8 +228,6 @@ class _AuthenticateState extends State<Authenticate> {
           validacoes.add('Preencha o campo Email.');
           // count++;
         });
-        // print('preencha todos os campos');
-        // return;
       } else if (!RegExp(
               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
           .hasMatch(_authData['email']!)) {
@@ -275,66 +235,46 @@ class _AuthenticateState extends State<Authenticate> {
           _isLoading = false;
           validationHospData['email'] = 'regex';
           validacoes.add('Insira um email válido.');
-          // count++;
         });
-        // print('coloca um email decente');
-        // return;
       }
     } else {
       setState(() {
         _isLoading = false;
         validationHospData['email'] = 'vazio';
         validacoes.add('Preencha o campo Email.');
-        // count++;
       });
-      // print('preencha todos os campos');
-      // return;
     }
 
     if (_authData['cpf'] != null) {
-      //VALIDACAO DO CPF
       if (_authData['cpf']!.isEmpty) {
         setState(() {
           _isLoading = false;
           validationHospData['cpf'] = 'vazio';
           validacoes.add('Preencha o campo CPF.');
-          // count++;
         });
-        // print('preencha todos os campos');
-        // return;
       } else if (!RegExp("^(?:[+0]9)?[0-9]{11}\$")
           .hasMatch(_authData['cpf']!)) {
         setState(() {
           _isLoading = false;
           validationHospData['cpf'] = 'regex';
           validacoes.add('Insira um CPF válido (apenas números).');
-          // count++;
         });
-        // print('coloca um cpf decente');
-        // return;
       }
     } else {
       setState(() {
         _isLoading = false;
         validationHospData['cpf'] = 'vazio';
         validacoes.add('Preencha o campo CPF.');
-        // count++;
       });
-      // print('preencha todos os campos');
-      // return;
     }
 
     if (_authData['telefone'] != null) {
-      //VALIDACAO DO TELEFONE
       if (_authData['telefone']!.isEmpty) {
         setState(() {
           _isLoading = false;
           validationHospData['telefone'] = 'vazio';
           validacoes.add('Preencha o campo Telefone.');
-          // count++;
         });
-        // print('preencha todos os campos');
-        // return;
       } else if (!RegExp(r"^(?:[+0]9)?[0-9]{11}$")
           .hasMatch(_authData['telefone']!)) {
         setState(() {
@@ -342,52 +282,36 @@ class _AuthenticateState extends State<Authenticate> {
           validationHospData['telefone'] = 'regex';
           validacoes.add(
               'Insira um telefone válido (apenas números, incluindo o DDD).');
-          // count++;
         });
-        // print('coloca um telefone decente');
-        // return;
       }
     } else {
       setState(() {
         _isLoading = false;
         validationHospData['telefone'] = 'vazio';
         validacoes.add('Preencha o campo Telefone.');
-        // count++;
       });
-      // print('preencha todos os campos');
-      // return;
     }
 
     if (_authData['senha'] != null) {
-      //VALIDACAO DA SENHA
       if (_authData['senha']!.isEmpty) {
         setState(() {
           _isLoading = false;
           validationHospData['senha'] = 'vazio';
           validacoes.add('Preencha o campo Senha.');
-          // count++;
         });
-        // print('preencha todos os campos');
-        // return;
       } else if (_authData['senha']!.length < 5) {
         setState(() {
           _isLoading = false;
           validationHospData['senha'] = 'regex';
           validacoes.add('A senha deve ter no mínimo 5 caractéres.');
-          // count++;
         });
-        // print('coloca uma senha decente');
-        // return;
       }
     } else {
       setState(() {
         _isLoading = false;
         validationHospData['senha'] = 'vazio';
         validacoes.add('Preencha o campo Senha.');
-        // count++;
       });
-      // print('preencha todos os campos');
-      // return;
     }
 
     if (validacoes.isNotEmpty) {
@@ -400,7 +324,7 @@ class _AuthenticateState extends State<Authenticate> {
 
     try {
       final url = Uri.parse(globals.getUrl('http', 'api/cadastro'));
-      final response = await http.post(
+      await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -420,11 +344,10 @@ class _AuthenticateState extends State<Authenticate> {
           },
         ),
       );
-      print('😶‍🌫️ ${json.decode(response.body)}');
       globals.carrosArray.clear();
       globals.carrosArray = [];
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     setState(() {
@@ -632,10 +555,8 @@ class _AuthenticateState extends State<Authenticate> {
                 lastDate: DateTime.now(),
               );
               if (pickedDate != null) {
-                //print(pickedDate);
                 String formattedDate =
                     DateFormat('dd/MM/yyyy').format(pickedDate!);
-                //print(formattedDate);
                 setState(() {
                   dateInput.text = formattedDate;
                 });
@@ -890,7 +811,7 @@ class _AuthenticateState extends State<Authenticate> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
-                Icons.cases_outlined,
+                Icons.group_outlined,
                 color: Colors.white,
               ),
               hintStyle: TextStyle(color: Colors.blue),
@@ -957,9 +878,6 @@ class _AuthenticateState extends State<Authenticate> {
             const SizedBox(height: 30.0),
             _buildSignUpButton(
                 'Quer cadastrar um carro? ', CadastroCarroScreen.routeName),
-            // const SizedBox(height: 10.0),
-            // _buildSignUpButton('Quer cadastrar um dependente? ',
-            //     CadastroDependenteScreen.routeName),
             const SizedBox(height: 30.0),
             _buildNomeTF(),
             const SizedBox(height: 30.0),

@@ -32,47 +32,6 @@ class _SegurancaListState extends State<SegurancaList> {
     super.dispose();
   }
 
-  // Future<String?> openDialog() => showDialog<String>(
-  //       context: context,
-  //       builder: (contex) => AlertDialog(
-  //         title: const Text(
-  //           'Descreva o problema',
-  //           style: TextStyle(
-  //               color: Colors.black, fontSize: 16, fontFamily: 'Quicksand'),
-  //         ),
-  //         content: TextField(
-  //           maxLines: null,
-  //           autofocus: true,
-  //           onSubmitted: (_) => submitInput(),
-  //           controller: inputController,
-  //           maxLength: 100,
-  //           decoration: InputDecoration(
-  //             border: InputBorder.none,
-  //             hintText: 'Digite aqui...',
-  //             hintStyle: TextStyle(
-  //               color: Colors.black,
-  //               fontFamily: 'Quicksand',
-  //               fontSize: 12,
-  //             ),
-  //           ),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //                 inputController.clear();
-  //               },
-  //               child: Text('Cancelar')),
-  //           TextButton(onPressed: submitInput, child: Text('Enviar')),
-  //         ],
-  //       ),
-  //     );
-
-  // void submitInput() {
-  //   Navigator.of(context).pop(inputController);
-  //   inputController.clear();
-  // }
-
   SizeTransition buildCardAni(BuildContext context, String title, String info,
       String date, String tag, Animation<double> animation) {
     return SizeTransition(
@@ -83,7 +42,7 @@ class _SegurancaListState extends State<SegurancaList> {
         ),
         color: tag == 'car'
             ? const Color(0xfff5f5f5)
-            : Theme.of(context).colorScheme.secondary, //aqui muda
+            : Theme.of(context).colorScheme.secondary,
         elevation: 5,
         margin: const EdgeInsets.symmetric(
           vertical: 10,
@@ -91,10 +50,8 @@ class _SegurancaListState extends State<SegurancaList> {
         ),
         child: ListTile(
           leading: SizedBox(
-            //width: 85,
             height: 55,
             child: Card(
-              //color: Theme.of(context).colorScheme.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -121,8 +78,8 @@ class _SegurancaListState extends State<SegurancaList> {
                     ),
                     child: tag == 'car'
                         ? const Icon(
-                            Icons.directions_car, //aqui muda
-                            color: Colors.black, //aqui muda
+                            Icons.directions_car,
+                            color: Colors.black,
                             size: 50,
                           )
                         : const Icon(
@@ -138,7 +95,7 @@ class _SegurancaListState extends State<SegurancaList> {
           title: Text(
             title,
             style: TextStyle(
-              color: tag == 'car' ? Colors.black : Colors.white, //aqui muda
+              color: tag == 'car' ? Colors.black : Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -149,11 +106,9 @@ class _SegurancaListState extends State<SegurancaList> {
               Text(
                 info,
                 style: TextStyle(
-                    color:
-                        tag == 'car' ? Colors.black : Colors.white), //aqui muda
+                    color: tag == 'car' ? Colors.black : Colors.white),
               ),
               AutoSizeText(
-                // widget.informationLogs[index].date,
                 DateFormat.MMMMEEEEd('pt_BR').add_Hms().format(
                     DateTime.parse(date).subtract(const Duration(hours: 3))),
                 style: TextStyle(
@@ -173,7 +128,6 @@ class _SegurancaListState extends State<SegurancaList> {
     return AnimatedList(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
-      //physics: AlwaysScrollableScrollPhysics(),
       key: globals.listKey,
       initialItemCount: widget.informationLogs.length,
       itemBuilder: (context, index, animation) {

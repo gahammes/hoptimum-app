@@ -21,7 +21,6 @@ class ReservaInfoCard extends StatelessWidget {
         return false;
       }
     });
-    //print('INDEX DA RESERVA ATIVA $index');
     return index;
   }
 
@@ -167,7 +166,6 @@ class ReservaInfoCard extends StatelessWidget {
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 16,
-                                  //fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],

@@ -1,17 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:hoptimum/models/seguranca.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 
 import '../models/providers/auth.dart';
 import '../models/servico.dart';
 import '../widgets/func_limpeza_item.dart';
 import '../widgets/seguranca_list.dart';
 import '../globals.dart' as globals;
+import '../../models/seguranca.dart';
 
 class FuncLimpezaScreen extends StatefulWidget {
   static const routeName = '/funcLimpeza-screen';
@@ -105,7 +101,6 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
                         },
                       )
                     : null,
-                //child: FuncLimpezaItem(servicosList, servicosFinalizadosList),
               ),
             ),
             SingleChildScrollView(
@@ -134,8 +129,7 @@ class _FuncLimpezaScreenState extends State<FuncLimpezaScreen>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(
-                    height: 640, //TODO: aqui da overflow MENTIRA
-                    //margin: EdgeInsets.only(top: 0),
+                    height: 640,
                     child: SegurancaList(segurancaLog),
                   ),
                 ],

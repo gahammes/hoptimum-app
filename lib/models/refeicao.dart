@@ -19,7 +19,6 @@ class Refeicao {
 }
 
 const refeitcoesList = [
-  //DUMMY_MEALS
   Refeicao(
     id: 's1',
     title: 'Serviço de quarto',

@@ -20,7 +20,6 @@ class CategoryMealsScreen extends StatelessWidget {
     final routeArgs =
         ModalRoute.of(context)?.settings.arguments as Map<String, String>;
     final categoryTitle = routeArgs['title'];
-    //final categoryId = routeArgs['id'];
     final categoryMeals = globals.servicoList.where((servico) {
       return servico['tipo'] == categoryTitle;
     }).toList();

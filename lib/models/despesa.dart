@@ -31,7 +31,6 @@ int getIndex() {
       return false;
     }
   });
-  //print('INDEX DA RESERVA ATIVA $index');
   return index;
 }
 
@@ -50,8 +49,6 @@ double getDiaria() {
           ['quarto']['precoBase']
       .toString());
 }
-
-void updateLog() {}
 
 void getDepesaLog() {
   var logs = [];

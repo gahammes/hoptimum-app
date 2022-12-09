@@ -1,10 +1,9 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:hoptimum/models/despesa.dart';
-import 'package:hoptimum/models/notificacao.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 
+import '../models/despesa.dart';
+import '../models/notificacao.dart';
 import '../globals.dart' as globals;
 
 class RefeicaoItem extends StatefulWidget {
@@ -42,7 +41,6 @@ class _RefeicaoItemState extends State<RefeicaoItem> {
         return false;
       }
     });
-    //print('INDEX DA RESERVA ATIVA $index');
     return index;
   }
 
@@ -119,14 +117,12 @@ class _RefeicaoItemState extends State<RefeicaoItem> {
           ),
         );
       });
-
-      print('🤦‍♂️ $data');
       setState(() {
         _isLoading = false;
       });
       showDialog(context: context, builder: pedidoFeitoDialog);
     } catch (error) {
-      print(error);
+      //print(error);
     }
   }
 
@@ -146,7 +142,6 @@ class _RefeicaoItemState extends State<RefeicaoItem> {
         fazerPedido();
       },
     );
-    // set up the AlertDialog
     AlertDialog confirmacaoDialog = AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: const Text(
@@ -236,10 +231,6 @@ class _RefeicaoItemState extends State<RefeicaoItem> {
                         ),
                       ],
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(left: 0),
-                    //   child: affordabilityIcons(context),
-                    // ),
                     Row(
                       children: [
                         Text(

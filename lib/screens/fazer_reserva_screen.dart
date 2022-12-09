@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hoptimum/models/providers/auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../globals.dart' as globals;
+import '../../models/providers/auth.dart';
 
 class FazerReservaScreen extends StatelessWidget {
   static const routeName = '/fazer-reserva-screen';
@@ -131,7 +131,7 @@ class _AuthenticateState extends State<Authenticate> {
       _dataDisponivel = false;
     });
     DateTimeRange? newDateRange = await showDateRangePicker(
-      locale: Locale('pt', 'BR'),
+      locale: const Locale('pt', 'BR'),
       context: context,
       initialDateRange: dateRange,
       firstDate: DateTime.now(),
@@ -215,7 +215,6 @@ class _AuthenticateState extends State<Authenticate> {
         "Dependente não encontrado!",
         style: TextStyle(color: Colors.black),
       ),
-      //contentTextStyle: TextStyle(),
       content: const Text(
         "Por favor, verifique o CPF ou cadastre o dependente na tela de cadastro.",
       ),
@@ -232,7 +231,6 @@ class _AuthenticateState extends State<Authenticate> {
         "Dependente já adicionado!",
         style: TextStyle(color: Colors.black),
       ),
-      //contentTextStyle: TextStyle(),
       content: const Text(
         "Dependente já está incluso na reserva.",
       ),
@@ -249,7 +247,6 @@ class _AuthenticateState extends State<Authenticate> {
         "CPF do titular!",
         style: TextStyle(color: Colors.black),
       ),
-      //contentTextStyle: TextStyle(),
       content: const Text(
         "Por favor, insira outro CPF.",
       ),
@@ -266,7 +263,6 @@ class _AuthenticateState extends State<Authenticate> {
         "Datas não disponíveis!",
         style: TextStyle(color: Colors.black),
       ),
-      //contentTextStyle: TextStyle(),
       content: const Text(
         "Por favor, selecione outro intervalo de datas.",
       ),
@@ -283,7 +279,6 @@ class _AuthenticateState extends State<Authenticate> {
         "Remover dependente?",
         style: TextStyle(color: Colors.black),
       ),
-      //contentTextStyle: TextStyle(),
       content: const Text(
         "Clique em remover para retirar o dependente da reserva.",
       ),
@@ -301,7 +296,6 @@ class _AuthenticateState extends State<Authenticate> {
         "Confirme sua reserva!",
         style: TextStyle(color: Colors.black),
       ),
-      //contentTextStyle: TextStyle(),
       content: const Text(
         "Clique em confirmar para prosseguir com a reserva.",
       ),
@@ -319,7 +313,6 @@ class _AuthenticateState extends State<Authenticate> {
         "Adicionar dependente?",
         style: TextStyle(color: Colors.black),
       ),
-      //contentTextStyle: TextStyle(),
       content: const Text(
         "Clique em adicionar para incluir o dependente na reserva.",
       ),
@@ -356,16 +349,12 @@ class _AuthenticateState extends State<Authenticate> {
         ),
       );
       var res = json.decode(response.body) as Map;
-      var infos = {};
       if (res.containsKey('error')) {
         showDialog(context: context, builder: dataAlertDialog);
-        print('😶‍🌫️ Data invalida');
         setState(() {
           _dataDisponivel = false;
         });
       } else {
-        print('🥸 data disponivel');
-        infos = res;
         mapReserva['checkIn'] =
             DateTime.parse(_dataMap['checkIn'].toString()).toIso8601String();
         mapReserva['checkOut'] =
@@ -375,16 +364,12 @@ class _AuthenticateState extends State<Authenticate> {
           _dataDisponivel = true;
         });
       }
-      //print('😶‍🌫️ $res');
-      //globals.carrosArray.add(res['_id']);
     } catch (error) {
-      print(error);
+      //print(error);
     }
-
     setState(() {
       _isLoadingData = false;
     });
-    //Navigator.pop(context);
   }
 
   void depCheck() async {
@@ -421,9 +406,7 @@ class _AuthenticateState extends State<Authenticate> {
       var taDentro = false;
       if (res.containsKey('error')) {
         showDialog(context: context, builder: depAlertDialog);
-        print('😶‍🌫️ ${res['error']}');
       } else {
-        print('🥸 pessoa encontrada');
         infos = res;
         for (var i = 0; i < listDep.length; i++) {
           if (listDep[i]['_id'] == res['_id']) {
@@ -437,7 +420,6 @@ class _AuthenticateState extends State<Authenticate> {
               listDep.add(infos);
               pessoaCount++;
             });
-            print('ADICIONOU AGORA! 🤖');
           }
         } else {
           showDialog(context: context, builder: depRepetidoDialog);
@@ -445,25 +427,20 @@ class _AuthenticateState extends State<Authenticate> {
         _adicionarDep = false;
         taDentro = false;
         mapReserva['dependentes'] = listDep;
-        print(listDep);
       }
-      //print('😶‍🌫️ $res');
-      //globals.carrosArray.add(res['_id']);
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     setState(() {
       _isLoadingDep = false;
     });
-    //Navigator.pop(context);
   }
 
   void _logout() {
     Provider.of<Auth>(context, listen: false).logout();
     Navigator.of(context).pop();
     Navigator.of(context).pop();
-    //Navigator.of(context).pushReplacementNamed('/');
   }
 
   void addReserva() async {
@@ -483,7 +460,7 @@ class _AuthenticateState extends State<Authenticate> {
     }
     try {
       final url = Uri.parse(globals.getUrl('http', 'api/reserva'));
-      final response = await http.post(
+      await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -498,11 +475,8 @@ class _AuthenticateState extends State<Authenticate> {
           },
         ),
       );
-      var res = json.decode(response.body) as Map;
-      print('😶‍🌫️ $res');
-      //globals.carrosArray.add(res['_id']);
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     setState(() {
@@ -626,26 +600,15 @@ class _AuthenticateState extends State<Authenticate> {
           height: 60.0,
           child: TextFormField(
             controller: depController,
-            //onSubmitted: (_) => _loginDirection(),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
             onFieldSubmitted: (_) {
               FocusScope.of(context).requestFocus(_passwordFocusNode);
             },
-            //decoration: InputDecoration(labelText: 'email'),
-            // validator: (value) {
-            //   if (value!.isEmpty || !value.contains('@')) {
-            //     return 'Email invalido';
-            //   }
-            //   return null;
-            // },
             onSaved: (value) {
               _depMap['cpf'] = value!;
             },
-
-            //controller: emailController,
-
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
@@ -691,7 +654,6 @@ class _AuthenticateState extends State<Authenticate> {
                 decoration: InputDecoration(
                   labelText: nome,
                   border: InputBorder.none,
-                  //label: Text(nome),
                   labelStyle: const TextStyle(
                     color: Colors.white,
                     fontFamily: 'OpenSans',
@@ -701,7 +663,6 @@ class _AuthenticateState extends State<Authenticate> {
                     Icons.person,
                     color: Colors.white,
                   ),
-                  //hintText: 'Digite o cpf do dependente',
                   hintStyle: kHintTextStyle,
                 ),
               ),
@@ -719,7 +680,6 @@ class _AuthenticateState extends State<Authenticate> {
                 context: context,
                 builder: removerDepDialog,
               );
-              print('deleta');
             },
             icon: const Icon(
               Icons.close,
@@ -746,7 +706,7 @@ class _AuthenticateState extends State<Authenticate> {
                 style: TextStyle(
                   color: _dataDisponivel
                       ? Colors.white
-                      : Color.fromARGB(255, 246, 106, 75),
+                      : const Color.fromARGB(255, 246, 106, 75),
                   letterSpacing: 1.5,
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -904,12 +864,8 @@ class _AuthenticateState extends State<Authenticate> {
           _builCheckOutPicker(),
           const SizedBox(height: 10.0),
           _buildVerificarDatasButton(_isLoadingData, dataCheck),
-          //const SizedBox(height: 30.0),
-
           if (_dataDisponivel && pessoaCount < maxOcupantes)
             _buildAddDepButton(),
-          //const SizedBox(height: 30.0),
-
           if (_dataDisponivel && _addDep && pessoaCount < maxOcupantes)
             _buildAddDependente(),
           if (_dataDisponivel && listDep.isNotEmpty)

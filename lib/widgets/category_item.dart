@@ -20,14 +20,6 @@ class CategoryItem extends StatelessWidget {
         'tipo': tipo,
       },
     );
-
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (_) {
-    //       return CategoryMealsScreen(id, title);
-    //     },
-    //   ),
-    // );
   }
 
   @override
@@ -45,7 +37,6 @@ class CategoryItem extends StatelessWidget {
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
-          //style: Theme.of(context).textTheme.headline6,
         ),
         decoration: BoxDecoration(
           gradient: LinearGradient(

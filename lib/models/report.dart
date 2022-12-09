@@ -23,7 +23,6 @@ int getIndex(List reservas) {
       return false;
     }
   });
-  //print('INDEX DA RESERVA ATIVA $index');
   return index;
 }
 

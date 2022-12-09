@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:hoptimum/models/seguranca.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 
 import '../models/hospede.dart';
 import '../models/providers/auth.dart';
@@ -13,6 +9,7 @@ import '../widgets/lista_hospedes.dart';
 import '../widgets/report_card.dart';
 import '../widgets/seguranca_list.dart';
 import '../globals.dart' as globals;
+import '../../models/seguranca.dart';
 
 class FuncSegurancaScreen extends StatefulWidget {
   static const routeName = '/funcSeguranca-screen';
@@ -56,10 +53,6 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
     super.dispose();
   }
 
-  void printCoiso() {
-    print(globals.loginData['funcionario']['registros']);
-  }
-
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting();
@@ -88,7 +81,6 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
         ),
       ),
       body: Container(
-        //margin: EdgeInsets.all(10.0),
         color: Colors.grey[300],
         child: TabBarView(
           controller: _tabController,
@@ -125,9 +117,7 @@ class _FuncSegurancaScreenState extends State<FuncSegurancaScreen>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(
-                    height: 640, //TODO: aqui da overflow
-                    //margin: EdgeInsets.only(top: 0),
-
+                    height: 640,
                     child: SegurancaList(segurancaLog),
                   ),
                 ],

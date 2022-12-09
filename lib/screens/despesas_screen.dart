@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 import '../models/despesa.dart';
 import '../widgets/grafico.dart';
 import '../widgets/despesa_list.dart';
-import '../globals.dart' as globals;
 
 class DespesasScreen extends StatefulWidget {
   const DespesasScreen({Key? key}) : super(key: key);
@@ -14,7 +12,6 @@ class DespesasScreen extends StatefulWidget {
 }
 
 class _DespesasScreen extends State<DespesasScreen> {
-  final List<Despesa> _userTransactions = despesasLog;
   DateTime latestDate = DateTime(DateTime.now().year);
 
   DateTime getLatestDate() {
@@ -38,11 +35,6 @@ class _DespesasScreen extends State<DespesasScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final routeArgs =
-    //     ModalRoute.of(context)?.settings.arguments as Map<String, List<Widget>>;
-    //final title = routeArgs['title'];
-    // final actions = routeArgs['actions'];
-
     return Scaffold(
       backgroundColor: const Color(0xffe1e1e1),
       body: SingleChildScrollView(

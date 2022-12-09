@@ -6,9 +6,9 @@ import '../models/despesa.dart';
 import '../widgets/chart_bar.dart';
 
 class Grafico extends StatelessWidget {
-  final List<Despesa> recentTransactions;
+  final List<Despesa> despesasRecentes;
 
-  const Grafico(this.recentTransactions, {Key? key}) : super(key: key);
+  const Grafico(this.despesasRecentes, {Key? key}) : super(key: key);
 
   DateTime getLatestDate() {
     var latestDate = DateTime(2022);
@@ -25,7 +25,7 @@ class Grafico extends StatelessWidget {
       final weekDay = getLatestDate().subtract(Duration(days: index));
       var totalSum = 0.0;
 
-      for (var tx in recentTransactions) {
+      for (var tx in despesasRecentes) {
         if (tx.date.day == weekDay.day &&
             tx.date.month == weekDay.month &&
             tx.date.year == weekDay.year) {

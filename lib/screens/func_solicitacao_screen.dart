@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hoptimum/models/seguranca.dart';
-import 'package:hoptimum/widgets/seguranca_list.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +6,8 @@ import '../globals.dart' as globals;
 import '../models/pedido.dart';
 import '../models/providers/auth.dart';
 import '../widgets/func_solicitacao_item.dart';
+import '../../models/seguranca.dart';
+import '../../widgets/seguranca_list.dart';
 
 class FuncSolicitacaoScreen extends StatefulWidget {
   static const routeName = '/funcSolicitacao-screen';
@@ -82,7 +82,6 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
         child: TabBarView(
           controller: _tabController,
           children: [
-            //TODO:LISTA DE PEDIDOS
             SingleChildScrollView(
               child: Container(
                 height: 647,
@@ -102,10 +101,8 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
                         },
                       )
                     : null,
-                //child: FuncLimpezaItem(servicosList, servicosFinalizadosList),
               ),
             ),
-            //HISTORICO DE PEDIDOS
             SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(0.0),
@@ -132,8 +129,7 @@ class _FuncSolicitacaoScreenState extends State<FuncSolicitacaoScreen>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(
-                    height: 640, //TODO: aqui da overflow MENTIRA
-                    //margin: EdgeInsets.only(top: 0),
+                    height: 640,
                     child: SegurancaList(segurancaLog),
                   ),
                 ],

@@ -1,7 +1,4 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:rxdart/subjects.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter/material.dart';
 
 class LocalNotificationService {
@@ -23,10 +20,7 @@ class LocalNotificationService {
     );
   }
 
-  void onDidReceiveNotificationResponse(NotificationResponse details) async {
-    final String? payload = details.payload;
-    print('payload $payload');
-  }
+  void onDidReceiveNotificationResponse(NotificationResponse details) async {}
 
   void showNotification(int id, String title, String text) async {
     const AndroidNotificationDetails androidNotificationDetails =
@@ -36,7 +30,6 @@ class LocalNotificationService {
       channelDescription: 'your channel description',
       color: Color.fromARGB(255, 255, 135, 108),
       autoCancel: true,
-      //colorized: false,
       importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',

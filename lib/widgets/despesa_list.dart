@@ -11,17 +11,9 @@ class DespesaList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //transactions = transactions.toList();
     return ListView.builder(
       itemCount: despesas.length,
       itemBuilder: (ctx, index) {
-        // for (var i = 0; i < transactions.length; i++) {
-        //   if (transactions[i].title == 'Diária') {
-        //     Transaction move = transactions[i];
-        //     transactions.removeAt(i);
-        //     transactions.insert(0, move);
-        //   }
-        // }
         return despesas[index].title != 'Diária'
             ? Card(
                 shape: RoundedRectangleBorder(
@@ -38,7 +30,6 @@ class DespesaList extends StatelessWidget {
                     width: 85,
                     height: 50,
                     child: Card(
-                      //color: Theme.of(context).colorScheme.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -75,16 +66,14 @@ class DespesaList extends StatelessWidget {
                       ),
                     ),
                   ),
-                  title: Container(
-                    child: AutoSizeText(
-                      despesas[index].title,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                      maxLines: 1,
+                  title: AutoSizeText(
+                    despesas[index].title,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
+                    maxLines: 1,
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

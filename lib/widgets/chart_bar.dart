@@ -28,8 +28,7 @@ class ChartBar extends StatelessWidget {
               height: constraints.maxHeight * 0.6,
               width: 10,
               child: Stack(
-                alignment:
-                    Alignment.bottomCenter, // fazer as barras de baixo pra cima
+                alignment: Alignment.bottomCenter,
                 children: [
                   Container(
                     decoration: BoxDecoration(

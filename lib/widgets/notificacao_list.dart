@@ -28,7 +28,7 @@ class _NotificacaoListState extends State<NotificacaoList> {
         ),
         color: tag == 'serv'
             ? const Color(0xfff5f5f5)
-            : Theme.of(context).colorScheme.secondary, //aqui muda
+            : Theme.of(context).colorScheme.secondary,
         elevation: 5,
         margin: const EdgeInsets.symmetric(
           vertical: 10,
@@ -36,10 +36,8 @@ class _NotificacaoListState extends State<NotificacaoList> {
         ),
         child: ListTile(
           leading: SizedBox(
-            //width: 85,
             height: 55,
             child: Card(
-              //color: Theme.of(context).colorScheme.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -66,8 +64,8 @@ class _NotificacaoListState extends State<NotificacaoList> {
                     ),
                     child: tag == 'serv'
                         ? const Icon(
-                            Icons.king_bed, //aqui muda
-                            color: Colors.black, //aqui muda
+                            Icons.king_bed,
+                            color: Colors.black,
                             size: 50,
                           )
                         : const Icon(
@@ -83,7 +81,7 @@ class _NotificacaoListState extends State<NotificacaoList> {
           title: AutoSizeText(
             title,
             style: TextStyle(
-              color: tag == 'serv' ? Colors.black : Colors.white, //aqui muda
+              color: tag == 'serv' ? Colors.black : Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -95,17 +93,14 @@ class _NotificacaoListState extends State<NotificacaoList> {
               Text(
                 info,
                 style: TextStyle(
-                    color: tag == 'serv'
-                        ? Colors.black
-                        : Colors.white), //aqui muda
+                    color: tag == 'serv' ? Colors.black : Colors.white),
               ),
               AutoSizeText(
-                // widget.informationLogs[index].date,
                 DateFormat.MMMMEEEEd('pt_BR').add_Hms().format(
                     DateTime.parse(date).subtract(const Duration(hours: 3))),
                 style: TextStyle(
                     color: tag == 'serv' ? Colors.black : Colors.white),
-                maxLines: 1, //aqui muda
+                maxLines: 1,
               ),
             ],
           ),
@@ -121,34 +116,23 @@ class _NotificacaoListState extends State<NotificacaoList> {
         return tag == 'serv'
             ? 'Solicitação em espera...'
             : 'Pedido em espera...';
-      //style: TextStyle(color: Colors.red),
 
       case 'recebido':
-        return tag == 'serv' ? 'Solicitação recebida...' : 'Pedido recebido'
-            //style: TextStyle(color: Colors.yellow),
-            ;
+        return tag == 'serv' ? 'Solicitação recebida...' : 'Pedido recebido';
       case 'preparando':
         return tag == 'serv'
-                ? 'Realizando serviço de quarto...'
-                : "Pedido em preparo"
-            //style: TextStyle(color: Colors.yellow),
-            ;
+            ? 'Realizando serviço de quarto...'
+            : "Pedido em preparo";
       case 'caminho':
-        return 'Pedido à caminho'
-            //style: TextStyle(color: Colors.yellow),
-            ;
+        return 'Pedido à caminho';
       case 'entregue':
-        return 'Pedido entregue'
-            //style: TextStyle(color: Colors.green),
-            ;
+        return 'Pedido entregue';
       case 'finalizado':
-        return tag == 'serv' ? 'Solicitação finalizada...' : 'Pedido finalizado'
-            //style: TextStyle(color: color),
-            ;
+        return tag == 'serv'
+            ? 'Solicitação finalizada...'
+            : 'Pedido finalizado';
       default:
-        return 'Pedido em espera...'
-            //style: TextStyle(color: color),
-            ;
+        return 'Pedido em espera...';
     }
   }
 
@@ -157,7 +141,6 @@ class _NotificacaoListState extends State<NotificacaoList> {
     return AnimatedList(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
-      //physics: AlwaysScrollableScrollPhysics(),
       key: globals.listKeyNotif,
       initialItemCount: widget.notificacaoLogs.length,
       itemBuilder: (context, index, animation) {

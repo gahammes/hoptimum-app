@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hoptimum/widgets/custom_rect_tween.dart';
-import 'package:hoptimum/widgets/hero_dialog_route.dart';
-import 'package:hoptimum/widgets/hospede_info_card.dart';
-import 'package:hoptimum/widgets/reserva_info_card.dart';
-import '../globals.dart' as globals;
+
+import '../widgets/custom_rect_tween.dart';
+import '../widgets/hero_dialog_route.dart';
+import '../widgets/hospede_info_card.dart';
 
 class CardsList extends StatelessWidget {
   final String nome;

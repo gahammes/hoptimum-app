@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hoptimum/models/providers/auth.dart';
-import 'package:hoptimum/screens/tela_reserva.dart';
 import 'package:provider/provider.dart';
+
+import '../models/providers/auth.dart';
+import '../screens/tela_reserva.dart';
 
 class SemReservaScreen extends StatelessWidget {
   const SemReservaScreen({Key? key}) : super(key: key);

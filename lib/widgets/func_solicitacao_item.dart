@@ -1,6 +1,6 @@
+// ignore_for_file: must_be_immutable, must_call_super
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dart:math';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -58,7 +58,7 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem>
     });
     try {
       final url = Uri.parse(globals.getUrl('http', 'api/statusservico'));
-      final response = await http.post(
+      await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -70,18 +70,15 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem>
           },
         ),
       );
-      print(json.decode(response.body));
     } catch (error) {
-      print(error);
+      //print(error);
     }
   }
 
   Widget _buildExpansionTile(Color color) {
     return ExpansionTile(
-      //maintainState: true,
       collapsedBackgroundColor: const Color(0xfff5f5f5),
       backgroundColor: const Color(0xfff5f5f5),
-      //collapsedBackgroundColor: Colors.white,
       title: const Text(
         'Detalhes',
         style: TextStyle(fontSize: 16),
@@ -103,7 +100,6 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem>
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              //'Pedido ${(widget.pedidos[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}',
               TextSpan(text: '${(widget.id.toString())}.'),
             ],
           ),
@@ -120,7 +116,6 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem>
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              //'Pedido ${(widget.pedidos[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}',
               TextSpan(text: '${(widget.title)}.'),
             ],
           ),
@@ -158,52 +153,9 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem>
             ],
           ),
         ),
-        // const SizedBox(height: 7.0),
-        // _buildListRefeicao(index),
       ],
     );
   }
-
-  // Widget _buildListRefeicao(int index) {
-  //   return widget.title.length == 1
-  //       ? Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             const Text(
-  //               'Refeição: ',
-  //               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //             ),
-  //             Container(
-  //               margin: const EdgeInsets.only(left: 20.0, bottom: 5.0),
-  //               child: Text(
-  //                 widget.pedidos[index].refeicao[0],
-  //                 overflow: TextOverflow.ellipsis,
-  //                 style: const TextStyle(fontSize: 16),
-  //               ),
-  //             ),
-  //           ],
-  //         )
-  //       : Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             const Text(
-  //               'Refeição: ',
-  //               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //             ),
-  //             const SizedBox(
-  //               height: 5.0,
-  //             ),
-  //             Container(
-  //               margin: const EdgeInsets.only(left: 20.0, bottom: 5.0),
-  //               child: Text(
-  //                 widget.pedidos[index].refeicao,
-  //                 overflow: TextOverflow.ellipsis,
-  //                 style: const TextStyle(fontSize: 16),
-  //               ),
-  //             ),
-  //           ],
-  //         );
-  // }
 
   Widget _getText(Color color) {
     switch (widget.status) {
@@ -250,7 +202,6 @@ class _FuncSolicitacaoItemState extends State<FuncSolicitacaoItem>
           children: [
             ListTile(
               leading: SizedBox(
-                //width: 85,
                 height: 60,
                 child: Card(
                   color: Theme.of(context).colorScheme.primary,

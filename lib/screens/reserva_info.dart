@@ -23,7 +23,6 @@ class ReservaInfo extends StatelessWidget {
         return false;
       }
     });
-    //print('INDEX DA RESERVA ATIVA $index');
     return index;
   }
 
@@ -136,7 +135,6 @@ class ReservaInfo extends StatelessWidget {
                     bottom: 10,
                   ),
                   child: Column(
-                    //crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +175,6 @@ class ReservaInfo extends StatelessWidget {
                                     style: TextStyle(
                                       color: Colors.grey,
                                       fontSize: 16,
-                                      //fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],

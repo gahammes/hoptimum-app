@@ -15,7 +15,6 @@ class _ListaHospedesState extends State<ListaHospedes> {
       maintainState: true,
       collapsedBackgroundColor: const Color(0xfff5f5f5),
       backgroundColor: const Color(0xfff5f5f5),
-      //collapsedBackgroundColor: Colors.white,
       title: const Text(
         'Detalhes',
         style: TextStyle(fontSize: 16),
@@ -112,13 +111,10 @@ class _ListaHospedesState extends State<ListaHospedes> {
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),
-                    Container(
-                      // margin: const EdgeInsets.only(left: 20.0, bottom: 5.0),
-                      child: Text(
-                        carro.placa,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 16),
-                      ),
+                    Text(
+                      carro.placa,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
@@ -177,7 +173,6 @@ class _ListaHospedesState extends State<ListaHospedes> {
           children: [
             ListTile(
                 leading: SizedBox(
-                  //width: 85,
                   height: 60,
                   child: Card(
                     color: Theme.of(context).colorScheme.primary,
@@ -200,10 +195,6 @@ class _ListaHospedesState extends State<ListaHospedes> {
                           ),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        // margin: const EdgeInsets.symmetric(
-                        //   vertical: 10,
-                        //   horizontal: 8,
-                        // ),
                         child: const Icon(
                           Icons.person,
                           color: Colors.black,

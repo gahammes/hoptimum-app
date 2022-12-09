@@ -10,7 +10,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../globals.dart' as globals;
-import '../http_exception.dart';
 import '../../models/seguranca.dart';
 import '../../models/despesa.dart';
 
@@ -68,7 +67,6 @@ class Auth with ChangeNotifier {
           }
         }
       }
-      print('🦕 ${globals.perfil}');
       if (decodedRes.containsKey('funcionario')) {
         switch (decodedRes['funcionario']['cargo']['nome']
             .toString()
@@ -84,20 +82,13 @@ class Auth with ChangeNotifier {
             break;
         }
       }
-      //JsonEncoder encoder = JsonEncoder.withIndent('  ');
-
       globals.loginData = json.decode(response.body);
       final responseData = json.decode(response.body) as Map;
 
-      //getLog();
-
-      if (responseData['error'] != null) {
-        throw HttpException(responseData['error']['message']);
-      }
       _token = globals.chave;
       if (responseData.containsKey('hospede') && globals.perfil == 'hospede') {
         List reservaList = json.decode(response.body)['hospede']['reservas'];
-        if (reservaList == null || reservaList.isEmpty) {
+        if (reservaList.isEmpty) {
         } else {
           getLog();
           getDepesaLog();
@@ -175,6 +166,10 @@ class Auth with ChangeNotifier {
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey('rememberMe')) {
+      if (json.decode(prefs.getString('userData')!)['perfil'] ==
+          'hospede-sem-reserva') {
+        return false;
+      }
       if (prefs.getString('rememberMe') == 'false') {
         return false;
       }
@@ -182,7 +177,6 @@ class Auth with ChangeNotifier {
     if (!prefs.containsKey('userData')) {
       return false;
     }
-    //getLog();
     final extractedUserData =
         json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
     _token = extractedUserData['token'] as String;
@@ -211,9 +205,7 @@ class Auth with ChangeNotifier {
       getLogFunc();
       getPedidos();
     }
-
     notifyListeners();
-
     return true;
   }
 }

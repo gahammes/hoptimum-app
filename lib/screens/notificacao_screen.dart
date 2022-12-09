@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hoptimum/widgets/notificacao_list.dart';
 
 import '../models/notificacao.dart';
 import '../widgets/notificacao_list.dart';
@@ -26,7 +25,6 @@ class _NotificacaoScreenState extends State<NotificacaoScreen> {
                       MediaQuery.of(context).padding.top -
                       185.0) *
                   1.08,
-              //margin: const EdgeInsets.only(top: 10),
               child: NotificacaoList(notificacoes),
             ),
           ],

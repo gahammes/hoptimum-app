@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:hoptimum/models/providers/auth.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/quarto.dart';
 import '../globals.dart' as globals;
+import '../../models/providers/auth.dart';
 
 class CancelarReservaScreen extends StatefulWidget {
   const CancelarReservaScreen({Key? key}) : super(key: key);
@@ -213,7 +212,6 @@ class _CancelarReservaScreenState extends State<CancelarReservaScreen> {
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 16,
-                              //fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -294,7 +292,6 @@ class _CancelarReservaScreenState extends State<CancelarReservaScreen> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      //contentTextStyle: TextStyle(),
       content: const Text(
         "Clique em confirmar para cancelar sua reserva.",
       ),
@@ -324,7 +321,7 @@ class _CancelarReservaScreenState extends State<CancelarReservaScreen> {
     }
     try {
       final url = Uri.parse(globals.getUrl('http', 'api/updatereserva'));
-      final response = await http.post(
+      await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -336,11 +333,8 @@ class _CancelarReservaScreenState extends State<CancelarReservaScreen> {
           },
         ),
       );
-      var res = json.decode(response.body) as Map;
-      print('😶‍🌫️ $res');
-      //globals.carrosArray.add(res['_id']);
     } catch (error) {
-      print(error);
+      //print(error);
     }
     setState(() {
       _isLoading = false;

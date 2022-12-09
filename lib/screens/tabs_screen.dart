@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -65,7 +64,6 @@ class _TabsScreenState extends State<TabsScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                //inputController.clear();
               },
               child: const Text('Cancelar'),
             ),
@@ -77,7 +75,7 @@ class _TabsScreenState extends State<TabsScreen> {
   void submitInput() async {
     try {
       final url = Uri.parse(globals.getUrl('http', 'api/report'));
-      final response = await http.post(
+      await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -89,9 +87,8 @@ class _TabsScreenState extends State<TabsScreen> {
           },
         ),
       );
-      print('🦐 ${json.decode(response.body)}');
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     Navigator.of(context).pop();
@@ -114,18 +111,26 @@ class _TabsScreenState extends State<TabsScreen> {
       {
         'page': const HomePage(),
         'title': 'Home',
-        'actions': [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(CancelarReservaScreen.routeName);
-            },
-            icon: const Icon(Icons.hotel),
-          ),
-          IconButton(
-            onPressed: _logout,
-            icon: const Icon(Icons.logout),
-          ),
-        ],
+        'actions': dataCheck
+            ? [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(CancelarReservaScreen.routeName);
+                  },
+                  icon: const Icon(Icons.hotel),
+                ),
+                IconButton(
+                  onPressed: _logout,
+                  icon: const Icon(Icons.logout),
+                ),
+              ]
+            : [
+                IconButton(
+                  onPressed: _logout,
+                  icon: const Icon(Icons.logout),
+                ),
+              ],
       },
       {
         'page': const DespesasScreen(),
@@ -147,7 +152,6 @@ class _TabsScreenState extends State<TabsScreen> {
         'title': 'Segurança',
         'actions': [
           IconButton(
-            //padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
             onPressed: () async {
               await openDialog();
@@ -164,10 +168,6 @@ class _TabsScreenState extends State<TabsScreen> {
     final appBar = AppBar(
       centerTitle: true,
       backgroundColor: Theme.of(context).colorScheme.secondary,
-      // leading: IconButton(
-      //   onPressed: () => {},
-      //   icon: Icon(Icons.density_medium),
-      // ),
       title: Text(
         _pages[globals.tabIndex]['title'],
         textAlign: TextAlign.center,

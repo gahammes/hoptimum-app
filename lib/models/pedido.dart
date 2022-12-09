@@ -46,19 +46,7 @@ class Pedido {
   });
 }
 
-List<Pedido> pedidosList = [
-  //PEDIDOS
-  // Pedido(
-  //   id: 98256,
-  //   refeicao: [
-  //     'Pizza de quatro quejos',
-  //   ],
-  //   numQuarto: 109,
-  //   total: 15.0,
-  //   data: DateTime(2022, 6, 15, 21, 03),
-  //   status: Status.espera,
-  // ),
-];
+List<Pedido> pedidosList = [];
 
 void getPedidos() {
   var pedidos = [];
@@ -93,14 +81,4 @@ void getPedidos() {
   }
 }
 
-List<Pedido> pedidosFinalizadosList = [
-  //PEDIDOS_FINALIZADOS
-  // Pedido(
-  //   id: '27310',
-  //   refeicao: 'Spaghetti com Molho de Tomate',
-  //   numQuarto: 226.toString(),
-  //   total: 15.0,
-  //   data: DateTime(2022, 6, 14, 21, 10),
-  //   status: Status.finalizado,
-  // ),
-];
+List<Pedido> pedidosFinalizadosList = [];

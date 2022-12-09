@@ -1,7 +1,7 @@
-import 'package:hoptimum/services/local_notification_service.dart';
 import 'dart:math';
 
 import '../globals.dart' as globals;
+import '../services/local_notification_service.dart';
 
 class Seguranca {
   final String id;
@@ -205,7 +205,6 @@ void addLog(Map<dynamic, dynamic> res) {
         date: res['createdAt'],
         tag: 'car',
       );
-      //SEGURANCA_DATA.insert(0, newData);
     }
   }
 
@@ -227,7 +226,6 @@ void addLog(Map<dynamic, dynamic> res) {
         date: res['createdAt'],
         tag: 'car',
       );
-      //SEGURANCA_DATA.insert(0, newData);
     } else {
       LocalNotificationService().showNotification(
         rng.nextInt(999),
@@ -241,7 +239,6 @@ void addLog(Map<dynamic, dynamic> res) {
         date: res['createdAt'],
         tag: 'tag',
       );
-      //SEGURANCA_DATA.insert(0, newData);
     }
   }
   segurancaLog.insert(0, newData);

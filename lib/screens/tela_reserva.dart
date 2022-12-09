@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../models/quarto.dart';
 import '../widgets/reserva_item.dart';
 import '../globals.dart' as globals;
 
@@ -10,7 +9,6 @@ class TelaReserva extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //print(globals.quartosList);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.secondary,

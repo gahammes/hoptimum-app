@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import '../models/quarto.dart';
 import '../globals.dart' as globals;
-import 'package:auto_size_text/auto_size_text.dart';
 
 class HospedeInfoCard extends StatelessWidget {
   final String tag;
@@ -26,16 +26,8 @@ class HospedeInfoCard extends StatelessWidget {
         return false;
       }
     });
-    //print('INDEX DA RESERVA ATIVA $index');
     return index;
   }
-
-  // List getHospedes() {
-  //   var hospedes = [];
-  //   hospedes = globals.loginData['hospede']['reservas'][getIndex()]['reserva']
-  //       ['hospedes'];
-  //   return hospedes;
-  // }
 
   List getCarros() {
     return globals.loginData['hospede']['carros'];
@@ -64,15 +56,10 @@ class HospedeInfoCard extends StatelessWidget {
     initializeDateFormatting();
     const fontSize = 22.0;
     const fontSize1 = 18.0;
-    final fontColor = Colors.white;
+    const fontColor = Colors.white;
     final fontColorTitle = Theme.of(context).colorScheme.primary;
     Widget separator = const SizedBox(
       height: 25,
-    );
-    Widget divider = Divider(
-      height: 30,
-      thickness: 1.5,
-      color: Theme.of(context).colorScheme.primary,
     );
     return Hero(
       tag: tag,
@@ -83,7 +70,6 @@ class HospedeInfoCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           color: Theme.of(context).colorScheme.secondary,
-          //elevation: 10.0,
           margin: const EdgeInsets.symmetric(
             vertical: 180,
             horizontal: 40,
@@ -104,7 +90,7 @@ class HospedeInfoCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: AutoSizeText(hospede['nome'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: fontSize1,
                         color: fontColor,
                       )),
@@ -121,7 +107,7 @@ class HospedeInfoCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: AutoSizeText(hospede['email'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: fontSize1,
                         color: fontColor,
                       )),
@@ -138,7 +124,7 @@ class HospedeInfoCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: AutoSizeText(hospede['cpf'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: fontSize1,
                         color: fontColor,
                       )),
@@ -155,7 +141,7 @@ class HospedeInfoCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: AutoSizeText(hospede['telefone'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: fontSize1,
                         color: fontColor,
                       )),
@@ -174,7 +160,7 @@ class HospedeInfoCard extends StatelessWidget {
                   child: AutoSizeText(
                       DateFormat.yMMMMd('pt_BR')
                           .format(DateTime.parse(hospede['nascimento'])),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: fontSize1,
                         color: fontColor,
                       )),
@@ -195,8 +181,8 @@ class HospedeInfoCard extends StatelessWidget {
                   for (var i = 0; i < getCarros().length; i++)
                     Expanded(
                       child: AutoSizeText(
-                          'Modelo: ${getCarros()[i]['modelo']}  /  Placa${getCarros()[i]['placa']}',
-                          style: TextStyle(
+                          'Modelo: ${getCarros()[i]['modelo']}  /  Placa: ${getCarros()[i]['placa']}',
+                          style: const TextStyle(
                             fontSize: fontSize1,
                             color: fontColor,
                           )),

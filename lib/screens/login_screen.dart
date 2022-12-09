@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hoptimum/screens/cadastro_screen.dart';
+
 import 'package:provider/provider.dart';
 
 import '../globals.dart' as globals;
 import '../models/providers/auth.dart';
+import '../screens/cadastro_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/login-screen';
@@ -101,7 +102,7 @@ class _AuthPartState extends State<AuthPart> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred!'),
+        title: const Text('Ocorreu um erro!'),
         content: Text(message),
         actions: [
           TextButton(
@@ -133,7 +134,6 @@ class _AuthPartState extends State<AuthPart> {
       );
     } catch (error) {
       const errorMessage = 'Algo deu errado. Tente novamente!';
-      print(error);
       _showErrorDiaglog(errorMessage);
     }
 
@@ -176,7 +176,6 @@ class _AuthPartState extends State<AuthPart> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            //onSubmitted: (_) => _loginDirection(),
             keyboardType: TextInputType.emailAddress,
             cursorColor: Colors.white,
             textInputAction: TextInputAction.next,
@@ -278,7 +277,6 @@ class _AuthPartState extends State<AuthPart> {
       padding: const EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
-        //TODO:pegar os dados aqui
         onPressed: _submit,
         child: isLoading
             ? const Center(
@@ -311,14 +309,6 @@ class _AuthPartState extends State<AuthPart> {
   Widget _buildSignUpButton() {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //     context,
-        //     PageRouteBuilder(
-        //       pageBuilder: (_, __, ___) => CadastroScreen(),
-        //       transitionDuration: Duration(seconds: 4),
-        //       transitionsBuilder: (_, a, __, c) =>
-        //           FadeTransition(opacity: a, child: c),
-        //     ));
         Navigator.of(context).pushNamed(CadastroScreen.routeName);
       },
       child: RichText(
@@ -356,7 +346,6 @@ class _AuthPartState extends State<AuthPart> {
           _buildEmailTF(),
           const SizedBox(height: 30.0),
           _buildPasswordTF(),
-          // _buildForgotPasswordBtn(),
           _buildRememberMeCB(),
           _buildLoginButton(_isLoading),
           _buildSignUpButton(),

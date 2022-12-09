@@ -1,22 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:hoptimum/models/report.dart';
-import 'package:hoptimum/services/local_notification_service.dart';
-import 'package:sizer/sizer.dart';
-import 'package:hoptimum/models/hospede.dart';
-import 'package:hoptimum/models/notificacao.dart';
-import 'package:hoptimum/models/pedido.dart';
-import 'package:hoptimum/models/servico.dart';
-import 'package:hoptimum/screens/cadastro_carro_screen.dart';
-import 'package:hoptimum/screens/cadastro_screen.dart';
-import 'package:hoptimum/screens/fazer_reserva_screen.dart';
-import 'package:hoptimum/screens/sem_reserva_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:web_socket_channel/io.dart';
 import 'dart:convert';
-import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -37,10 +25,19 @@ import '../models/providers/auth.dart';
 import '../screens/func_limpeza_screen.dart';
 import '../screens/cancelar_reserva_screen.dart';
 import '../globals.dart' as globals;
+import '../models/report.dart';
+import '../services/local_notification_service.dart';
+import '../models/hospede.dart';
+import '../models/notificacao.dart';
+import '../models/pedido.dart';
+import '../models/servico.dart';
+import '../screens/cadastro_carro_screen.dart';
+import '../screens/cadastro_screen.dart';
+import '../screens/fazer_reserva_screen.dart';
+import '../screens/sem_reserva_screen.dart';
 
 void main() {
   Intl.defaultLocale = 'pt_BR';
-  //initializeDateFormatting();
   WidgetsFlutterBinding.ensureInitialized();
   LocalNotificationService().initialize();
   SystemChrome.setPreferredOrientations([
@@ -72,12 +69,8 @@ Future<void> reLogin() async {
       },
     ),
   );
-  // JsonEncoder encoder = JsonEncoder.withIndent('  ');
-  // print(encoder.convert(json.decode(response.body)));
   globals.loginData = json.decode(response.body);
   final data = json.decode(response.body) as Map;
-  //print(data);
-
   if (data.containsKey('hospede')) {
     getLog();
     getDepesaLog();
@@ -91,9 +84,6 @@ Future<void> reLogin() async {
     if (data['funcionario']['cargo']['nome'] == 'limpeza') {
       getServicos();
     }
-    if (data['funcionario']['cargo']['nome'] == 'seguranca') {
-      //TODO:provavelmnte o get da lista de hospedes vai aqui
-    }
   }
 }
 
@@ -103,17 +93,13 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 class _HoptimumAppState extends State<HoptimumApp> {
   void _connect() async {
     globals.channel = IOWebSocketChannel.connect(globals.getUrl('ws', ''));
-    print('💩💩💩💩💩💩💩💩💩💩💩💩💩');
-    JsonEncoder encoder = const JsonEncoder.withIndent('  ');
-
     while (globals.servicoList.isEmpty) {
-      //TODO: MUDEI AQUI TEM Q VER SE NAO DA RUIM (as vezes nao pega a lista)
       try {
         final url = Uri.parse(globals.getUrl('http', 'api/servicos'));
         final response = await http.get(url);
         globals.servicoList = json.decode(response.body);
       } catch (error) {
-        print(error);
+        //print(error);
       }
     }
 
@@ -122,29 +108,22 @@ class _HoptimumAppState extends State<HoptimumApp> {
       final response = await http.get(url);
       globals.quartosList = json.decode(response.body);
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     try {
       final url = Uri.parse(globals.getUrl('http', 'api/hospedes'));
       final response = await http.get(url);
-      //print('🫥 ${json.decode(response.body)}');
       globals.hospedesList = json.decode(response.body);
       getHospList();
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     globals.channel?.stream.listen(
       (data) async {
         var res = json.decode(data) as Map;
         globals.listenData = data;
-
-        print('🤪 conectou');
-
-        //print(data);
-
-        //print(jsonDecode(data)['createdAt'].toString());
         if (res['loginId'] != null) {
           globals.chave = res['loginId'];
           if (globals.email != null &&
@@ -152,7 +131,6 @@ class _HoptimumAppState extends State<HoptimumApp> {
               globals.email.toString().isNotEmpty &&
               globals.password.toString().isNotEmpty) {
             if (!globals.naoTenta) {
-              print('ta relogando aqui em cima 💕');
               reLogin();
             }
           }
@@ -167,16 +145,10 @@ class _HoptimumAppState extends State<HoptimumApp> {
               globals.password = extractedUserData['password'] as String;
 
               if (!globals.naoTenta) {
-                print('ta relogando aqui mais embaixo 🤣');
                 reLogin();
               }
             }
           }
-          //globals.loginData = res;
-          //globals.chaveBackUp = res['loginId'];
-          //print(res['loginId']);
-          //res['loginId'] = '';
-
         }
 
         if (res.containsKey('funcionario') && res.containsKey('status')) {
@@ -184,37 +156,25 @@ class _HoptimumAppState extends State<HoptimumApp> {
           setState(() {
             updateStatus();
           });
-          print('😱 update de status 😱');
-          //print('🥸🥸🥸 $res');
         } else if (res.containsKey('reserva')) {
           setState(() {
             addLog(res);
           });
-          print('🧄 log de hospede 🧄');
         } else if (res.containsKey('funcionario')) {
           setState(() {
             addLog(res);
           });
-          print('🤢 log de funcionario 🤢');
         } else if (res.containsKey('status')) {
           setState(() {
             addLog(res);
           });
-          print('👌 log de carro 👌');
         } else if (res.containsKey('texto')) {
           setState(() {
             addReporte(res);
           });
-          print('👅 reporte feito 👅');
         }
-        //print(encoder.convert(json.decode(data)));
-
-        // globals.listenData = data;
-        // DateTime teste = DateTime.parse(
-        //     jsonDecode(globals.listenData)['createdAt'].toString());
-        // print(teste);
       },
-      onError: (error) => {/*print(error)*/},
+      onError: (error) => {},
       onDone: _connect,
     );
   }
@@ -225,7 +185,7 @@ class _HoptimumAppState extends State<HoptimumApp> {
     try {
       _connect();
     } catch (e) {
-      print("🧄 ERRO AO CONECTAR NO WEBSOCKET: " + e.toString());
+      //print("ERRO AO CONECTAR NO WEBSOCKET: " + e.toString());
     }
   }
 
@@ -295,7 +255,6 @@ class _HoptimumAppState extends State<HoptimumApp> {
                           : const LoginScreen(),
                 ),
           routes: {
-            //'/': (context) => LoginScreen(),
             CategoriesScreen.routeName: (ctx) => const CategoriesScreen(),
             CategoryMealsScreen.routeName: (ctx) => const CategoryMealsScreen(),
             InfoScreen.routeName: (ctx) => const InfoScreen(),

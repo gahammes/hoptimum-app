@@ -2,11 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 import '../globals.dart' as globals;
-import '../models/http_exception.dart';
-import '../models/providers/auth.dart';
 
 enum AuthMode { signup, login }
 
@@ -129,8 +126,7 @@ class _AuthenticateState extends State<Authenticate> {
         "ERRO!",
         style: TextStyle(color: Colors.black),
       ),
-      //contentTextStyle: TextStyle(),
-      content: Container(
+      content: SizedBox(
         height: (MediaQuery.of(context).size.height -
                 MediaQuery.of(context).padding.top) *
             0.13,
@@ -145,27 +141,6 @@ class _AuthenticateState extends State<Authenticate> {
     );
   }
 
-  void _showErrorDiaglog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred!'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              setState(() {
-                _isLoading = false;
-              });
-            },
-            child: const Text('Okay'),
-          ),
-        ],
-      ),
-    );
-  }
-
   void tryCadastro() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -176,7 +151,6 @@ class _AuthenticateState extends State<Authenticate> {
     });
 
     if (_authData['placa'] != null) {
-      //VALIDACAO DO NOME
       if (_authData['placa']!.isEmpty) {
         setState(() {
           _isLoading = false;
@@ -197,7 +171,6 @@ class _AuthenticateState extends State<Authenticate> {
     }
 
     if (_authData['modelo'] != null) {
-      //VALIDACAO DO NOME
       if (_authData['modelo']!.isEmpty) {
         setState(() {
           _isLoading = false;
@@ -212,7 +185,6 @@ class _AuthenticateState extends State<Authenticate> {
     }
 
     if (_authData['cor'] != null) {
-      //VALIDACAO DO NOME
       if (_authData['cor']!.isEmpty) {
         setState(() {
           _isLoading = false;
@@ -255,10 +227,9 @@ class _AuthenticateState extends State<Authenticate> {
         ),
       );
       var res = json.decode(response.body);
-      print('😶‍🌫️ $res');
       globals.carrosArray.add(res['_id']);
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     setState(() {
@@ -411,7 +382,6 @@ class _AuthenticateState extends State<Authenticate> {
       padding: const EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
-        //TODO:pegar os dados aqui
         onPressed: tryCadastro,
         child: isLoading
             ? const Center(

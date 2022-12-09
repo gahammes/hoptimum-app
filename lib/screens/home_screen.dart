@@ -1,12 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+
 import '../models/despesa.dart';
 import '../screens/tabs_screen.dart';
 import '../widgets/custom_rect_tween.dart';
 import '../widgets/hero_dialog_route.dart';
 import '../widgets/info_card.dart';
 import '../widgets/reserva_info_card.dart';
-
 import '../widgets/cards_list.dart';
 import '../widgets/gradient_text.dart';
 import '../globals.dart' as globals;
@@ -20,14 +20,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int getHospCount() {
-    //var hospCount;
-    //var decodedData;
-
     var hospedes = [];
-
     hospedes = globals.loginData['hospede']['reservas'][getIndex()]['reserva']
         ['hospedes'];
-    //print('numero hospedes ${hospedes.length}');
     return hospedes.length;
   }
 
@@ -46,12 +41,6 @@ class _HomePageState extends State<HomePage> {
             reservas['hospede']['reservas'][getIndex()]['reserva']['checkOut']);
   }
 
-  void printReserva() {
-    var reservas = globals.loginData as Map;
-    print(
-        reservas['hospede']['reservas'][getIndex()]['reserva']['servicos'][0]);
-  }
-
   int getIndex() {
     var dados = globals.loginData as Map;
     var reservas = [];
@@ -65,7 +54,6 @@ class _HomePageState extends State<HomePage> {
         return false;
       }
     });
-    //print('INDEX DA RESERVA ATIVA $index');
     return index;
   }
 
@@ -93,13 +81,6 @@ class _HomePageState extends State<HomePage> {
     return hospedes;
   }
 
-  void getCartoes() {
-    var cartoes = [];
-    cartoes = globals.loginData['hospede']['reservas'][getIndex()]['reserva']
-        ['cartoesChave'];
-    print(cartoes);
-  }
-
   double _getConsumo() {
     var subTotal = 0.0;
     for (var valor in despesasLog) {
@@ -110,7 +91,6 @@ class _HomePageState extends State<HomePage> {
     return subTotal;
   }
 
-  // void printCarros() {
   @override
   Widget build(BuildContext context) {
     var gradient = const LinearGradient(
@@ -130,8 +110,6 @@ class _HomePageState extends State<HomePage> {
       fontSize: 17,
       fontWeight: FontWeight.bold,
     );
-    // printCarros();
-    //printReserva();
     return Column(
       children: [
         Container(
@@ -152,7 +130,6 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        //SizedBox(height: height * 0.03),
         CarouselSlider(
           options: CarouselOptions(
             enableInfiniteScroll: getHospCount() > 1 ? true : false,
@@ -186,13 +163,11 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         Column(
-          //padding: EdgeInsets.all(0),
           children: [
             FittedBox(
               child: Row(
                 children: [
                   GestureDetector(
-                    //onTap: () => _selectInfo(context),
                     onTap: () {
                       Navigator.of(context).push(
                         HeroDialogRoute(builder: (context) {
@@ -250,14 +225,6 @@ class _HomePageState extends State<HomePage> {
                                     style: textStyle,
                                   ),
                                 ),
-                                // Text(
-                                //   'INFORMAÇÕES',
-                                //   style: TextStyle(
-                                //     color: Theme.of(context).colorScheme.primary,
-                                //     fontSize: 17,
-                                //     fontWeight: FontWeight.bold,
-                                //   ),
-                                // ),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -342,7 +309,6 @@ class _HomePageState extends State<HomePage> {
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25,
-                                    //fontStyle: FontStyle.italic,
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
@@ -353,10 +319,9 @@ class _HomePageState extends State<HomePage> {
                                   getDatas('checkIn').isAfter(DateTime.now())
                                       ? 'Disponibilizado após o check-in.'
                                       : 'Mais detalhes na aba de despesas.',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 13,
-                                    //fontStyle: FontStyle.italic,
                                   ),
                                   textAlign: TextAlign.left,
                                 )
@@ -371,7 +336,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             GestureDetector(
-              //onTap: () => _selectReservaInfo(context),
               onTap: () {
                 Navigator.of(context).push(
                   HeroDialogRoute(builder: (context) {
@@ -433,16 +397,6 @@ class _HomePageState extends State<HomePage> {
                             gradient: gradient,
                             style: textStyle,
                           ),
-                          // Text(
-                          //   '${getDatas('checkOut').difference(getDatas('checkIn')).inDays.toString()} dias para o check-out'
-                          //       .toUpperCase(),
-                          //   style: TextStyle(
-                          //     color: Theme.of(context).colorScheme.primary,
-                          //     fontSize: 17,
-                          //     fontWeight: FontWeight.bold,
-                          //   ),
-                          //   textAlign: TextAlign.center,
-                          // ),
                           const SizedBox(
                             height: 9,
                           ),
@@ -460,7 +414,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                //aqui
               ),
             ),
           ],

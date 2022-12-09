@@ -30,7 +30,6 @@ class _ReportCardState extends State<ReportCard> {
         children: [
           ListTile(
             leading: SizedBox(
-              //width: 85,
               height: 55,
               child: Card(
                 color: Theme.of(context).colorScheme.primary,
@@ -55,10 +54,6 @@ class _ReportCardState extends State<ReportCard> {
                       ),
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    // margin: const EdgeInsets.symmetric(
-                    //   vertical: 10,
-                    //   horizontal: 8,
-                    // ),
                     child: const Icon(
                       Icons.warning_rounded,
                       color: Colors.black,

@@ -1,5 +1,5 @@
+// ignore_for_file: must_be_immutable, must_call_super
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -23,8 +23,6 @@ class FuncLimpezaItem extends StatefulWidget {
 
 class _FuncLimpezaItemState extends State<FuncLimpezaItem>
     with AutomaticKeepAliveClientMixin<FuncLimpezaItem> {
-  //post com _id de servicos[i] status(string) /api/statusservico
-  //int finalizadoCount = 0;
   @override
   bool get wantKeepAlive => true;
   void _updateStatus() async {
@@ -42,23 +40,7 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem>
         case Status.preparando:
           widget.status = Status.finalizado;
           status = 'finalizado';
-          // servicosFinalizadosList.insert(
-          //   0,
-          //   Servico(
-          //     id: widget.id,
-          //     title: widget.title,
-          //     numQuarto: widget.quarto,
-          //     data: widget.data,
-          //     status: widget.status,
-          //   ),
-          // );
-
           servicosList.removeWhere((servico) => servico.id == widget.id);
-
-          //widget.solicitacoes.removeAt(index);
-          //globals.listaDeServicos.removeAt(index);
-          //finalizadoCount++;
-
           break;
         case Status.finalizado:
           break;
@@ -68,7 +50,7 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem>
     });
     try {
       final url = Uri.parse(globals.getUrl('http', 'api/statusservico'));
-      final response = await http.post(
+      await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -80,18 +62,15 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem>
           },
         ),
       );
-      print(json.decode(response.body));
     } catch (error) {
-      print(error);
+      //print(error);
     }
   }
 
   Widget _buildExpansionTile(Color color) {
     return ExpansionTile(
-      //maintainState: true,
       collapsedBackgroundColor: const Color(0xfff5f5f5),
       backgroundColor: const Color(0xfff5f5f5),
-      //collapsedBackgroundColor: Colors.white,
       title: const Text(
         'Detalhes',
         style: TextStyle(fontSize: 16),
@@ -113,7 +92,6 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem>
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              //'${(widget.pedidos[index].id.toString().length - (rng.nextInt(5))) * (rng.nextInt(100) + 1)}.'
               TextSpan(text: '${(widget.id.toString())}.'),
             ],
           ),
@@ -195,7 +173,6 @@ class _FuncLimpezaItemState extends State<FuncLimpezaItem>
           children: [
             ListTile(
               leading: SizedBox(
-                //width: 85,
                 height: 60,
                 child: Card(
                   color: Theme.of(context).colorScheme.primary,

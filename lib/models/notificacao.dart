@@ -32,7 +32,6 @@ int getIndex() {
       return false;
     }
   });
-  //print('INDEX DA RESERVA ATIVA $index');
   return index;
 }
 
@@ -69,34 +68,21 @@ String getStatusText(String status, String tag) {
   switch (status) {
     case 'espera':
       return tag == 'serv' ? 'Solicitação em espera...' : 'Pedido em espera...';
-    //style: TextStyle(color: Colors.red),
 
     case 'recebido':
-      return tag == 'serv' ? 'Solicitação recebida.' : 'Pedido recebido.'
-          //style: TextStyle(color: Colors.yellow),
-          ;
+      return tag == 'serv' ? 'Solicitação recebida.' : 'Pedido recebido.';
     case 'preparando':
       return tag == 'serv'
-              ? 'Realizando serviço de quarto.'
-              : "Pedido em preparo."
-          //style: TextStyle(color: Colors.yellow),
-          ;
+          ? 'Realizando serviço de quarto.'
+          : "Pedido em preparo.";
     case 'caminho':
-      return 'Pedido à caminho.'
-          //style: TextStyle(color: Colors.yellow),
-          ;
+      return 'Pedido à caminho.';
     case 'entregue':
-      return 'Pedido entregue.'
-          //style: TextStyle(color: Colors.green),
-          ;
+      return 'Pedido entregue.';
     case 'finalizado':
-      return tag == 'serv' ? 'Solicitação finalizada.' : 'Pedido finalizado.'
-          //style: TextStyle(color: color),
-          ;
+      return tag == 'serv' ? 'Solicitação finalizada.' : 'Pedido finalizado.';
     default:
-      return 'Pedido em espera.'
-          //style: TextStyle(color: color),
-          ;
+      return 'Pedido em espera.';
   }
 }
 

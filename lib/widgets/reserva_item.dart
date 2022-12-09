@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hoptimum/screens/fazer_reserva_screen.dart';
+
+import '../screens/fazer_reserva_screen.dart';
 
 class ReservaItem extends StatelessWidget {
   final Map quarto;
@@ -37,7 +38,6 @@ class ReservaItem extends StatelessWidget {
               bottom: 10,
             ),
             child: Column(
-              //crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +77,6 @@ class ReservaItem extends StatelessWidget {
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 16,
-                                //fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
@@ -133,10 +132,7 @@ class ReservaItem extends StatelessWidget {
                         borderRadius: BorderRadius.circular(25.0),
                       ),
                     ),
-                    onPressed: /*quarto['ocupado']
-                        ? null
-                        : */
-                        () {
+                    onPressed: () {
                       Navigator.of(context).pushNamed(
                         FazerReservaScreen.routeName,
                         arguments: {
@@ -144,7 +140,6 @@ class ReservaItem extends StatelessWidget {
                           'maxOcupantes': quarto['maxOcupantes'].toString(),
                         },
                       );
-                      print('🤬 RESERVA FEITA');
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
